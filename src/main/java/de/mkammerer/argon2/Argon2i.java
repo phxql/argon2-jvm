@@ -7,12 +7,27 @@ import de.mkammerer.argon2.jna.Uint32_t;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
+/**
+ * Argon2i password hashing function.
+ */
 class Argon2i implements Argon2 {
+    /**
+     * Salt length in bytes.
+     */
     public static final int SALT_LENGTH = 16;
+    /**
+     * Hash length in bytes.
+     */
     public static final int HASH_LENGTH = 32;
 
+    /**
+     * Secure RNG for salt.
+     */
     private final SecureRandom secureRandom = new SecureRandom();
 
+    /**
+     * ASCII encoding.
+     */
     private static final Charset ASCII = Charset.forName("ASCII");
 
     @Override
@@ -33,6 +48,11 @@ class Argon2i implements Argon2 {
         return new String(encoded, ASCII);
     }
 
+    /**
+     * Generates {@link #SALT_LENGTH} bytes of salt.
+     *
+     * @return Salt.
+     */
     private byte[] generateSalt() {
         byte[] salt = new byte[SALT_LENGTH];
         secureRandom.nextBytes(salt);
