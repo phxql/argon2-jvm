@@ -4,7 +4,7 @@ This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 
 ## Maven
 Add [this Bintray Maven repository](https://bintray.com/phxql/maven/argon2-jvm/view#) to your settings.
-You can use then the following coordinates:
+You can then use the following Maven coordinates:
 ```
 <dependency>
     <groupId>de.mkammerer</groupId>
@@ -16,7 +16,7 @@ You can use then the following coordinates:
 ```
 repositories {
     maven {
-        url  "http://dl.bintray.com/phxql/maven"
+        url  "https://dl.bintray.com/phxql/maven"
     }
 }
 
