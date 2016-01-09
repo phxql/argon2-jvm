@@ -10,7 +10,7 @@ TODO
 ```
 TODO
 ```
-### Usage
+## Usage
 This binding needs the Argon2 C library. Libraries for the following operation systems are included:
 * Linux x86-64
 
@@ -31,11 +31,14 @@ if (argon2.verify(hash, "password")) {
 }
 ```
 
-### Technical details
+## Technical details
 This library uses [JNA](https://github.com/java-native-access/jna) to communicate with the Argon2 C library.
 
-### License
+## Building it yourself
+Run `./gradlew clean build` to build and test the software.
+
+## License
 [LGPL v3](https://www.gnu.org/licenses/lgpl.html)
 
-### Maintainer
+## Maintainer
 Moritz Kammerer ([@phXql](https://github.com/phxql))
