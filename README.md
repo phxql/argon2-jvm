@@ -3,12 +3,26 @@
 This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 
 ## Maven
+Add [this Bintray Maven repository](https://bintray.com/phxql/maven/argon2-jvm/view#) to your settings.
+You can use then the following coordinates:
 ```
-TODO
+<dependency>
+    <groupId>de.mkammerer</groupId>
+    <artifactId>argon2-jvm</artifactId>
+    <version>1.0</version>
+<dependency>
 ```
 ## Gradle
 ```
-TODO
+repositories {
+    maven {
+        url  "http://dl.bintray.com/phxql/maven"
+    }
+}
+
+dependencies {
+    compile 'de.mkammerer:argon2-jvm:1.0'
+}
 ```
 ## Usage
 This binding needs the Argon2 C library. Libraries for the following operation systems are included:
