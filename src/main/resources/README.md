@@ -6,3 +6,5 @@ The libraries are compiled from [this source code](https://github.com/P-H-C/phc-
 
 * linux-x86-64: Commit hash `9c141611ec3b3294bfcad86ebc928f9cdf19cba5`
 * linux-x86: Commit hash `dc11c31cd62db177ad807f7e92498918f0ed031a`
+* win32-x86-64: Commit hash `7788a0ec61ab13fabd9cf79ff53c59acb728902f`
+* win32-x86: Commit hash `7788a0ec61ab13fabd9cf79ff53c59acb728902f`

@@ -28,8 +28,10 @@ dependencies {
 This binding needs the Argon2 C library. Libraries for the following operation systems are included:
 * Linux x86
 * Linux x86-64
+* Windows x86
+* Windows x86-64
 
-If your operating system isn't in the list, you have to specify the `jna.library.path`. See [this documentation](https://java-native-access.github.io/jna/4.2.1/com/sun/jna/NativeLibrary.html) for details.
+If your operating system isn't in the list, you have to get a compiled version of the Argon2 C library and specify the `jna.library.path`. See [this documentation](https://java-native-access.github.io/jna/4.2.1/com/sun/jna/NativeLibrary.html) on where to place the library.
 
 ```
 // Create instance
