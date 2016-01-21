@@ -1,7 +1,22 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.4"
+}
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
 group 'de.mkammerer'
 version '1.2-SNAPSHOT'
-
-apply plugin: 'java'
 
 sourceCompatibility = 1.5
 targetCompatibility = 1.5
@@ -32,4 +47,30 @@ artifacts {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.10'
+}
+
+publishing {
+    publications {
+        Argon2JvmPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['Argon2JvmPublication']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/phxql/argon2-jvm.git'
+        version {
+            name = project.version
+        }
+    }
 }
