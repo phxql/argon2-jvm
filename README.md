@@ -10,7 +10,7 @@ You can then use the following Maven coordinates:
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
     <version>1.1</version>
-<dependency>
+</dependency>
 ```
 ## Gradle
 ```
