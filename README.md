@@ -9,7 +9,7 @@ You can then use the following Maven coordinates:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
 <dependency>
 ```
 ## Gradle
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compile 'de.mkammerer:argon2-jvm:1.0'
+    compile 'de.mkammerer:argon2-jvm:1.1.0'
 }
 ```
 ## Usage
