@@ -3,7 +3,20 @@
 This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 
 ## Maven
-Add [this Bintray Maven repository](https://bintray.com/phxql/maven/argon2-jvm/view#) to your settings.
+Add this repository:
+```
+<repositories>
+  <repository>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+    <id>bintray-phxql-maven</id>
+    <name>bintray</name>
+    <url>http://dl.bintray.com/phxql/maven</url>
+  </repository>
+</repositories>
+```
+
 You can then use the following Maven coordinates:
 ```
 <dependency>
