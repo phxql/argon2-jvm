@@ -12,7 +12,7 @@ Add this repository:
     </snapshots>
     <id>bintray-phxql-maven</id>
     <name>bintray</name>
-    <url>http://dl.bintray.com/phxql/maven</url>
+    <url>https://dl.bintray.com/phxql/maven</url>
   </repository>
 </repositories>
 ```
