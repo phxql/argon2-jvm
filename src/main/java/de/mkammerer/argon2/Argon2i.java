@@ -30,9 +30,14 @@ class Argon2i implements Argon2 {
      */
     private static final Charset ASCII = Charset.forName("ASCII");
 
+    /**
+     * UTF-8 encoding.
+     */
+    private static final Charset UTF8 = Charset.forName("UTF8");
+
     @Override
     public String hash(int iterations, int memory, int parallelism, String password) {
-        byte[] pwd = password.getBytes();
+        byte[] pwd = password.getBytes(UTF8);
         byte[] salt = generateSalt();
 
         byte[] encoded = new byte[HASH_LENGTH * 4];
@@ -63,7 +68,7 @@ class Argon2i implements Argon2 {
     @Override
     public boolean verify(String hash, String password) {
         byte[] encoded = hash.getBytes(ASCII);
-        byte[] pwd = password.getBytes();
+        byte[] pwd = password.getBytes(UTF8);
 
         int result = Argon2Library.INSTANCE.argon2i_verify(encoded, pwd, new Size_t(pwd.length));
 
