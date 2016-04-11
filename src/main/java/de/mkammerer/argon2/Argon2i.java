@@ -72,7 +72,8 @@ class Argon2i implements Argon2 {
 
     @Override
     public boolean verify(String hash, String password) {
-        byte[] encoded = hash.getBytes(ASCII);
+        //encoded needs to be nul terminated for strlen to work
+        byte[] encoded = Native.toByteArray(hash, ASCII_STR);
         byte[] pwd = password.getBytes();
 
         int result = Argon2Library.INSTANCE.argon2i_verify(encoded, pwd, new Size_t(pwd.length));
