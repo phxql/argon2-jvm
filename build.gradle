@@ -1,6 +1,18 @@
 group 'de.mkammerer'
 version '1.1'
 
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2'
+    }
+}
+
+apply plugin: 'org.sonarqube'
 apply plugin: 'java'
 
 sourceCompatibility = 1.5
