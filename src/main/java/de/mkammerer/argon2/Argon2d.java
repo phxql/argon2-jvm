@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 /**
  * Argon2i password hashing function.
  */
-class Argon2i extends BaseArgon2 {
+class Argon2d extends BaseArgon2 {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, String password) {
@@ -26,7 +26,7 @@ class Argon2i extends BaseArgon2 {
                 new Uint32_t(salt.length), new Uint32_t(HASH_LENGTH)).intValue();
         final byte[] encoded = new byte[len];
 
-        int result = Argon2Library.INSTANCE.argon2i_hash_encoded(
+        int result = Argon2Library.INSTANCE.argon2d_hash_encoded(
                 iterations_t, memory_t, parallelism_t, pwd, new Size_t(pwd.length),
                 salt, new Size_t(salt.length), new Size_t(HASH_LENGTH), encoded, new Size_t(encoded.length)
         );
@@ -44,7 +44,7 @@ class Argon2i extends BaseArgon2 {
         byte[] encoded = Native.toByteArray(hash, ASCII);
         byte[] pwd = password.getBytes();
 
-        int result = Argon2Library.INSTANCE.argon2i_verify(encoded, pwd, new Size_t(pwd.length));
+        int result = Argon2Library.INSTANCE.argon2d_verify(encoded, pwd, new Size_t(pwd.length));
         return result == Argon2Library.ARGON2_OK;
     }
 }

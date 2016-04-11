@@ -26,7 +26,8 @@ public interface Argon2Library extends Library {
      */
 
     /**
-     * Hashes a password with Argon2i, producing an encoded hash.
+     * Hashes a password with Argon2, producing an encoded hash. Variants are provided
+     * for both agon2i and argon2d.
      *
      * @param t_cost      Number of iterations
      * @param m_cost      Sets memory usage to m_cost kibibytes
@@ -41,9 +42,10 @@ public interface Argon2Library extends Library {
      * @return ARGON2_OK if successful
      */
     int argon2i_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+    int argon2d_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
 
     /**
-     * Verifies a password against an encoded string
+     * Verifies a password against an encoded string.
      *
      * @param encoded String encoding parameters, salt, hash
      * @param pwd Pointer to password
@@ -54,6 +56,7 @@ public interface Argon2Library extends Library {
     int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen);
      */
     int argon2i_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
+    int argon2d_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
 
     /**
      * Returns the encoded hash length for the given input parameters

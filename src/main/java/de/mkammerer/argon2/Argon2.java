@@ -4,6 +4,7 @@ package de.mkammerer.argon2;
  * Argon2 password hashing function.
  */
 public interface Argon2 {
+
     /**
      * Hashes a password.
      *
