@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Better memory management
+- Updated Argon2 library for Linux-x86 and Linux-x86-64
 
 ## [1.1.0] - 2016-01-21
 ### Added
