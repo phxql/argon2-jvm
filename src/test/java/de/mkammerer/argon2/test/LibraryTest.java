@@ -1,5 +1,7 @@
-package de.mkammerer.argon2;
+package de.mkammerer.argon2.test;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
