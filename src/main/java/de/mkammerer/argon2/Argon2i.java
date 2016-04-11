@@ -6,7 +6,6 @@ import de.mkammerer.argon2.jna.Argon2Library;
 import de.mkammerer.argon2.jna.Size_t;
 import de.mkammerer.argon2.jna.Uint32_t;
 
-import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
 /**
@@ -30,8 +29,7 @@ class Argon2i implements Argon2 {
     /**
      * ASCII encoding.
      */
-    private static final String ASCII_STR = "ASCII";
-    private static final Charset ASCII = Charset.forName(ASCII_STR);
+    private static final String ASCII = "ASCII";
 
     @Override
     public String hash(int iterations, int memory, int parallelism, String password) {
@@ -55,7 +53,7 @@ class Argon2i implements Argon2 {
             throw new IllegalStateException(String.format("%s (%d)", errMsg, result));
         }
 
-        return Native.toString(encoded, ASCII_STR);
+        return Native.toString(encoded, ASCII);
     }
 
     /**
@@ -73,7 +71,7 @@ class Argon2i implements Argon2 {
     @Override
     public boolean verify(String hash, String password) {
         //encoded needs to be nul terminated for strlen to work
-        byte[] encoded = Native.toByteArray(hash, ASCII_STR);
+        byte[] encoded = Native.toByteArray(hash, ASCII);
         byte[] pwd = password.getBytes();
 
         int result = Argon2Library.INSTANCE.argon2i_verify(encoded, pwd, new Size_t(pwd.length));
