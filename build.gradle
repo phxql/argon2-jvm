@@ -1,19 +1,27 @@
-group 'de.mkammerer'
-version '1.1'
-
 buildscript {
     repositories {
+        jcenter()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
     }
     dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2'
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.4"
+}
+
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group 'de.mkammerer'
+version '1.2-SNAPSHOT'
 
 sourceCompatibility = 1.5
 targetCompatibility = 1.5
@@ -30,6 +38,7 @@ dependencies {
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
+    exclude('**/*.dylib', '**/*.so', '**/*.dll')
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -44,4 +53,30 @@ artifacts {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
+}
+
+publishing {
+    publications {
+        Argon2JvmPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['Argon2JvmPublication']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/phxql/argon2-jvm.git'
+        version {
+            name = project.version
+        }
+    }
 }
