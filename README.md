@@ -73,3 +73,6 @@ Run `./gradlew clean build` to build and test the software.
 
 ## Maintainer
 Moritz Kammerer ([@phXql](https://github.com/phxql))
+
+## Contributor
+See [contributor.md](contributor.md)
