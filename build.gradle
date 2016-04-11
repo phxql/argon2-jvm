@@ -15,6 +15,11 @@ plugins {
     id "com.jfrog.bintray" version "1.4"
 }
 
+ext {
+    bintrayUser = ''
+    bintrayKey = ''
+}
+
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java'
