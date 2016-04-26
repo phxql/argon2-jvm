@@ -12,15 +12,6 @@ import java.security.SecureRandom;
 abstract class BaseArgon2 implements Argon2 {
 
     /**
-     * Salt length in bytes.
-     */
-    private static final int SALT_LENGTH = 16;
-    /**
-     * Hash length in bytes.
-     */
-    protected static final int HASH_LENGTH = 32;
-
-    /**
      * ASCII encoding.
      */
     private static final String ASCII = "ASCII";
@@ -30,13 +21,29 @@ abstract class BaseArgon2 implements Argon2 {
      */
     private final SecureRandom secureRandom = new SecureRandom();
 
+    private int saltLen;
+    private int hashLen;
+
+    public BaseArgon2() {
+        this(Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    public BaseArgon2(int saltLen, int hashLen) {
+        this.saltLen = saltLen;
+        this.hashLen = hashLen;
+    }
+
+    protected int getHashLength() {
+        return hashLen;
+    }
+
     /**
      * Generates {@link #SALT_LENGTH} bytes of salt.
      *
      * @return Salt.
      */
     private byte[] generateSalt() {
-        byte[] salt = new byte[SALT_LENGTH];
+        byte[] salt = new byte[saltLen];
         secureRandom.nextBytes(salt);
 
         return salt;
@@ -52,7 +59,7 @@ abstract class BaseArgon2 implements Argon2 {
         final Uint32_t parallelism_t = new Uint32_t(parallelism);
 
         int len = Argon2Library.INSTANCE.argon2_encodedlen(iterations_t, memory_t, parallelism_t,
-                new Uint32_t(salt.length), new Uint32_t(HASH_LENGTH)).intValue();
+                new Uint32_t(salt.length), new Uint32_t(hashLen)).intValue();
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
