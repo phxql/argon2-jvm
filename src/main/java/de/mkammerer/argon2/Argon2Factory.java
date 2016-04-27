@@ -30,7 +30,18 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create() {
-        return create(Argon2Types.ARGON2i);
+        return create(Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    /**
+     * Creates a new {@link Argon2} instance.
+     *
+     * @param saltLen Byte length of salt
+     * @param hashLen Byte length of hash
+     * @return Argon2 instance.
+     */
+    public static Argon2 create(int saltLen, int hashLen) {
+        return create(Argon2Types.ARGON2i, saltLen, hashLen);
     }
 
     /**
@@ -40,11 +51,21 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create(Argon2Types type) {
+        return create(type, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    /**
+     * Creates a new {@link Argon2} instance with the given type.
+     *
+     * @param type Argon2 type.
+     * @return Argon2 instance.
+     */
+    public static Argon2 create(Argon2Types type, int saltLen, int hashLen) {
         switch (type) {
             case ARGON2i:
-                return new Argon2i();
+                return new Argon2i(saltLen, hashLen);
             case ARGON2d:
-                return new Argon2d();
+                return new Argon2d(saltLen, hashLen);
             default:
                 throw new IllegalArgumentException("Invalid argon2 type");
         }

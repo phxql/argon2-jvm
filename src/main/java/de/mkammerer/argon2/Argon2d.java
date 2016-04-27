@@ -8,11 +8,16 @@ import de.mkammerer.argon2.jna.Uint32_t;
  * Argon2i password hashing function.
  */
 class Argon2d extends BaseArgon2 {
+
+    public Argon2d(int saltLen, int hashLen) {
+        super(saltLen, hashLen);
+    }
+
     @Override
     protected int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded) {
         return Argon2Library.INSTANCE.argon2d_hash_encoded(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),
-                salt, new Size_t(salt.length), new Size_t(HASH_LENGTH), encoded, new Size_t(encoded.length)
+                salt, new Size_t(salt.length), new Size_t(getHashLength()), encoded, new Size_t(encoded.length)
         );
     }
 
