@@ -15,18 +15,13 @@ plugins {
     id "com.jfrog.bintray" version "1.4"
 }
 
-ext {
-    bintrayUser = ''
-    bintrayKey = ''
-}
-
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group 'de.mkammerer'
-version '1.2-SNAPSHOT'
+version '1.2'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -72,8 +67,8 @@ publishing {
 
 
 bintray {
-    user = bintrayUser
-    key = bintrayKey
+    user = property('bintrayUser')
+    key = property('bintrayKey')
     publications = ['Argon2JvmPublication']
     pkg {
         repo = 'maven'
