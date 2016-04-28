@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Better memory management
 - Better nul byte handling
 - Updated Argon2 library for Linux-x86 and Linux-x86-64
+- Updated Argon2 library for Windows-x86 and Windows-x86-64
 - Removed pre-compiled libraries from source JAR
 
 ## [1.1.0] - 2016-01-21
