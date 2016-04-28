@@ -8,7 +8,20 @@ import de.mkammerer.argon2.jna.Uint32_t;
  * Argon2i password hashing function.
  */
 class Argon2i extends BaseArgon2 {
+    /**
+     * Constructor.
+     * <p>
+     * Uses default salt and hash lengths.
+     */
+    public Argon2i() {
+    }
 
+    /**
+     * Constructor.
+     *
+     * @param saltLen Salt length in bytes.
+     * @param hashLen Hash length in bytes.
+     */
     public Argon2i(int saltLen, int hashLen) {
       super(saltLen, hashLen);
     }

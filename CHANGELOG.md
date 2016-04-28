@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Added support for Argon2d
+- Added configurable salt and hash lengths
 
 ### Changed
 - Better memory management

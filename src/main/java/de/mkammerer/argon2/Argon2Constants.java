@@ -4,7 +4,9 @@ package de.mkammerer.argon2;
  * Commonly used constants.
  */
 public final class Argon2Constants {
-
+    /**
+     * Static class, no instances allowed.
+     */
     private Argon2Constants() {
     }
 

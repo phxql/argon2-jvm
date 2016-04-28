@@ -21,24 +21,39 @@ abstract class BaseArgon2 implements Argon2 {
      */
     private final SecureRandom secureRandom = new SecureRandom();
 
-    private int saltLen;
-    private int hashLen;
+    private final int saltLen;
+    private final int hashLen;
 
+    /**
+     * Constructor.
+     * <p>
+     * Uses default salt and hash lengths.
+     */
     public BaseArgon2() {
         this(Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param saltLen Salt length in bytes.
+     * @param hashLen Hash length in bytes.
+     */
     public BaseArgon2(int saltLen, int hashLen) {
         this.saltLen = saltLen;
         this.hashLen = hashLen;
     }
 
+    /**
+     * Returns the hash length in bytes.
+     * @return Hash length in bytes.
+     */
     protected int getHashLength() {
         return hashLen;
     }
 
     /**
-     * Generates {@link #SALT_LENGTH} bytes of salt.
+     * Generates {@link #saltLen} bytes of salt.
      *
      * @return Salt.
      */
@@ -86,7 +101,7 @@ abstract class BaseArgon2 implements Argon2 {
 
     @Override
     public boolean verify(String hash, String password) {
-        //encoded needs to be nul terminated for strlen to work
+        // encoded needs to be nul terminated for strlen to work
         byte[] encoded = Native.toByteArray(hash, ASCII);
         byte[] pwd = password.getBytes();
 
