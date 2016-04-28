@@ -97,6 +97,7 @@ public interface Argon2Library extends Library {
     /**
      * Get the associated error message for given error code.
      *
+     * @param error_code Numeric error code.
      * @return The error message associated with the given error code.
      */
     String argon2_error_message(int error_code);

@@ -58,6 +58,8 @@ public final class Argon2Factory {
      * Creates a new {@link Argon2} instance with the given type.
      *
      * @param type Argon2 type.
+     * @param saltLen Byte length of salt.
+     * @param hashLen Byte length of hash.
      * @return Argon2 instance.
      */
     public static Argon2 create(Argon2Types type, int saltLen, int hashLen) {
