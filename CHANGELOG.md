@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Specified the release from which the binaries have been built (see README.md in the `resources` folder)
+
+### Changed
+- Recompiled libraries for Linux x86 and x64 and for Windows x86 and x64
 
 ## [1.2] - 2016-04-28
 ### Added
