@@ -21,6 +21,18 @@ public class LibraryTest {
     }
 
     @Test
+    public void testArgon2iWithChars() throws Exception {
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
+
+        String hash = sut.hash(2, 65536, 1, "password".toCharArray());
+        System.out.println(hash);
+
+        assertThat(hash.startsWith("$argon2i$"), is(true));
+        assertThat(sut.verify(hash, "password".toCharArray()), is(true));
+        assertThat(sut.verify(hash, "not-the-password".toCharArray()), is(false));
+    }
+
+    @Test
     public void testArgon2d() throws Exception {
         Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d);
 
@@ -30,6 +42,18 @@ public class LibraryTest {
         assertThat(hash.startsWith("$argon2d$"), is(true));
         assertThat(sut.verify(hash, "password"), is(true));
         assertThat(sut.verify(hash, "not-the-password"), is(false));
+    }
+
+    @Test
+    public void testArgon2dWithChars() throws Exception {
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d);
+
+        String hash = sut.hash(2, 65536, 1, "password".toCharArray());
+        System.out.println(hash);
+
+        assertThat(hash.startsWith("$argon2d$"), is(true));
+        assertThat(sut.verify(hash, "password".toCharArray()), is(true));
+        assertThat(sut.verify(hash, "not-the-password".toCharArray()), is(false));
     }
 
     @Test
@@ -61,5 +85,17 @@ public class LibraryTest {
         Argon2 sut = Argon2Factory.create();
 
         sut.hash(0, 0, 0, "password");
+    }
+
+    @Test
+    public void testWipeArray() throws Exception {
+        char[] array = "Hello, Argon2".toCharArray();
+
+        Argon2 sut = Argon2Factory.create();
+        sut.wipeArray(array);
+
+        for (char c : array) {
+            assertThat(c, is((char) 0));
+        }
     }
 }

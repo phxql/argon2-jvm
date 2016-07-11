@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Specified the release from which the binaries have been built (see README.md in the `resources` folder). See #7
+- Added overloads to hash and verify methods which accept `char[]` for password. See #9
 
 ### Changed
 - Recompiled libraries for Linux x86 and x64 and for Windows x86 and x64

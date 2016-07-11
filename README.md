@@ -51,14 +51,22 @@ If your operating system isn't in the list, have a look at [this documentation](
 // Create instance
 Argon2 argon2 = Argon2Factory.create();
 
-// Hash password
-String hash = argon2.hash(2, 65536, 1, "password");
+// Read password from user
+char[] password = readPasswordFromUser();
 
-// Verify password
-if (argon2.verify(hash, "password")) {
-    // Hash matches password
-} else {
-    // Hash doesn't match password
+try {
+    // Hash password
+    String hash = argon2.hash(2, 65536, 1, password);
+
+    // Verify password
+    if (argon2.verify(hash, password)) {
+        // Hash matches password
+    } else {
+        // Hash doesn't match password
+    }
+} finally {
+    // Wipe confidential data
+    argon2.wipeArray(password);
 }
 ```
 

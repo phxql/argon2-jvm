@@ -4,6 +4,9 @@ import com.sun.jna.Native;
 import de.mkammerer.argon2.jna.Argon2Library;
 import de.mkammerer.argon2.jna.Uint32_t;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -67,8 +70,26 @@ abstract class BaseArgon2 implements Argon2 {
     }
 
     @Override
+    public String hash(int iterations, int memory, int parallelism, char[] password) {
+        final byte[] pwd = toByteArray(password);
+        try {
+            return hashBytes(iterations, memory, parallelism, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
     public String hash(int iterations, int memory, int parallelism, String password) {
         final byte[] pwd = password.getBytes();
+        try {
+            return hashBytes(iterations, memory, parallelism, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
         final byte[] salt = generateSalt();
 
         final Uint32_t iterations_t = new Uint32_t(iterations);
@@ -80,7 +101,6 @@ abstract class BaseArgon2 implements Argon2 {
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
-        wipeArray(pwd);
 
         if (result != Argon2Library.ARGON2_OK) {
             String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
@@ -88,6 +108,34 @@ abstract class BaseArgon2 implements Argon2 {
         }
 
         return Native.toString(encoded, ASCII);
+    }
+
+    @Override
+    public boolean verify(String hash, String password) {
+        byte[] pwd = password.getBytes();
+        try {
+            return verifyBytes(hash, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public boolean verify(String hash, char[] password) {
+        byte[] pwd = toByteArray(password);
+        try {
+            return verifyBytes(hash, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    private boolean verifyBytes(String hash, byte[] pwd) {
+        // encoded needs to be nul terminated for strlen to work
+        byte[] encoded = Native.toByteArray(hash, ASCII);
+        int result = callLibraryVerify(encoded, pwd);
+
+        return result == Argon2Library.ARGON2_OK;
     }
 
     /**
@@ -102,18 +150,6 @@ abstract class BaseArgon2 implements Argon2 {
      * @return Return code.
      */
     protected abstract int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded);
-
-    @Override
-    public boolean verify(String hash, String password) {
-        // encoded needs to be nul terminated for strlen to work
-        byte[] encoded = Native.toByteArray(hash, ASCII);
-        byte[] pwd = password.getBytes();
-
-        int result = callLibraryVerify(encoded, pwd);
-        wipeArray(pwd);
-
-        return result == Argon2Library.ARGON2_OK;
-    }
 
     /**
      * Is called when the verify function of the native library should be called.
@@ -132,6 +168,31 @@ abstract class BaseArgon2 implements Argon2 {
      * @param array the array to wipe
      */
     private void wipeArray(byte[] array) {
+        assert array != null;
+
         Arrays.fill(array, (byte) 0);
+    }
+
+    @Override
+    public void wipeArray(char[] array) {
+        Arrays.fill(array, (char) 0);
+    }
+
+    /**
+     * Converts the given char array to a UTF-8 encoded byte array.
+     *
+     * @param chars the char array to convert
+     * @return UTF-8 encoded byte array
+     */
+    private byte[] toByteArray(char[] chars) {
+        assert chars != null;
+
+        CharBuffer charBuffer = CharBuffer.wrap(chars);
+        ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
+        byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
+                byteBuffer.position(), byteBuffer.limit());
+        Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
+        Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
+        return bytes;
     }
 }
