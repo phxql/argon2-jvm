@@ -5,6 +5,7 @@ import de.mkammerer.argon2.jna.Argon2Library;
 import de.mkammerer.argon2.jna.Uint32_t;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 /**
  * Argon2 base class.
@@ -46,6 +47,7 @@ abstract class BaseArgon2 implements Argon2 {
 
     /**
      * Returns the hash length in bytes.
+     *
      * @return Hash length in bytes.
      */
     protected int getHashLength() {
@@ -78,6 +80,8 @@ abstract class BaseArgon2 implements Argon2 {
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
+        wipeArray(pwd);
+
         if (result != Argon2Library.ARGON2_OK) {
             String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
             throw new IllegalStateException(String.format("%s (%d)", errMsg, result));
@@ -106,6 +110,8 @@ abstract class BaseArgon2 implements Argon2 {
         byte[] pwd = password.getBytes();
 
         int result = callLibraryVerify(encoded, pwd);
+        wipeArray(pwd);
+
         return result == Argon2Library.ARGON2_OK;
     }
 
@@ -117,4 +123,15 @@ abstract class BaseArgon2 implements Argon2 {
      * @return Return code.
      */
     protected abstract int callLibraryVerify(byte[] encoded, byte[] pwd);
+
+    /**
+     * Wipes the data from the given array.
+     * <p>
+     * Use this method to clear confidential data after using it.
+     *
+     * @param array the array to wipe
+     */
+    private void wipeArray(byte[] array) {
+        Arrays.fill(array, (byte) 0);
+    }
 }
