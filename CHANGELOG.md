@@ -4,10 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Specified the release from which the binaries have been built (see README.md in the `resources` folder)
+- Specified the release from which the binaries have been built (see README.md in the `resources` folder). See #7
 
 ### Changed
 - Recompiled libraries for Linux x86 and x64 and for Windows x86 and x64
+- The internal arrays which contain the passwords are now wiped after hash creation / verification. See #9
 
 ## [1.2] - 2016-04-28
 ### Added
