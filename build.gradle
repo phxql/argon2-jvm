@@ -67,8 +67,8 @@ publishing {
 
 
 bintray {
-    user = property('bintrayUser')
-    key = property('bintrayKey')
+    user = hasProperty('bintrayUser') ? property('bintrayUser') : ''
+    key = hasProperty('bintrayKey') ? property('bintrayKey') : ''
     publications = ['Argon2JvmPublication']
     pkg {
         repo = 'maven'
