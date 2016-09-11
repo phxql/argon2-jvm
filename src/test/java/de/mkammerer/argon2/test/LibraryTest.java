@@ -4,6 +4,8 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -78,6 +80,15 @@ public class LibraryTest {
         assertThat(hash.startsWith("$argon2d$"), is(true));
         assertThat(sut.verify(hash, "password"), is(true));
         assertThat(sut.verify(hash, "not-the-password"), is(false));
+    }
+
+    @Test
+    public void testUTF8() throws Exception {
+        String password = "ŧҺìş ίŝ ứţƒ-8";
+
+        Argon2 sut = Argon2Factory.create();
+        String hash = sut.hash(2, 65535, 1, password, Charset.forName("UTF-8"));
+        assertThat(sut.verify(hash, password, Charset.forName("UTF-8")), is(true));
     }
 
     @Test(expected = IllegalStateException.class)

@@ -3,13 +3,18 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+*Attention*: This release sets the default charset to UTF-8 instead of using the system default. If your system default
+haven't been UTF-8, refactor your code to use the overloads which accept `Charset`.
+
 ### Added
 - Specified the release from which the binaries have been built (see README.md in the `resources` folder). See #7
 - Added overloads to hash and verify methods which accept `char[]` for password. See #9
+- Added overloads to hash and verify methods which accept a `Charset`. See #10
 
 ### Changed
 - Recompiled libraries for Linux x86 and x64 and for Windows x86 and x64
 - The internal arrays which contain the passwords are now wiped after hash creation / verification. See #9
+- Changed the default charset from JVM system default to UTF-8. See #10
 
 ## [1.2] - 2016-04-28
 ### Added

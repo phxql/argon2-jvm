@@ -21,6 +21,11 @@ abstract class BaseArgon2 implements Argon2 {
     private static final String ASCII = "ASCII";
 
     /**
+     * Default charset.
+     */
+    private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+
+    /**
      * Secure RNG for salt.
      */
     private final SecureRandom secureRandom = new SecureRandom();
@@ -71,7 +76,22 @@ abstract class BaseArgon2 implements Argon2 {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, char[] password) {
-        final byte[] pwd = toByteArray(password);
+        return hash(iterations, memory, parallelism, password, DEFAULT_CHARSET);
+    }
+
+    @Override
+    public String hash(int iterations, int memory, int parallelism, char[] password, Charset charset) {
+        final byte[] pwd = toByteArray(password, charset);
+        try {
+            return hashBytes(iterations, memory, parallelism, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public String hash(int iterations, int memory, int parallelism, String password, Charset charset) {
+        final byte[] pwd = password.getBytes(charset);
         try {
             return hashBytes(iterations, memory, parallelism, pwd);
         } finally {
@@ -81,12 +101,7 @@ abstract class BaseArgon2 implements Argon2 {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, String password) {
-        final byte[] pwd = password.getBytes();
-        try {
-            return hashBytes(iterations, memory, parallelism, pwd);
-        } finally {
-            wipeArray(pwd);
-        }
+        return hash(iterations, memory, parallelism, password, DEFAULT_CHARSET);
     }
 
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
@@ -112,7 +127,22 @@ abstract class BaseArgon2 implements Argon2 {
 
     @Override
     public boolean verify(String hash, String password) {
-        byte[] pwd = password.getBytes();
+        return verify(hash, password, DEFAULT_CHARSET);
+    }
+
+    @Override
+    public boolean verify(String hash, String password, Charset charset) {
+        byte[] pwd = password.getBytes(charset);
+        try {
+            return verifyBytes(hash, pwd);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public boolean verify(String hash, char[] password, Charset charset) {
+        byte[] pwd = toByteArray(password, charset);
         try {
             return verifyBytes(hash, pwd);
         } finally {
@@ -122,12 +152,7 @@ abstract class BaseArgon2 implements Argon2 {
 
     @Override
     public boolean verify(String hash, char[] password) {
-        byte[] pwd = toByteArray(password);
-        try {
-            return verifyBytes(hash, pwd);
-        } finally {
-            wipeArray(pwd);
-        }
+        return verify(hash, password, DEFAULT_CHARSET);
     }
 
     private boolean verifyBytes(String hash, byte[] pwd) {
@@ -181,14 +206,15 @@ abstract class BaseArgon2 implements Argon2 {
     /**
      * Converts the given char array to a UTF-8 encoded byte array.
      *
-     * @param chars the char array to convert
+     * @param chars   the char array to convert
+     * @param charset Charset of the password
      * @return UTF-8 encoded byte array
      */
-    private byte[] toByteArray(char[] chars) {
+    private byte[] toByteArray(char[] chars, Charset charset) {
         assert chars != null;
 
         CharBuffer charBuffer = CharBuffer.wrap(chars);
-        ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
+        ByteBuffer byteBuffer = charset.encode(charBuffer);
         byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
                 byteBuffer.position(), byteBuffer.limit());
         Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data

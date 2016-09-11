@@ -1,5 +1,7 @@
 package de.mkammerer.argon2;
 
+import java.nio.charset.Charset;
+
 /**
  * Argon2 password hashing function.
  */
@@ -23,9 +25,33 @@ public interface Argon2 {
      * @param memory      Sets memory usage to x kibibytes
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
+     * @param charset     Charset of the password
+     * @return Hashed password.
+     */
+    String hash(int iterations, int memory, int parallelism, String password, Charset charset);
+
+    /**
+     * Hashes a password.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to hash
      * @return Hashed password.
      */
     String hash(int iterations, int memory, int parallelism, char[] password);
+
+    /**
+     * Hashes a password.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to hash
+     * @param charset     Charset of the password
+     * @return Hashed password.
+     */
+    String hash(int iterations, int memory, int parallelism, char[] password, Charset charset);
 
     /**
      * Verifies a password against a hash.
@@ -41,9 +67,29 @@ public interface Argon2 {
      *
      * @param hash     Hash.
      * @param password Password.
+     * @param charset  Charset of the password
+     * @return True if the password matches the hash, false otherwise.
+     */
+    boolean verify(String hash, String password, Charset charset);
+
+    /**
+     * Verifies a password against a hash.
+     *
+     * @param hash     Hash.
+     * @param password Password.
      * @return True if the password matches the hash, false otherwise.
      */
     boolean verify(String hash, char[] password);
+
+    /**
+     * Verifies a password against a hash.
+     *
+     * @param hash     Hash.
+     * @param password Password.
+     * @param charset  Charset of the password
+     * @return True if the password matches the hash, false otherwise.
+     */
+    boolean verify(String hash, char[] password, Charset charset);
 
     /**
      * Wipes the data from the given array.
