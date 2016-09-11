@@ -10,6 +10,8 @@ public interface Argon2 {
     /**
      * Hashes a password.
      *
+     * Uses UTF-8 encoding.
+     *
      * @param iterations  Number of iterations
      * @param memory      Sets memory usage to x kibibytes
      * @param parallelism Number of threads and compute lanes
@@ -32,6 +34,8 @@ public interface Argon2 {
 
     /**
      * Hashes a password.
+     *
+     * Uses UTF-8 encoding.
      *
      * @param iterations  Number of iterations
      * @param memory      Sets memory usage to x kibibytes
@@ -56,6 +60,8 @@ public interface Argon2 {
     /**
      * Verifies a password against a hash.
      *
+     * Uses UTF-8 encoding.
+     *
      * @param hash     Hash.
      * @param password Password.
      * @return True if the password matches the hash, false otherwise.
@@ -74,6 +80,8 @@ public interface Argon2 {
 
     /**
      * Verifies a password against a hash.
+     *
+     * Uses UTF-8 encoding.
      *
      * @param hash     Hash.
      * @param password Password.
