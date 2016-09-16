@@ -5,5 +5,11 @@ The subfolders must have the name of the platform, for which the library has bee
 The libraries are compiled from [this source code](https://github.com/P-H-C/phc-winner-argon2/releases/tag/20160821).
 
 ## Linux:
-* x64: `make clean && CFLAGS=-m64 OPTTARGET= make`
-* x86: `make clean && CFLAGS=-m32 OPTTARGET= make`
+* x64: `make clean && CFLAGS=-m64 OPTTARGET=generic make`
+* x86: `make clean && CFLAGS=-m32 OPTTARGET=generic make`
+
+## Windows
+Compiled with VS2015, ReleaseStatic configuration
+
+## OSX:
+* `make clean && OPTTARGET=generic make`
