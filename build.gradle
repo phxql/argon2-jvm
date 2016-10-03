@@ -20,7 +20,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group 'de.mkammerer'
-version '2.0'
+version '2.1-SNAPSHOT'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
