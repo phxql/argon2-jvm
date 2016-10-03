@@ -25,6 +25,10 @@ version '2.0-SNAPSHOT'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral()
@@ -52,7 +56,7 @@ artifacts {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '3.1'
 }
 
 publishing {
