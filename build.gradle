@@ -70,8 +70,8 @@ publishing {
 
 
 bintray {
-    user = hasProperty('bintrayUser') ? property('bintrayUser') : ''
-    key = hasProperty('bintrayKey') ? property('bintrayKey') : ''
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
     publications = ['Argon2JvmPublication']
     pkg {
         repo = 'maven'
