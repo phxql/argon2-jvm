@@ -38,14 +38,16 @@ dependencies {
 }
 ```
 ## Usage
-This binding needs the Argon2 C library. Libraries for the following operation systems are included:
+This binding needs the Argon2 C library. Libraries for the following operation systems are included in argon2-jvm library:
 * Linux x86
 * Linux x86-64
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
 
-If your operating system isn't in the list, have a look at [this documentation](docs/compile-argon2.md).
+If you'd prefer to install/compile argon2 on your own you can use argon2-jvm-nolibs instead of argon2-jvm.
+
+If you need help to build argon2, have a look at [this documentation](docs/compile-argon2.md).
 
 ```
 // Create instance

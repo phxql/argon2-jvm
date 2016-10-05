@@ -40,8 +40,7 @@ dependencies {
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
-    from sourceSets.main.allSource
-    exclude('**/*.dylib', '**/*.so', '**/*.dll')
+    from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -49,9 +48,29 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task noLibsJar(type: Jar, dependsOn: javadoc) {
+    baseName = project.name + '-nolibs'
+    from sourceSets.main.output.classesDir
+}
+
+task noLibsSourcesJar(type: Jar, dependsOn: classes) {
+    baseName = project.name + '-nolibs'
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task noLibsJavadocJar(type: Jar, dependsOn: javadoc) {
+    baseName = project.name + '-nolibs'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 artifacts {
     archives sourcesJar
     archives javadocJar
+    archives noLibsJar
+    archives noLibsSourcesJar
+    archives noLibsJavadocJar
 }
 
 task wrapper(type: Wrapper) {
@@ -64,6 +83,9 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
+            artifact noLibsJar
+            artifact noLibsSourcesJar
+            artifact noLibsJavadocJar
         }
     }
 }
