@@ -8,7 +8,7 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 
 group 'de.mkammerer'
-version '2.1-SNAPSHOT'
+version '2.1'
 
 description 'Argon2 Binding for the JVM'
 
@@ -107,9 +107,11 @@ uploadArchives {
 void enhancePom(MavenPom pom) {
     pom.project {
         url 'https://github.com/phxql/argon2-jvm'
+        name 'Argon2 JVM'
+        description 'Argon2 Binding for the JVM'
         licenses {
             license {
-                name 'GNU LESSER GENERAL PUBLIC LICENSE, Version 3'
+                name 'GNU Lesser General Public License, Version 3'
                 url 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
             }
         }
