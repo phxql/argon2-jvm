@@ -107,7 +107,7 @@ void enhancePom(pom) {
         def developer = asNode().appendNode('developers').appendNode('developer')
         developer.appendNode('name', 'Moritz Kammerer')
         developer.appendNode('email', 'kammerer.moritz@gmail.com')
-        developer.appendNode('organizationUrl', 'https://www.mkammerer.de/')
+        developer.appendNode('url', 'https://www.mkammerer.de/')
 
         def scm = asNode().appendNode('scm')
         scm.appendNode('connection', 'scm:git:git://github.com/phxql/argon2-jvm.git')
@@ -132,7 +132,7 @@ uploadArchives {
                     developer {
                         name 'Moritz Kammerer'
                         email 'kammerer.moritz@gmail.com'
-                        organizationUrl 'https://www.mkammerer.de/'
+                        url 'https://www.mkammerer.de/'
                     }
                 }
                 scm {
