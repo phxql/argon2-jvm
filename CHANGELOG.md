@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Not released yet
+
 ## [2.1] - 2016-10-31
 ### Added
 - Added artifact without the pre-compiled argon2 libraries.
