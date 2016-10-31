@@ -76,14 +76,43 @@ signing {
 
 publishing {
     publications {
-        Argon2JvmPublication(MavenPublication) {
+        withLibs(MavenPublication) {
+            enhancePom(pom)
             from components.java
             artifact sourcesJar
             artifact javadocJar
+        }
+        withoutLibs(MavenPublication) {
+            enhancePom(pom)
+            artifactId project.name + '-nolibs'
             artifact noLibsJar
             artifact noLibsSourcesJar
             artifact noLibsJavadocJar
         }
+    }
+}
+
+/**
+ * Adds more information like developer, license and SCM to the POM.
+ * @param pom POM.
+ */
+void enhancePom(pom) {
+    pom.withXml {
+        asNode().appendNode('url', 'https://github.com/phxql/argon2-jvm')
+
+        def license = asNode().appendNode('licenses').appendNode('license')
+        license.appendNode('name', 'GNU LESSER GENERAL PUBLIC LICENSE, Version 3')
+        license.appendNode('url', 'https://www.gnu.org/licenses/lgpl-3.0.en.html')
+
+        def developer = asNode().appendNode('developers').appendNode('developer')
+        developer.appendNode('name', 'Moritz Kammerer')
+        developer.appendNode('email', 'kammerer.moritz@gmail.com')
+        developer.appendNode('organizationUrl', 'https://www.mkammerer.de/')
+
+        def scm = asNode().appendNode('scm')
+        scm.appendNode('connection', 'scm:git:git://github.com/phxql/argon2-jvm.git')
+        scm.appendNode('developerConnection', 'scm:git:git://github.com/phxql/argon2-jvm.git')
+        scm.appendNode('url', 'https://github.com/phxql/argon2-jvm')
     }
 }
 
@@ -119,7 +148,7 @@ uploadArchives {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publications = ['Argon2JvmPublication']
+    publications = ['withLibs', 'withoutLibs']
     pkg {
         repo = 'maven'
         name = project.name
