@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Added artifact without the precompiled argon2 libraries.
+- Added artifact without the pre-compiled argon2 libraries.
 
 ## [2.0] - 2016-10-03
 *Attention*: This release sets the default charset to UTF-8 instead of using the system default. If your system default
