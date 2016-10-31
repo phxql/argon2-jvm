@@ -1,18 +1,6 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2'
-    }
-}
-
 plugins {
     id "com.jfrog.bintray" version "1.7"
+    id "org.sonarqube" version "2.2"
 }
 
 apply plugin: 'org.sonarqube'
@@ -89,7 +77,6 @@ publishing {
         }
     }
 }
-
 
 bintray {
     user = System.getenv('BINTRAY_USER')
