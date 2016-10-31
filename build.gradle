@@ -1,27 +1,16 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2'
-    }
-}
-
 plugins {
-    id "com.jfrog.bintray" version "1.4"
+    id "org.sonarqube" version "2.2"
 }
 
 apply plugin: 'org.sonarqube'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java'
-apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'maven'
 
 group 'de.mkammerer'
-version '2.0'
+version '2.1'
+
+description 'Argon2 Binding for the JVM'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -41,8 +30,7 @@ dependencies {
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
-    from sourceSets.main.allSource
-    exclude('**/*.dylib', '**/*.so', '**/*.dll')
+    from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -50,37 +38,94 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task noLibsJar(type: Jar, dependsOn: javadoc) {
+    baseName = project.name + '-nolibs'
+    from sourceSets.main.output.classesDir
+}
+
+task noLibsSourcesJar(type: Jar, dependsOn: classes) {
+    baseName = project.name + '-nolibs'
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task noLibsJavadocJar(type: Jar, dependsOn: javadoc) {
+    baseName = project.name + '-nolibs'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 artifacts {
     archives sourcesJar
     archives javadocJar
+    archives noLibsJar
+    archives noLibsSourcesJar
+    archives noLibsJavadocJar
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
 }
 
-publishing {
-    publications {
-        Argon2JvmPublication(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
+signing {
+    sign configurations.archives
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
+                authentication(userName: System.getenv('SONATYPE_USER'), password: System.getenv('SONATYPE_PASSWORD'))
+            }
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
+                authentication(userName: System.getenv('SONATYPE_USER'), password: System.getenv('SONATYPE_PASSWORD'))
+            }
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            // default: With included pre-compiled Argon2 libraries
+            addFilter('default') { artifact, file ->
+                !file.getName().contains('-nolibs')
+            }
+            // nolibs: Without included pre-compiled Argon2 libraries
+            addFilter('nolibs') { artifact, file ->
+                file.getName().contains('-nolibs')
+            }
+
+            enhancePom(pom('default'))
+
+            // Publish the nolibs version under a different artifact name
+            pom('nolibs').artifactId = 'argon2-jvm-nolibs'
+            enhancePom(pom('nolibs'))
         }
     }
 }
 
-
-bintray {
-    user = hasProperty('bintrayUser') ? property('bintrayUser') : ''
-    key = hasProperty('bintrayKey') ? property('bintrayKey') : ''
-    publications = ['Argon2JvmPublication']
-    pkg {
-        repo = 'maven'
-        name = project.name
-        licenses = ['LGPL-3.0']
-        vcsUrl = 'https://github.com/phxql/argon2-jvm.git'
-        version {
-            name = project.version
+/**
+ * Adds license, developer and SCM tags to the POM file.
+ * @param pom POM.
+ */
+void enhancePom(MavenPom pom) {
+    pom.project {
+        url 'https://github.com/phxql/argon2-jvm'
+        name 'Argon2 JVM'
+        description 'Argon2 Binding for the JVM'
+        licenses {
+            license {
+                name 'GNU Lesser General Public License, Version 3'
+                url 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+            }
+        }
+        developers {
+            developer {
+                name 'Moritz Kammerer'
+                email 'kammerer.moritz@gmail.com'
+                url 'https://www.mkammerer.de/'
+            }
+        }
+        scm {
+            connection 'scm:git:git://github.com/phxql/argon2-jvm.git'
+            developerConnection 'scm:git:git://github.com/phxql/argon2-jvm.git'
+            url 'https://github.com/phxql/argon2-jvm'
         }
     }
 }

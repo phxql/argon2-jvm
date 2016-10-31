@@ -3,49 +3,50 @@
 This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 
 ## Maven
-Add this repository:
-```
-<repositories>
-  <repository>
-    <snapshots>
-      <enabled>false</enabled>
-    </snapshots>
-    <id>bintray-phxql-maven</id>
-    <name>bintray</name>
-    <url>https://dl.bintray.com/phxql/maven</url>
-  </repository>
-</repositories>
-```
+With pre-compiled Argon2 libraries:
 
-You can then use the following Maven coordinates:
-```
+```xml
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>2.0</version>
+    <version>2.1-SNAPSHOT</version>
 </dependency>
 ```
-## Gradle
-```
-repositories {
-    maven {
-        url  "https://dl.bintray.com/phxql/maven"
-    }
-}
 
-dependencies {
-    compile 'de.mkammerer:argon2-jvm:2.0'
-}
+Without pre-compiled Argon2 libraries:
+
+```xml
+<dependency>
+    <groupId>de.mkammerer</groupId>
+    <artifactId>argon2-jvm-nolibs</artifactId>
+    <version>2.1-SNAPSHOT</version>
+</dependency>
 ```
+
+## Gradle
+With pre-compiled Argon2 libraries:
+
+```groovy
+compile 'de.mkammerer:argon2-jvm:2.1-SNAPSHOT'
+```
+
+Without pre-compiled Argon2 libraries:
+
+```groovy
+compile 'de.mkammerer:argon2-jvm-nolibs:2.1-SNAPSHOT'
+```
+
 ## Usage
-This binding needs the Argon2 C library. Libraries for the following operation systems are included:
+This binding needs the Argon2 C library. Libraries for the following operation systems are included in argon2-jvm library:
 * Linux x86
 * Linux x86-64
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
 
-If your operating system isn't in the list, have a look at [this documentation](docs/compile-argon2.md).
+If you'd prefer to install/compile argon2 on your own you can use argon2-jvm-nolibs instead of argon2-jvm.
+
+If you need help to build argon2, have a look at [this documentation](docs/compile-argon2.md).
 
 ```
 // Create instance

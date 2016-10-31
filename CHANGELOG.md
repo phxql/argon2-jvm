@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- Added artifact without the pre-compiled argon2 libraries.
+
+### Changed
+- The libraries are now uploaded to Maven Central instead to Bintray.
+
 ## [2.0] - 2016-10-03
 *Attention*: This release sets the default charset to UTF-8 instead of using the system default. If your system default
 haven't been UTF-8, refactor your code to use the overloads which accept `Charset`.
