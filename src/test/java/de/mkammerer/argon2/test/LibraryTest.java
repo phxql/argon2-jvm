@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -32,6 +33,16 @@ public class LibraryTest {
         assertThat(hash.startsWith("$argon2i$"), is(true));
         assertThat(sut.verify(hash, "password".toCharArray()), is(true));
         assertThat(sut.verify(hash, "not-the-password".toCharArray()), is(false));
+    }
+
+    @Test
+    public void testCharsAreLeftIntact() throws Exception {
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
+
+        char[] chars = "password".toCharArray();
+        sut.hash(2, 65536, 1, chars);
+
+        assertThat(chars, equalTo("password".toCharArray()));
     }
 
     @Test

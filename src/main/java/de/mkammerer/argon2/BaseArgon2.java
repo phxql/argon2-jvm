@@ -217,7 +217,6 @@ abstract class BaseArgon2 implements Argon2 {
         ByteBuffer byteBuffer = charset.encode(charBuffer);
         byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
                 byteBuffer.position(), byteBuffer.limit());
-        Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
         Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
         return bytes;
     }
