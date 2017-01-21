@@ -7,10 +7,10 @@ import de.mkammerer.argon2.jna.Uint32_t;
 /**
  * Argon2i password hashing function.
  */
-class Argon2d extends BaseArgon2 {
+class Argon2id extends BaseArgon2 {
     @Override
     public final Argon2Constants.Argon2Types getType() {
-        return Argon2Constants.Argon2Types.ARGON2d;
+        return Argon2Constants.Argon2Types.ARGON2id;
     }
 
     /**
@@ -18,7 +18,7 @@ class Argon2d extends BaseArgon2 {
      * <p>
      * Uses default salt and hash lengths.
      */
-    public Argon2d() {
+    public Argon2id() {
     }
 
     /**
@@ -27,13 +27,13 @@ class Argon2d extends BaseArgon2 {
      * @param saltLen Salt length in bytes.
      * @param hashLen Hash length in bytes.
      */
-    public Argon2d(int saltLen, int hashLen) {
+    public Argon2id(int saltLen, int hashLen) {
         super(saltLen, hashLen);
     }
 
     @Override
     protected int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded) {
-        return Argon2Library.INSTANCE.argon2d_hash_encoded(
+        return Argon2Library.INSTANCE.argon2id_hash_encoded(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),
                 salt, new Size_t(salt.length), new Size_t(getHashLength()), encoded, new Size_t(encoded.length)
         );
@@ -41,6 +41,6 @@ class Argon2d extends BaseArgon2 {
 
     @Override
     protected int callLibraryVerify(byte[] encoded, byte[] pwd) {
-        return Argon2Library.INSTANCE.argon2d_verify(encoded, pwd, new Size_t(pwd.length));
+        return Argon2Library.INSTANCE.argon2id_verify(encoded, pwd, new Size_t(pwd.length));
     }
 }

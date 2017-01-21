@@ -11,26 +11,12 @@ public final class Argon2Factory {
     }
 
     /**
-     * Argon2 type.
-     */
-    public enum Argon2Types {
-        /**
-         * Argon2i.
-         */
-        ARGON2i,
-        /**
-         * Argon2d.
-         */
-        ARGON2d
-    }
-
-    /**
      * Creates a new {@link Argon2} instance.
      *
      * @return Argon2 instance.
      */
     public static Argon2 create() {
-        return create(Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+        return create(Argon2Constants.Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
     }
 
     /**
@@ -41,7 +27,7 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create(int saltLen, int hashLen) {
-        return create(Argon2Types.ARGON2i, saltLen, hashLen);
+        return create(Argon2Constants.Argon2Types.ARGON2i, saltLen, hashLen);
     }
 
     /**
@@ -50,7 +36,7 @@ public final class Argon2Factory {
      * @param type Argon2 type.
      * @return Argon2 instance.
      */
-    public static Argon2 create(Argon2Types type) {
+    public static Argon2 create(Argon2Constants.Argon2Types type) {
         return create(type, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
     }
 
@@ -62,12 +48,14 @@ public final class Argon2Factory {
      * @param hashLen Byte length of hash.
      * @return Argon2 instance.
      */
-    public static Argon2 create(Argon2Types type, int saltLen, int hashLen) {
+    public static Argon2 create(Argon2Constants.Argon2Types type, int saltLen, int hashLen) {
         switch (type) {
             case ARGON2i:
                 return new Argon2i(saltLen, hashLen);
             case ARGON2d:
                 return new Argon2d(saltLen, hashLen);
+            case ARGON2id:
+                return new Argon2id(saltLen, hashLen);
             default:
                 throw new IllegalArgumentException("Invalid argon2 type");
         }

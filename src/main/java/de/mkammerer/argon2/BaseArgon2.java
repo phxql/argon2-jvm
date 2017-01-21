@@ -33,6 +33,8 @@ abstract class BaseArgon2 implements Argon2 {
     private final int saltLen;
     private final int hashLen;
 
+    public abstract Argon2Constants.Argon2Types getType();
+
     /**
      * Constructor.
      * <p>
@@ -112,7 +114,7 @@ abstract class BaseArgon2 implements Argon2 {
         final Uint32_t parallelism_t = new Uint32_t(parallelism);
 
         int len = Argon2Library.INSTANCE.argon2_encodedlen(iterations_t, memory_t, parallelism_t,
-                new Uint32_t(salt.length), new Uint32_t(hashLen)).intValue();
+                new Uint32_t(salt.length), new Uint32_t(hashLen), getType().ordinal).intValue();
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
