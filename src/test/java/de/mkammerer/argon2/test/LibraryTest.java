@@ -1,7 +1,6 @@
 package de.mkammerer.argon2.test;
 
 import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Factory;
 import org.junit.Test;
 
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class LibraryTest {
     @Test
     public void testArgon2i() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2i);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
 
         String hash = sut.hash(2, 65536, 1, "password");
         System.out.println(hash);
@@ -26,7 +25,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2iWithChars() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2i);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
 
         String hash = sut.hash(2, 65536, 1, "password".toCharArray());
         System.out.println(hash);
@@ -38,7 +37,7 @@ public class LibraryTest {
 
     @Test
     public void testCharsAreLeftIntact() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2i);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
 
         char[] chars = "password".toCharArray();
         sut.hash(2, 65536, 1, chars);
@@ -48,7 +47,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2d() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2d);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d);
 
         String hash = sut.hash(2, 65536, 1, "password");
         System.out.println(hash);
@@ -60,7 +59,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2dWithChars() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2d);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d);
 
         String hash = sut.hash(2, 65536, 1, "password".toCharArray());
         System.out.println(hash);
@@ -72,7 +71,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2id() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2id);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
 
         String hash = sut.hash(2, 65536, 1, "password");
         System.out.println(hash);
@@ -84,7 +83,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2idWithChars() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2id);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
 
         String hash = sut.hash(2, 65536, 1, "password".toCharArray());
         System.out.println(hash);
@@ -107,7 +106,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2dWithArgs() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2d, 32, 64);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d, 32, 64);
 
         String hash = sut.hash(2, 65536, 1, "password");
         System.out.println(hash);
@@ -119,7 +118,7 @@ public class LibraryTest {
 
     @Test
     public void testArgon2idWithArgs() throws Exception {
-        Argon2 sut = Argon2Factory.create(Argon2Constants.Argon2Types.ARGON2id, 32, 64);
+        Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
 
         String hash = sut.hash(2, 65536, 1, "password");
         System.out.println(hash);

@@ -9,8 +9,8 @@ import de.mkammerer.argon2.jna.Uint32_t;
  */
 class Argon2i extends BaseArgon2 {
     @Override
-    public final Argon2Constants.Argon2Types getType() {
-        return Argon2Constants.Argon2Types.ARGON2i;
+    public final Argon2Factory.Argon2Types getType() {
+        return Argon2Factory.Argon2Types.ARGON2i;
     }
 
     /**

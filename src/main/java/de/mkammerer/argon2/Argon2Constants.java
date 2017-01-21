@@ -21,27 +21,4 @@ public final class Argon2Constants {
      * Hash length in bytes.
      */
     public static final int DEFAULT_HASH_LENGTH = 32;
-
-    /**
-     * Argon2 type.
-     */
-    public enum Argon2Types {
-        /**
-         * Argon2i.
-         */
-        ARGON2i,
-        /**
-         * Argon2d.
-         */
-        ARGON2d,
-        /**
-         * Argon2id
-         */
-        ARGON2id;
-
-        public final Argon2_type ordinal;
-        Argon2Types() {
-            this.ordinal = new Argon2_type(this.ordinal());
-        }
-    }
 }

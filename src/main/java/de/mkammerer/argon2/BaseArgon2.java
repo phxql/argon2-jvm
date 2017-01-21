@@ -33,7 +33,7 @@ abstract class BaseArgon2 implements Argon2 {
     private final int saltLen;
     private final int hashLen;
 
-    public abstract Argon2Constants.Argon2Types getType();
+    public abstract Argon2Factory.Argon2Types getType();
 
     /**
      * Constructor.
