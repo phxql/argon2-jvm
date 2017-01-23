@@ -8,11 +8,6 @@ import de.mkammerer.argon2.jna.Uint32_t;
  * Argon2i password hashing function.
  */
 class Argon2id extends BaseArgon2 {
-    @Override
-    public final Argon2Factory.Argon2Types getType() {
-        return Argon2Factory.Argon2Types.ARGON2id;
-    }
-
     /**
      * Constructor.
      * <p>
@@ -29,6 +24,11 @@ class Argon2id extends BaseArgon2 {
      */
     public Argon2id(int saltLen, int hashLen) {
         super(saltLen, hashLen);
+    }
+
+    @Override
+    public final Argon2Factory.Argon2Types getType() {
+        return Argon2Factory.Argon2Types.ARGON2id;
     }
 
     @Override

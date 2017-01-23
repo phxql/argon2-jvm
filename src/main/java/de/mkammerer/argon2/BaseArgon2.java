@@ -33,8 +33,6 @@ abstract class BaseArgon2 implements Argon2 {
     private final int saltLen;
     private final int hashLen;
 
-    public abstract Argon2Factory.Argon2Types getType();
-
     /**
      * Constructor.
      * <p>
@@ -63,6 +61,13 @@ abstract class BaseArgon2 implements Argon2 {
     protected int getHashLength() {
         return hashLen;
     }
+
+    /**
+     * Returns the Argon2 type.
+     *
+     * @return Argon2 type.
+     */
+    protected abstract Argon2Factory.Argon2Types getType();
 
     /**
      * Generates {@link #saltLen} bytes of salt.
