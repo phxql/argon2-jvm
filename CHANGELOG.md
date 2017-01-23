@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed [#22](https://github.com/phxql/argon2-jvm/issues/22).
 
-## Changed
+### Changed
 - Recompiled Argon2 libraries (Argon2 version is now 20161029).
 
 ## [2.1] - 2016-10-31
