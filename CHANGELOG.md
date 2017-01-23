@@ -4,8 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Not released yet
 
+### Added
+- Added support for Argon2id.
+
 ### Fixed
-- Fixed [#22](https://github.com/phxql/argon2-jvm/issues/22)
+- Fixed [#22](https://github.com/phxql/argon2-jvm/issues/22).
+
+## Changed
+- Recompiled Argon2 libraries (Argon2 version is now 20161029).
 
 ## [2.1] - 2016-10-31
 ### Added
