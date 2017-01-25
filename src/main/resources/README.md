@@ -9,7 +9,7 @@ The libraries are compiled from [this source code](https://github.com/P-H-C/phc-
 * x86: `make clean && CFLAGS=-m32 OPTTARGET=generic make`
 
 ## Windows
-Compiled with VS2015, ReleaseStatic configuration
+Compiled with Visual Studio 2015, `ReleaseStatic` configuration
 
 ## OSX:
 * `make clean && OPTTARGET=generic make`
