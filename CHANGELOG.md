@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2] - 2017-01-29
+
+### Added
+- Added support for Argon2id.
+
+### Fixed
+- Fixed [#22](https://github.com/phxql/argon2-jvm/issues/22).
+
+### Changed
+- Recompiled Argon2 libraries (Argon2 version is now 20161029).
+
 ## [2.1] - 2016-10-31
 ### Added
 - Added artifact without the pre-compiled argon2 libraries.

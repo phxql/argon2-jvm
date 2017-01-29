@@ -27,6 +27,11 @@ class Argon2d extends BaseArgon2 {
     }
 
     @Override
+    public final Argon2Factory.Argon2Types getType() {
+        return Argon2Factory.Argon2Types.ARGON2d;
+    }
+
+    @Override
     protected int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded) {
         return Argon2Library.INSTANCE.argon2d_hash_encoded(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),

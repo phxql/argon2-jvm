@@ -1,5 +1,7 @@
 package de.mkammerer.argon2;
 
+import de.mkammerer.argon2.jna.Argon2_type;
+
 /**
  * Commonly used constants.
  */

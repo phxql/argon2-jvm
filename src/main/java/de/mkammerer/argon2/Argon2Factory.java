@@ -1,5 +1,7 @@
 package de.mkammerer.argon2;
 
+import de.mkammerer.argon2.jna.Argon2_type;
+
 /**
  * Factory for {@link Argon2} instances.
  */
@@ -8,20 +10,6 @@ public final class Argon2Factory {
      * Static class, no instances allowed.
      */
     private Argon2Factory() {
-    }
-
-    /**
-     * Argon2 type.
-     */
-    public enum Argon2Types {
-        /**
-         * Argon2i.
-         */
-        ARGON2i,
-        /**
-         * Argon2d.
-         */
-        ARGON2d
     }
 
     /**
@@ -68,8 +56,33 @@ public final class Argon2Factory {
                 return new Argon2i(saltLen, hashLen);
             case ARGON2d:
                 return new Argon2d(saltLen, hashLen);
+            case ARGON2id:
+                return new Argon2id(saltLen, hashLen);
             default:
                 throw new IllegalArgumentException("Invalid argon2 type");
+        }
+    }
+
+    /**
+     * Argon2 type.
+     */
+    public enum Argon2Types {
+        /**
+         * Argon2i.
+         */
+        ARGON2i,
+        /**
+         * Argon2d.
+         */
+        ARGON2d,
+        /**
+         * Argon2id
+         */
+        ARGON2id;
+
+        public final Argon2_type ordinal;
+        Argon2Types() {
+            this.ordinal = new Argon2_type(this.ordinal());
         }
     }
 }

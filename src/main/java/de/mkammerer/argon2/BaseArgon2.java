@@ -63,6 +63,13 @@ abstract class BaseArgon2 implements Argon2 {
     }
 
     /**
+     * Returns the Argon2 type.
+     *
+     * @return Argon2 type.
+     */
+    protected abstract Argon2Factory.Argon2Types getType();
+
+    /**
      * Generates {@link #saltLen} bytes of salt.
      *
      * @return Salt.
@@ -112,7 +119,7 @@ abstract class BaseArgon2 implements Argon2 {
         final Uint32_t parallelism_t = new Uint32_t(parallelism);
 
         int len = Argon2Library.INSTANCE.argon2_encodedlen(iterations_t, memory_t, parallelism_t,
-                new Uint32_t(salt.length), new Uint32_t(hashLen)).intValue();
+                new Uint32_t(salt.length), new Uint32_t(hashLen), getType().ordinal).intValue();
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
@@ -217,7 +224,6 @@ abstract class BaseArgon2 implements Argon2 {
         ByteBuffer byteBuffer = charset.encode(charBuffer);
         byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
                 byteBuffer.position(), byteBuffer.limit());
-        Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
         Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
         return bytes;
     }
