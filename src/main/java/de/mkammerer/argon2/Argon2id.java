@@ -40,6 +40,14 @@ class Argon2id extends BaseArgon2 {
     }
 
     @Override
+    protected int callLibraryRawHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] hash) {
+        return Argon2Library.INSTANCE.argon2id_hash_raw(
+                iterations, memory, parallelism, pwd, new Size_t(pwd.length),
+                salt, new Size_t(salt.length), hash, new Size_t(hash.length)
+        );
+    }
+
+    @Override
     protected int callLibraryVerify(byte[] encoded, byte[] pwd) {
         return Argon2Library.INSTANCE.argon2id_verify(encoded, pwd, new Size_t(pwd.length));
     }

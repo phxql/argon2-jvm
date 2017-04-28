@@ -1,14 +1,18 @@
 package de.mkammerer.argon2.test;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
-import org.junit.Test;
-
-import java.nio.charset.Charset;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+
+import java.nio.charset.Charset;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.junit.Test;
+
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+import de.mkammerer.argon2.Argon2Factory.Argon2Types;
 
 public class LibraryTest {
     @Test
@@ -130,7 +134,7 @@ public class LibraryTest {
 
     @Test
     public void testUTF8() throws Exception {
-        String password = "ŧҺìş ίŝ ứţƒ-8";
+        String password = "Å§ÒºÃ¬ÅŸ Î¯Å� á»©Å£Æ’-8";
 
         Argon2 sut = Argon2Factory.create();
         String hash = sut.hash(2, 65535, 1, password, Charset.forName("UTF-8"));
@@ -154,5 +158,41 @@ public class LibraryTest {
         for (char c : array) {
             assertThat(c, is((char) 0));
         }
+    }
+    
+    @Test
+    public void testArgon2dRawHash() throws Exception {
+        byte[] salt = new byte[16];
+        ThreadLocalRandom.current().nextBytes(salt);
+        
+        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2d, salt.length, 32);
+        byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
+        
+        assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
+        assertThat(sut.rawHash(2, 65536, 1, "not-the-password", salt), is(not(hash)));
+    }
+
+    @Test
+    public void testArgon2iRawHash() throws Exception {
+        byte[] salt = new byte[16];
+        ThreadLocalRandom.current().nextBytes(salt);
+        
+        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2i, salt.length, 32);
+        byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
+        
+        assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
+        assertThat(sut.rawHash(2, 65536, 1, "not-the-password", salt), is(not(hash)));
+    }
+
+    @Test
+    public void testArgon2idRawHash() throws Exception {
+        byte[] salt = new byte[16];
+        ThreadLocalRandom.current().nextBytes(salt);
+        
+        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2id, salt.length, 32);
+        byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
+        
+        assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
+        assertThat(sut.rawHash(2, 65536, 1, "not-the-password", salt), is(not(hash)));
     }
 }
