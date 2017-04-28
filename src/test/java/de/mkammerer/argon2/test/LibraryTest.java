@@ -134,7 +134,7 @@ public class LibraryTest {
 
     @Test
     public void testUTF8() throws Exception {
-        String password = "Å§ÒºÃ¬ÅŸ Î¯Å� á»©Å£Æ’-8";
+        String password = "ŧҺìş ίŝ ứţƒ-8";
 
         Argon2 sut = Argon2Factory.create();
         String hash = sut.hash(2, 65535, 1, password, Charset.forName("UTF-8"));
