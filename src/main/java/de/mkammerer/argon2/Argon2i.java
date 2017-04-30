@@ -1,8 +1,8 @@
 package de.mkammerer.argon2;
 
 import de.mkammerer.argon2.jna.Argon2Library;
+import de.mkammerer.argon2.jna.JnaUint32;
 import de.mkammerer.argon2.jna.Size_t;
-import de.mkammerer.argon2.jna.Uint32_t;
 
 /**
  * Argon2i password hashing function.
@@ -10,19 +10,11 @@ import de.mkammerer.argon2.jna.Uint32_t;
 class Argon2i extends BaseArgon2 {
     /**
      * Constructor.
-     * <p>
-     * Uses default salt and hash lengths.
-     */
-    public Argon2i() {
-    }
-
-    /**
-     * Constructor.
      *
      * @param saltLen Salt length in bytes.
      * @param hashLen Hash length in bytes.
      */
-    public Argon2i(int saltLen, int hashLen) {
+    Argon2i(int saltLen, int hashLen) {
       super(saltLen, hashLen);
     }
 
@@ -32,7 +24,7 @@ class Argon2i extends BaseArgon2 {
     }
 
     @Override
-    protected int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded) {
+    protected int callLibraryHash(byte[] pwd, byte[] salt, JnaUint32 iterations, JnaUint32 memory, JnaUint32 parallelism, byte[] encoded) {
         return Argon2Library.INSTANCE.argon2i_hash_encoded(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),
                 salt, new Size_t(salt.length), new Size_t(getHashLength()), encoded, new Size_t(encoded.length)
@@ -40,7 +32,7 @@ class Argon2i extends BaseArgon2 {
     }
 
     @Override
-    protected int callLibraryRawHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] hash) {
+    protected int callLibraryRawHash(byte[] pwd, byte[] salt, JnaUint32 iterations, JnaUint32 memory, JnaUint32 parallelism, byte[] hash) {
         return Argon2Library.INSTANCE.argon2i_hash_raw(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),
                 salt, new Size_t(salt.length), hash, new Size_t(hash.length)

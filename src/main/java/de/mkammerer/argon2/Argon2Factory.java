@@ -126,10 +126,14 @@ public final class Argon2Factory {
          */
         ARGON2id;
 
-        public final Argon2_type ordinal;
+        private final Argon2_type jnaType;
 
         Argon2Types() {
-            this.ordinal = new Argon2_type(this.ordinal());
+            this.jnaType = new Argon2_type(this.ordinal());
+        }
+
+        public Argon2_type getJnaType() {
+            return jnaType;
         }
     }
 }

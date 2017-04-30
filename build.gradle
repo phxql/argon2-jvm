@@ -1,5 +1,5 @@
 plugins {
-    id "org.sonarqube" version "2.2"
+    id "org.sonarqube" version "2.3"
 }
 
 apply plugin: 'org.sonarqube'
@@ -127,5 +127,11 @@ void enhancePom(MavenPom pom) {
             developerConnection 'scm:git:git://github.com/phxql/argon2-jvm.git'
             url 'https://github.com/phxql/argon2-jvm'
         }
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.exclusions", "src/main/java/de/mkammerer/argon2/jna/*.java"
     }
 }

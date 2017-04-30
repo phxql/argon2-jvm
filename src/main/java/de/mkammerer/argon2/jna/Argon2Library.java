@@ -40,7 +40,7 @@ public interface Argon2Library extends Library {
      * @param encodedlen  Size of the buffer (thus max size of the encoded hash)
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2i_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+    int argon2i_hash_encoded(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
 
     /**
      * Hashes a password with Argon2id, producing an encoded hash.
@@ -57,7 +57,7 @@ public interface Argon2Library extends Library {
      * @param encodedlen  Size of the buffer (thus max size of the encoded hash)
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2id_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+    int argon2id_hash_encoded(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
     /**
      * Hashes a password with Argon2d, producing an encoded hash.
      *
@@ -73,7 +73,7 @@ public interface Argon2Library extends Library {
      * @param encodedlen  Size of the buffer (thus max size of the encoded hash)
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2d_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+    int argon2d_hash_encoded(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
     
     /**
      * Hashes a password with Argon2i, producing an encoded hash.
@@ -89,7 +89,7 @@ public interface Argon2Library extends Library {
      * @param hashlen     Desired length of the hash in bytes
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2i_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+    int argon2i_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
 
     /**
      * Hashes a password with Argon2id, producing an encoded hash.
@@ -105,7 +105,7 @@ public interface Argon2Library extends Library {
      * @param hashlen     Desired length of the hash in bytes
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2id_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+    int argon2id_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
     /**
      * Hashes a password with Argon2d, producing an encoded hash.
      *
@@ -120,7 +120,7 @@ public interface Argon2Library extends Library {
      * @param hashlen     Desired length of the hash in bytes
      * @return {@link #ARGON2_OK} if successful
      */
-    int argon2d_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+    int argon2d_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
     /**
      * Verifies a password against an Argon2i encoded string.
      *
@@ -164,7 +164,7 @@ public interface Argon2Library extends Library {
      * @param type        The argon2 type.
      * @return The encoded hash length in bytes.
      */
-    Size_t argon2_encodedlen(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, Uint32_t saltlen, Uint32_t hashlen, Argon2_type type);
+    Size_t argon2_encodedlen(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, JnaUint32 saltlen, JnaUint32 hashlen, Argon2_type type);
 
     /**
      * Get the associated error message for given error code.

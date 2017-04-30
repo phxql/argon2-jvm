@@ -2,7 +2,7 @@ package de.mkammerer.argon2;
 
 import com.sun.jna.Native;
 import de.mkammerer.argon2.jna.Argon2Library;
-import de.mkammerer.argon2.jna.Uint32_t;
+import de.mkammerer.argon2.jna.JnaUint32;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -35,20 +35,11 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     /**
      * Constructor.
-     * <p>
-     * Uses default salt and hash lengths.
-     */
-    public BaseArgon2() {
-        this(Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
-    }
-
-    /**
-     * Constructor.
      *
      * @param saltLen Salt length in bytes.
      * @param hashLen Hash length in bytes.
      */
-    public BaseArgon2(int saltLen, int hashLen) {
+    BaseArgon2(int saltLen, int hashLen) {
         this.saltLen = saltLen;
         this.hashLen = hashLen;
     }
@@ -58,7 +49,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      *
      * @return Hash length in bytes.
      */
-    protected int getHashLength() {
+    int getHashLength() {
         return hashLen;
     }
 
@@ -144,15 +135,15 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
         final byte[] salt = generateSalt();
 
-        final Uint32_t iterations_t = new Uint32_t(iterations);
-        final Uint32_t memory_t = new Uint32_t(memory);
-        final Uint32_t parallelism_t = new Uint32_t(parallelism);
+        final JnaUint32 jnaIterations = new JnaUint32(iterations);
+        final JnaUint32 jnaMemory = new JnaUint32(memory);
+        final JnaUint32 jnaParallelism = new JnaUint32(parallelism);
 
-        int len = Argon2Library.INSTANCE.argon2_encodedlen(iterations_t, memory_t, parallelism_t,
-                new Uint32_t(salt.length), new Uint32_t(hashLen), getType().ordinal).intValue();
+        int len = Argon2Library.INSTANCE.argon2_encodedlen(jnaIterations, jnaMemory, jnaParallelism,
+                new JnaUint32(salt.length), new JnaUint32(hashLen), getType().getJnaType()).intValue();
         final byte[] encoded = new byte[len];
 
-        int result = callLibraryHash(pwd, salt, iterations_t, memory_t, parallelism_t, encoded);
+        int result = callLibraryHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, encoded);
 
         if (result != Argon2Library.ARGON2_OK) {
             String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
@@ -163,13 +154,13 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     }
 
     private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt) {
-        final Uint32_t iterations_t = new Uint32_t(iterations);
-        final Uint32_t memory_t = new Uint32_t(memory);
-        final Uint32_t parallelism_t = new Uint32_t(parallelism);
+        final JnaUint32 jnaIterations = new JnaUint32(iterations);
+        final JnaUint32 jnaMemory = new JnaUint32(memory);
+        final JnaUint32 jnaParallelism = new JnaUint32(parallelism);
 
         final byte[] hash = new byte[hashLen];
 
-        int result = callLibraryRawHash(pwd, salt, iterations_t, memory_t, parallelism_t, hash);
+        int result = callLibraryRawHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, hash);
 
         if (result != Argon2Library.ARGON2_OK) {
             String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
@@ -228,7 +219,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param encoded     Byte array to write the hash to.
      * @return Return code.
      */
-    protected abstract int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded);
+    protected abstract int callLibraryHash(byte[] pwd, byte[] salt, JnaUint32 iterations, JnaUint32 memory, JnaUint32 parallelism, byte[] encoded);
 
     /**
      * Is called when the hash function of the native library should be called.
@@ -241,7 +232,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param hash        Byte array to write the hash to.
      * @return Return code.
      */
-    protected abstract int callLibraryRawHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] hash);
+    protected abstract int callLibraryRawHash(byte[] pwd, byte[] salt, JnaUint32 iterations, JnaUint32 memory, JnaUint32 parallelism, byte[] hash);
 
     /**
      * Is called when the verify function of the native library should be called.
