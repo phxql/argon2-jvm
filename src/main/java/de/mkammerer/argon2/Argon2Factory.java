@@ -18,7 +18,16 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create() {
-        return create(Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+        return createInternal(Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    /**
+     * Creates a new {@link Argon2Advanced} instance.
+     *
+     * @return Argon2Advanced instance.
+     */
+    public static Argon2Advanced createAdvanced() {
+        return createInternal(Argon2Types.ARGON2i, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
     }
 
     /**
@@ -29,7 +38,18 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create(int saltLen, int hashLen) {
-        return create(Argon2Types.ARGON2i, saltLen, hashLen);
+        return createInternal(Argon2Types.ARGON2i, saltLen, hashLen);
+    }
+
+    /**
+     * Creates a new {@link Argon2Advanced} instance.
+     *
+     * @param saltLen Byte length of salt.
+     * @param hashLen Byte length of hash.
+     * @return Argon2Advanced instance.
+     */
+    public static Argon2Advanced createAdvanced(int saltLen, int hashLen) {
+        return createInternal(Argon2Types.ARGON2i, saltLen, hashLen);
     }
 
     /**
@@ -39,18 +59,44 @@ public final class Argon2Factory {
      * @return Argon2 instance.
      */
     public static Argon2 create(Argon2Types type) {
-        return create(type, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+        return createInternal(type, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    /**
+     * Creates a new {@link Argon2Advanced} instance with the given type.
+     *
+     * @param type Argon2 type.
+     * @return Argon2Advanced instance.
+     */
+    public static Argon2Advanced createAdvanced(Argon2Types type) {
+        return createInternal(type, Argon2Constants.DEFAULT_SALT_LENGTH, Argon2Constants.DEFAULT_HASH_LENGTH);
+    }
+
+    /**
+     * Creates a new {@link Argon2Advanced} instance with the given type.
+     *
+     * @param type    Argon2 type.
+     * @param saltLen Byte length of salt.
+     * @param hashLen Byte length of hash.
+     * @return Argon2Advanced instance.
+     */
+    public static Argon2Advanced createAdvanced(Argon2Types type, int saltLen, int hashLen) {
+        return createInternal(type, saltLen, hashLen);
     }
 
     /**
      * Creates a new {@link Argon2} instance with the given type.
      *
-     * @param type Argon2 type.
+     * @param type    Argon2 type.
      * @param saltLen Byte length of salt.
      * @param hashLen Byte length of hash.
      * @return Argon2 instance.
      */
     public static Argon2 create(Argon2Types type, int saltLen, int hashLen) {
+        return createInternal(type, saltLen, hashLen);
+    }
+
+    private static Argon2Advanced createInternal(Argon2Types type, int saltLen, int hashLen) {
         switch (type) {
             case ARGON2i:
                 return new Argon2i(saltLen, hashLen);
@@ -81,6 +127,7 @@ public final class Argon2Factory {
         ARGON2id;
 
         public final Argon2_type ordinal;
+
         Argon2Types() {
             this.ordinal = new Argon2_type(this.ordinal());
         }

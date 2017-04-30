@@ -1,20 +1,19 @@
 package de.mkammerer.argon2;
 
+import com.sun.jna.Native;
+import de.mkammerer.argon2.jna.Argon2Library;
+import de.mkammerer.argon2.jna.Uint32_t;
+
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-import com.sun.jna.Native;
-
-import de.mkammerer.argon2.jna.Argon2Library;
-import de.mkammerer.argon2.jna.Uint32_t;
-
 /**
  * Argon2 base class.
  */
-abstract class BaseArgon2 implements Argon2 {
+abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     /**
      * ASCII encoding.

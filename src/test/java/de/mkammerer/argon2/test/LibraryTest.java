@@ -1,20 +1,20 @@
 package de.mkammerer.argon2.test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
-import java.nio.charset.Charset;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.junit.Test;
-
 import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Advanced;
 import de.mkammerer.argon2.Argon2Factory;
 import de.mkammerer.argon2.Argon2Factory.Argon2Types;
+import org.junit.Test;
+
+import java.nio.charset.Charset;
+import java.util.Random;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 public class LibraryTest {
+    private final Random random = new Random();
+
     @Test
     public void testArgon2i() throws Exception {
         Argon2 sut = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
@@ -163,9 +163,9 @@ public class LibraryTest {
     @Test
     public void testArgon2dRawHash() throws Exception {
         byte[] salt = new byte[16];
-        ThreadLocalRandom.current().nextBytes(salt);
-        
-        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2d, salt.length, 32);
+        random.nextBytes(salt);
+
+        Argon2Advanced sut = Argon2Factory.createAdvanced(Argon2Types.ARGON2d, salt.length, 32);
         byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
         
         assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
@@ -175,9 +175,9 @@ public class LibraryTest {
     @Test
     public void testArgon2iRawHash() throws Exception {
         byte[] salt = new byte[16];
-        ThreadLocalRandom.current().nextBytes(salt);
-        
-        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2i, salt.length, 32);
+        random.nextBytes(salt);
+
+        Argon2Advanced sut = Argon2Factory.createAdvanced(Argon2Types.ARGON2i, salt.length, 32);
         byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
         
         assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
@@ -187,9 +187,9 @@ public class LibraryTest {
     @Test
     public void testArgon2idRawHash() throws Exception {
         byte[] salt = new byte[16];
-        ThreadLocalRandom.current().nextBytes(salt);
-        
-        Argon2 sut = Argon2Factory.create(Argon2Types.ARGON2id, salt.length, 32);
+        random.nextBytes(salt);
+
+        Argon2Advanced sut = Argon2Factory.createAdvanced(Argon2Types.ARGON2id, salt.length, 32);
         byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
         
         assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
