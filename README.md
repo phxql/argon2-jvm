@@ -48,7 +48,7 @@ If you'd prefer to install/compile argon2 on your own you can use argon2-jvm-nol
 
 If you need help to build argon2, have a look at [this documentation](docs/compile-argon2.md).
 
-```
+```java
 // Create instance
 Argon2 argon2 = Argon2Factory.create();
 
