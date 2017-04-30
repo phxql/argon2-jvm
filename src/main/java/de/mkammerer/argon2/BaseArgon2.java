@@ -1,14 +1,15 @@
 package de.mkammerer.argon2;
 
-import com.sun.jna.Native;
-import de.mkammerer.argon2.jna.Argon2Library;
-import de.mkammerer.argon2.jna.Uint32_t;
-
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Arrays;
+
+import com.sun.jna.Native;
+
+import de.mkammerer.argon2.jna.Argon2Library;
+import de.mkammerer.argon2.jna.Uint32_t;
 
 /**
  * Argon2 base class.
@@ -111,6 +112,36 @@ abstract class BaseArgon2 implements Argon2 {
         return hash(iterations, memory, parallelism, password, DEFAULT_CHARSET);
     }
 
+    @Override
+    public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, byte[] salt) {
+        return rawHash(iterations, memory, parallelism, password, DEFAULT_CHARSET, salt);
+    }
+
+    @Override
+    public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt) {
+        final byte[] pwd = toByteArray(password, charset);
+        try {
+            return rawHashBytes(iterations, memory, parallelism, pwd, salt);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public byte[] rawHash(int iterations, int memory, int parallelism, String password, Charset charset, byte[] salt) {
+        final byte[] pwd = password.getBytes(charset);
+        try {
+            return rawHashBytes(iterations, memory, parallelism, pwd, salt);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public byte[] rawHash(int iterations, int memory, int parallelism, String password, byte[] salt) {
+        return rawHash(iterations, memory, parallelism, password, DEFAULT_CHARSET, salt);
+    }
+
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
         final byte[] salt = generateSalt();
 
@@ -130,6 +161,23 @@ abstract class BaseArgon2 implements Argon2 {
         }
 
         return Native.toString(encoded, ASCII);
+    }
+
+    private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt) {
+        final Uint32_t iterations_t = new Uint32_t(iterations);
+        final Uint32_t memory_t = new Uint32_t(memory);
+        final Uint32_t parallelism_t = new Uint32_t(parallelism);
+
+        final byte[] hash = new byte[hashLen];
+
+        int result = callLibraryRawHash(pwd, salt, iterations_t, memory_t, parallelism_t, hash);
+
+        if (result != Argon2Library.ARGON2_OK) {
+            String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
+            throw new IllegalStateException(String.format("%s (%d)", errMsg, result));
+        }
+
+        return hash;
     }
 
     @Override
@@ -182,6 +230,19 @@ abstract class BaseArgon2 implements Argon2 {
      * @return Return code.
      */
     protected abstract int callLibraryHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] encoded);
+
+    /**
+     * Is called when the hash function of the native library should be called.
+     *
+     * @param pwd         Password.
+     * @param salt        Salt.
+     * @param iterations  Iterations.
+     * @param memory      Memory.
+     * @param parallelism Parallelism.
+     * @param hash        Byte array to write the hash to.
+     * @return Return code.
+     */
+    protected abstract int callLibraryRawHash(byte[] pwd, byte[] salt, Uint32_t iterations, Uint32_t memory, Uint32_t parallelism, byte[] hash);
 
     /**
      * Is called when the verify function of the native library should be called.

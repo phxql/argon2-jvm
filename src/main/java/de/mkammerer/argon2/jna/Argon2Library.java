@@ -74,6 +74,53 @@ public interface Argon2Library extends Library {
      * @return {@link #ARGON2_OK} if successful
      */
     int argon2d_hash_encoded(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+    
+    /**
+     * Hashes a password with Argon2i, producing an encoded hash.
+     *
+     * @param t_cost      Number of iterations
+     * @param m_cost      Sets memory usage to m_cost kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param pwd         Pointer to password
+     * @param pwdlen      Password size in bytes
+     * @param salt        Pointer to salt
+     * @param saltlen     Salt size in bytes
+     * @param hash        Buffer where to write the raw hash
+     * @param hashlen     Desired length of the hash in bytes
+     * @return {@link #ARGON2_OK} if successful
+     */
+    int argon2i_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+
+    /**
+     * Hashes a password with Argon2id, producing an encoded hash.
+     *
+     * @param t_cost      Number of iterations
+     * @param m_cost      Sets memory usage to m_cost kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param pwd         Pointer to password
+     * @param pwdlen      Password size in bytes
+     * @param salt        Pointer to salt
+     * @param saltlen     Salt size in bytes
+     * @param hash        Buffer where to write the raw hash
+     * @param hashlen     Desired length of the hash in bytes
+     * @return {@link #ARGON2_OK} if successful
+     */
+    int argon2id_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+    /**
+     * Hashes a password with Argon2d, producing an encoded hash.
+     *
+     * @param t_cost      Number of iterations
+     * @param m_cost      Sets memory usage to m_cost kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param pwd         Pointer to password
+     * @param pwdlen      Password size in bytes
+     * @param salt        Pointer to salt
+     * @param saltlen     Salt size in bytes
+     * @param hash        Buffer where to write the raw hash
+     * @param hashlen     Desired length of the hash in bytes
+     * @return {@link #ARGON2_OK} if successful
+     */
+    int argon2d_hash_raw(Uint32_t t_cost, Uint32_t m_cost, Uint32_t parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
     /**
      * Verifies a password against an Argon2i encoded string.
      *
