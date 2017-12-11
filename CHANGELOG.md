@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+
+- Added support for Argon2 raw hashes
+
+### Changed
+- Updated version from JNA from 4.2.1 to 4.5.0
+
 ## [2.2] - 2017-01-29
 
 ### Added

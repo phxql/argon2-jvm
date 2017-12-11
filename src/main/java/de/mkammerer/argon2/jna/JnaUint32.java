@@ -5,11 +5,11 @@ import com.sun.jna.IntegerType;
 /**
  * uint32_t type for C interaction.
  */
-public class Uint32_t extends IntegerType {
+public class JnaUint32 extends IntegerType {
     /**
      * Constructor.
      */
-    public Uint32_t() {
+    public JnaUint32() {
         this(0);
     }
 
@@ -18,7 +18,7 @@ public class Uint32_t extends IntegerType {
      *
      * @param value Value.
      */
-    public Uint32_t(int value) {
+    public JnaUint32(int value) {
         super(4, value, true);
     }
 }
