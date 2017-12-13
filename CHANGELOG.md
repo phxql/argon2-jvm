@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-### Added
+## [2.3] - 2017-12-12
 
+### Added
 - Added support for Argon2 raw hashes
 
 ### Changed
