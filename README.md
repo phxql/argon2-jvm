@@ -84,7 +84,7 @@ Licensed under [LGPL v3](https://www.gnu.org/licenses/lgpl.html).
 Moritz Kammerer ([@phXql](https://github.com/phxql))
 
 ## Contributing
-See [contributing guidelines](CONTRIBUTING).
+See [contributing guidelines](CONTRIBUTING.md).
 
 ## Contributors
 See [contributors page](https://github.com/phxql/argon2-jvm/graphs/contributors).
