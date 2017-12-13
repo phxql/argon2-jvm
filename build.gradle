@@ -77,10 +77,10 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
-                authentication(userName: System.getenv('SONATYPE_USER'), password: System.getenv('SONATYPE_PASSWORD'))
+                authentication(userName: project.properties['sonatype.username'], password: project.properties['sonatype.password'])
             }
             snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
-                authentication(userName: System.getenv('SONATYPE_USER'), password: System.getenv('SONATYPE_PASSWORD'))
+                authentication(userName: project.properties['sonatype.username'], password: project.properties['sonatype.password'])
             }
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
             // default: With included pre-compiled Argon2 libraries
