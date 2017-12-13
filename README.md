@@ -78,13 +78,13 @@ This library uses [JNA](https://github.com/java-native-access/jna) to communicat
 Run `./gradlew clean build` to build and test the software.
 
 ## License
-[LGPL v3](https://www.gnu.org/licenses/lgpl.html)
+Licensed under [LGPL v3](https://www.gnu.org/licenses/lgpl.html).
 
 ## Maintainer
 Moritz Kammerer ([@phXql](https://github.com/phxql))
 
 ## Contributing
-See [contributing.md](contributing.md)
+See [contributing guidelines](CONTRIBUTING).
 
-## Contributor
-See [contributor.md](contributor.md)
+## Contributors
+See [contributors page](https://github.com/phxql/argon2-jvm/graphs/contributors).
