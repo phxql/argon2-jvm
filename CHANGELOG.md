@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- Added `Automatic-Module-Name` to JAR files
+
 ## [2.3] - 2017-12-12
 
 ### Added

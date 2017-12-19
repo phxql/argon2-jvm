@@ -42,6 +42,10 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 task noLibsJar(type: Jar, dependsOn: javadoc) {
     baseName = project.name + '-nolibs'
     from sourceSets.main.output.classesDirs
+
+    manifest {
+        attributes('Automatic-Module-Name': 'de.mkammerer.argon2')
+    }
 }
 
 task noLibsSourcesJar(type: Jar, dependsOn: classes) {
@@ -62,6 +66,12 @@ artifacts {
     archives noLibsJar
     archives noLibsSourcesJar
     archives noLibsJavadocJar
+}
+
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'de.mkammerer.argon2')
+    }
 }
 
 task wrapper(type: Wrapper) {
