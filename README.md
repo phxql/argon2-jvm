@@ -40,6 +40,7 @@ compile 'de.mkammerer:argon2-jvm-nolibs:2.4-SNAPSHOT'
 This binding needs the Argon2 C library. Libraries for the following operation systems are included in argon2-jvm library:
 * Linux x86
 * Linux x86-64
+* Linux ARM
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
