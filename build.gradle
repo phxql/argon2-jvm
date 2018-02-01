@@ -29,6 +29,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+ext.sharedManifest = manifest {
+    attributes("Automatic-Module-Name": "de.mkammerer.argon2.jvm")
+}
+
+jar {
+    manifest = project.manifest {
+        from sharedManifest
+    }
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allJava
@@ -42,6 +52,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 task noLibsJar(type: Jar, dependsOn: javadoc) {
     baseName = project.name + '-nolibs'
     from sourceSets.main.output.classesDirs
+    manifest = project.manifest {
+        from sharedManifest
+    }
 }
 
 task noLibsSourcesJar(type: Jar, dependsOn: classes) {
