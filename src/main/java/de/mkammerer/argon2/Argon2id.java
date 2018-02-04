@@ -6,6 +6,8 @@ import de.mkammerer.argon2.jna.Size_t;
 
 /**
  * Argon2i password hashing function.
+ *
+ * This class is thread safe.
  */
 class Argon2id extends BaseArgon2 {
     /**

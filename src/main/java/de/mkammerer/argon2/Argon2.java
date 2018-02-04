@@ -4,9 +4,10 @@ import java.nio.charset.Charset;
 
 /**
  * Argon2 password hashing function.
+ *
+ * All implementing classes need to be thread safe.
  */
 public interface Argon2 {
-
     /**
      * Hashes a password.
      *

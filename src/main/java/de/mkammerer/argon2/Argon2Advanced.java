@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 
 /**
  * Advanced Argon2 hash functions.
+ *
+ * All implementing classes need to be thread safe.
  */
 public interface Argon2Advanced extends Argon2 {
     /**
