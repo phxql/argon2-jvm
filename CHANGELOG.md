@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Added `Automatic-Module-Name` to JAR files
 - Added support for Linux ARM. Compiled on a Raspberry Pi 2.
+- Added support for Linux ARM-64. Compiled on a Raspberry Pi 3.
 
 ## [2.3] - 2017-12-12
 

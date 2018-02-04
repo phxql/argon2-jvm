@@ -41,6 +41,7 @@ This binding needs the Argon2 C library. Libraries for the following operation s
 * Linux x86
 * Linux x86-64
 * Linux ARM
+* Linux ARM-64
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
