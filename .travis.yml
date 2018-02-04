@@ -1,11 +1,8 @@
 language: java
 
-matrix.include:
-  - os: linux
-    jdk:
-      - oraclejdk8
-      - openjdk8
-  - os: osx
+os:
+  - linux
+  - osx
 
 # Gradle wrapper caching
 before_cache:
