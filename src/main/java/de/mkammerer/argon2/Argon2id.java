@@ -13,11 +13,11 @@ class Argon2id extends BaseArgon2 {
     /**
      * Constructor.
      *
-     * @param saltLen Salt length in bytes.
-     * @param hashLen Hash length in bytes.
+     * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
+     * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      */
-    Argon2id(int saltLen, int hashLen) {
-        super(saltLen, hashLen);
+    Argon2id(int defaultSaltLength, int defaultHashLength) {
+        super(defaultSaltLength, defaultHashLength);
     }
 
     @Override
@@ -29,7 +29,7 @@ class Argon2id extends BaseArgon2 {
     protected int callLibraryHash(byte[] pwd, byte[] salt, JnaUint32 iterations, JnaUint32 memory, JnaUint32 parallelism, byte[] encoded) {
         return Argon2Library.INSTANCE.argon2id_hash_encoded(
                 iterations, memory, parallelism, pwd, new Size_t(pwd.length),
-                salt, new Size_t(salt.length), new Size_t(getHashLength()), encoded, new Size_t(encoded.length)
+                salt, new Size_t(salt.length), new Size_t(getDefaultHashLength()), encoded, new Size_t(encoded.length)
         );
     }
 

@@ -17,7 +17,7 @@ public interface Argon2Advanced extends Argon2 {
      * @param memory      Sets memory usage to x kibibytes
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
-     * @param salt        Salt to use
+     * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
      */
     byte[] rawHash(int iterations, int memory, int parallelism, String password, byte[] salt);
@@ -30,7 +30,7 @@ public interface Argon2Advanced extends Argon2 {
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
      * @param charset     Charset of the password
-     * @param salt        Salt to use
+     * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
      */
     byte[] rawHash(int iterations, int memory, int parallelism, String password, Charset charset, byte[] salt);
@@ -44,7 +44,7 @@ public interface Argon2Advanced extends Argon2 {
      * @param memory      Sets memory usage to x kibibytes
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
-     * @param salt        Salt to use
+     * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
      */
     byte[] rawHash(int iterations, int memory, int parallelism, char[] password, byte[] salt);
@@ -57,7 +57,7 @@ public interface Argon2Advanced extends Argon2 {
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
      * @param charset     Charset of the password
-     * @param salt        Salt to use
+     * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
      */
     byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
