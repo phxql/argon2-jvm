@@ -106,7 +106,7 @@ public abstract class AbstractArgonTest {
     }
 
     @Test
-    public void testRawHash() throws Exception {
+    public void testRawWithString() throws Exception {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
 
@@ -114,6 +114,22 @@ public abstract class AbstractArgonTest {
 
         assertThat(sut.rawHash(2, 65536, 1, PASSWORD, salt), is(hash));
         assertThat(sut.rawHash(2, 65536, 1, NOT_THE_PASSWORD, salt), is(not(hash)));
+        byte[] notTheSalt = new byte[16];
+        assertThat(sut.rawHash(2, 65536, 1, PASSWORD, notTheSalt), is(not(hash)));
+
+    }
+
+    @Test
+    public void testRawWithChars() throws Exception {
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+
+        byte[] hash = sut.rawHash(2, 65536, 1, PASSWORD.toCharArray(), salt);
+
+        assertThat(sut.rawHash(2, 65536, 1, PASSWORD.toCharArray(), salt), is(hash));
+        assertThat(sut.rawHash(2, 65536, 1, NOT_THE_PASSWORD.toCharArray(), salt), is(not(hash)));
+        byte[] notTheSalt = new byte[16];
+        assertThat(sut.rawHash(2, 65536, 1, PASSWORD.toCharArray(), notTheSalt), is(not(hash)));
     }
 
 }
