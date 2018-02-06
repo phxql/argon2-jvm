@@ -159,7 +159,20 @@ public class LibraryTest {
             assertThat(c, is((char) 0));
         }
     }
-    
+
+    @Test
+    public void testDefaultRawHash() throws Exception {
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+
+        Argon2Advanced sut = Argon2Factory.createAdvanced();
+        byte[] hash = sut.rawHash(2, 65536, 1, "password", salt);
+
+        assertThat(sut.rawHash(2, 65536, 1, "password", salt), is(hash));
+        assertThat(sut.rawHash(2, 65536, 1, "not-the-password", salt), is(not(hash)));
+    }
+
+
     @Test
     public void testArgon2dRawHash() throws Exception {
         byte[] salt = new byte[16];
