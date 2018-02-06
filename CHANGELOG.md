@@ -5,10 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
-
 - Added `Automatic-Module-Name` to JAR files
 - Added support for Linux ARM. Compiled on a Raspberry Pi 2.
 - Added support for Linux ARM-64. Compiled on a Raspberry Pi 3.
+
+### Fixed
+- Fixed wrong Argon2 id mapping ([PR](https://github.com/phxql/argon2-jvm/pull/41))
 
 ## [2.3] - 2017-12-12
 

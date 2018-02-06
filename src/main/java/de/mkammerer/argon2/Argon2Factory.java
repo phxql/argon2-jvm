@@ -128,6 +128,11 @@ public final class Argon2Factory {
 
         private final Argon2_type jnaType;
 
+        /**
+         * Constructor.
+         *
+         * @param idx Index from the Argon2 API.
+         */
         Argon2Types(int idx) {
             this.jnaType = new Argon2_type(idx);
         }
