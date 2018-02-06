@@ -116,20 +116,20 @@ public final class Argon2Factory {
         /**
          * Argon2i.
          */
-        ARGON2i,
+        ARGON2i(1),
         /**
          * Argon2d.
          */
-        ARGON2d,
+        ARGON2d(0),
         /**
          * Argon2id
          */
-        ARGON2id;
+        ARGON2id(2);
 
         private final Argon2_type jnaType;
 
-        Argon2Types() {
-            this.jnaType = new Argon2_type(this.ordinal());
+        Argon2Types(int idx) {
+            this.jnaType = new Argon2_type(idx);
         }
 
         public Argon2_type getJnaType() {
