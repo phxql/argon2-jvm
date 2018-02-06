@@ -33,23 +33,23 @@ public final class Argon2Factory {
     /**
      * Creates a new {@link Argon2} instance.
      *
-     * @param saltLen Byte length of salt.
-     * @param hashLen Byte length of hash.
+     * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
+     * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2 instance.
      */
-    public static Argon2 create(int saltLen, int hashLen) {
-        return createInternal(Argon2Types.ARGON2i, saltLen, hashLen);
+    public static Argon2 create(int defaultSaltLength, int defaultHashLength) {
+        return createInternal(Argon2Types.ARGON2i, defaultSaltLength, defaultHashLength);
     }
 
     /**
      * Creates a new {@link Argon2Advanced} instance.
      *
-     * @param saltLen Byte length of salt.
-     * @param hashLen Byte length of hash.
+     * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
+     * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2Advanced instance.
      */
-    public static Argon2Advanced createAdvanced(int saltLen, int hashLen) {
-        return createInternal(Argon2Types.ARGON2i, saltLen, hashLen);
+    public static Argon2Advanced createAdvanced(int defaultSaltLength, int defaultHashLength) {
+        return createInternal(Argon2Types.ARGON2i, defaultSaltLength, defaultHashLength);
     }
 
     /**
@@ -76,34 +76,34 @@ public final class Argon2Factory {
      * Creates a new {@link Argon2Advanced} instance with the given type.
      *
      * @param type    Argon2 type.
-     * @param saltLen Byte length of salt.
-     * @param hashLen Byte length of hash.
+     * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
+     * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2Advanced instance.
      */
-    public static Argon2Advanced createAdvanced(Argon2Types type, int saltLen, int hashLen) {
-        return createInternal(type, saltLen, hashLen);
+    public static Argon2Advanced createAdvanced(Argon2Types type, int defaultSaltLength, int defaultHashLength) {
+        return createInternal(type, defaultSaltLength, defaultHashLength);
     }
 
     /**
      * Creates a new {@link Argon2} instance with the given type.
      *
      * @param type    Argon2 type.
-     * @param saltLen Byte length of salt.
-     * @param hashLen Byte length of hash.
+     * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
+     * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2 instance.
      */
-    public static Argon2 create(Argon2Types type, int saltLen, int hashLen) {
-        return createInternal(type, saltLen, hashLen);
+    public static Argon2 create(Argon2Types type, int defaultSaltLength, int defaultHashLength) {
+        return createInternal(type, defaultSaltLength, defaultHashLength);
     }
 
-    private static Argon2Advanced createInternal(Argon2Types type, int saltLen, int hashLen) {
+    private static Argon2Advanced createInternal(Argon2Types type, int defaultSaltLength, int defaultHashLength) {
         switch (type) {
             case ARGON2i:
-                return new Argon2i(saltLen, hashLen);
+                return new Argon2i(defaultSaltLength, defaultHashLength);
             case ARGON2d:
-                return new Argon2d(saltLen, hashLen);
+                return new Argon2d(defaultSaltLength, defaultHashLength);
             case ARGON2id:
-                return new Argon2id(saltLen, hashLen);
+                return new Argon2id(defaultSaltLength, defaultHashLength);
             default:
                 throw new IllegalArgumentException("Invalid argon2 type");
         }
