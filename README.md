@@ -73,6 +73,22 @@ try {
 }
 ```
 
+## Recommended parameters
+
+The recommended parameters for the `hash` call above can be found in the [whitepaper](https://github.com/P-H-C/phc-winner-argon2/blob/master/argon2-specs.pdf), section 9.
+
+You can use the method `Argon2Helper.findIterations` to find the optimal number of iterations on your system:
+
+```java
+Argon2 argon2 = Argon2Factory.create();
+// 1000 = The hash call must take at most 1000 ms
+// 65536 = Memory cost
+// 1 = parallelism
+int iterations = Argon2Helper.findIterations(argon2, 1000, 65536, 1);
+
+System.out.println("Optimal number of iterations: " + iterations);
+```
+
 ## Technical details
 This library uses [JNA](https://github.com/java-native-access/jna) to communicate with the Argon2 C library.
 

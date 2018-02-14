@@ -13,7 +13,7 @@ public final class Argon2Factory {
     }
 
     /**
-     * Creates a new {@link Argon2} instance.
+     * Creates a new {@link Argon2} instance. This will select the Argon2i algorithm.
      *
      * @return Argon2 instance.
      */
@@ -22,7 +22,7 @@ public final class Argon2Factory {
     }
 
     /**
-     * Creates a new {@link Argon2Advanced} instance.
+     * Creates a new {@link Argon2Advanced} instance. This will select the Argon2i algorithm.
      *
      * @return Argon2Advanced instance.
      */
@@ -31,7 +31,7 @@ public final class Argon2Factory {
     }
 
     /**
-     * Creates a new {@link Argon2} instance.
+     * Creates a new {@link Argon2} instance. This will select the Argon2i algorithm.
      *
      * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
      * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
@@ -42,7 +42,7 @@ public final class Argon2Factory {
     }
 
     /**
-     * Creates a new {@link Argon2Advanced} instance.
+     * Creates a new {@link Argon2Advanced} instance. This will select the Argon2i algorithm.
      *
      * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
      * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
@@ -75,7 +75,7 @@ public final class Argon2Factory {
     /**
      * Creates a new {@link Argon2Advanced} instance with the given type.
      *
-     * @param type    Argon2 type.
+     * @param type              Argon2 type.
      * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
      * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2Advanced instance.
@@ -87,7 +87,7 @@ public final class Argon2Factory {
     /**
      * Creates a new {@link Argon2} instance with the given type.
      *
-     * @param type    Argon2 type.
+     * @param type              Argon2 type.
      * @param defaultSaltLength Default salt length in bytes. Can be overridden by some methods.
      * @param defaultHashLength Default hash length in bytes. Can be overridden by some methods.
      * @return Argon2 instance.
