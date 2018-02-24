@@ -59,7 +59,7 @@ char[] password = readPasswordFromUser();
 
 try {
     // Hash password
-    String hash = argon2.hash(2, 65536, 1, password);
+    String hash = argon2.hash(10, 65536, 1, password);
 
     // Verify password
     if (argon2.verify(hash, password)) {
