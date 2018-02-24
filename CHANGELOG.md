@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [2.4] - 2018-02-24
+
 ### Added
 - Added `Automatic-Module-Name` to JAR files
 - Added support for Linux ARM. Compiled on a Raspberry Pi 2.
