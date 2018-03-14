@@ -19,7 +19,7 @@ public class Argon2dTest extends AbstractArgonTest {
 
     @Test
     public void testHashWithSalt() {
-        String hash = getSut().hash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), UTF8, getFixedSalt());
+        String hash = getSut().hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), UTF8, getFixedSalt());
 
         assertThat(hash, is("$argon2d$v=19$m=1024,t=2,p=1$dGhpc2lzdGhlc2FsdA$rkBsbLVYkXDowmxcwZ9qjpLuAbNjIPBXxmD27YvzHzw"));
     }

@@ -17,6 +17,7 @@ public abstract class AbstractArgonTest {
     protected static final String NOT_THE_PASSWORD = "not-the-password";
     protected static final int ITERATIONS = 2;
     protected static final int MEMORY = 1024;
+    protected static final int PARALLELISM = 1;
 
     private final Random random = new Random();
 
@@ -35,7 +36,7 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testWithString() throws Exception {
-        String hash = sut.hash(ITERATIONS, MEMORY, 1, PASSWORD);
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD);
         System.out.println(hash);
 
         assertThat(hash.startsWith(prefix), is(true));
@@ -45,7 +46,7 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testWithStringAndCharset() throws Exception {
-        String hash = sut.hash(ITERATIONS, MEMORY, 1, PASSWORD, ASCII);
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII);
         System.out.println(hash);
 
         assertThat(hash.startsWith(prefix), is(true));
@@ -55,7 +56,7 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testWithChars() throws Exception {
-        String hash = sut.hash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray());
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray());
         System.out.println(hash);
 
         assertThat(hash.startsWith(prefix), is(true));
@@ -65,7 +66,7 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testWithCharsAndCharset() throws Exception {
-        String hash = sut.hash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), ASCII);
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII);
         System.out.println(hash);
 
         assertThat(hash.startsWith(prefix), is(true));
@@ -76,7 +77,7 @@ public abstract class AbstractArgonTest {
     @Test
     public void testUTF8() throws Exception {
         String password = "ŧҺìş ίŝ ứţƒ-8";
-        String hash = sut.hash(ITERATIONS, 65535, 1, password, UTF8);
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, password, UTF8);
         assertThat(sut.verify(hash, password, UTF8), is(true));
     }
 
@@ -99,7 +100,7 @@ public abstract class AbstractArgonTest {
     @Test
     public void testCharsAreLeftIntact() throws Exception {
         char[] chars = PASSWORD.toCharArray();
-        sut.hash(ITERATIONS, MEMORY, 1, chars);
+        sut.hash(ITERATIONS, MEMORY, PARALLELISM, chars);
 
         assertThat(chars, equalTo(PASSWORD.toCharArray()));
     }
@@ -107,45 +108,45 @@ public abstract class AbstractArgonTest {
     @Test
     public void testRawWithString() throws Exception {
         byte[] salt = createSalt();
-        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, salt);
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, NOT_THE_PASSWORD, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, notTheSalt), is(not(hash)));
     }
 
     @Test
     public void testRawWithStringAndCharset() throws Exception {
         byte[] salt = createSalt();
-        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, ASCII, salt);
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, ASCII, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, NOT_THE_PASSWORD, ASCII, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, ASCII, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD, ASCII, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, notTheSalt), is(not(hash)));
     }
 
     @Test
     public void testRawWithChars() throws Exception {
         byte[] salt = createSalt();
-        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), salt);
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, NOT_THE_PASSWORD.toCharArray(), salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), notTheSalt), is(not(hash)));
     }
 
     @Test
     public void testRawWithCharsAndCharset() throws Exception {
         byte[] salt = createSalt();
-        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), ASCII, salt);
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), ASCII, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
     }
 
     protected byte[] getFixedSalt() {
