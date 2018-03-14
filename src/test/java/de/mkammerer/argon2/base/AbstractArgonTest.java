@@ -11,18 +11,17 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public abstract class AbstractArgonTest {
-    private static final Charset ASCII = Charset.forName("ASCII");
-    private static final Charset UTF8 = Charset.forName("utf-8");
-    private static final String PASSWORD = "password";
-    private static final String NOT_THE_PASSWORD = "not-the-password";
-    private static final int ITERATIONS = 2;
-    private static final int MEMORY = 1024;
+    protected static final Charset ASCII = Charset.forName("ASCII");
+    protected static final Charset UTF8 = Charset.forName("utf-8");
+    protected static final String PASSWORD = "password";
+    protected static final String NOT_THE_PASSWORD = "not-the-password";
+    protected static final int ITERATIONS = 2;
+    protected static final int MEMORY = 1024;
 
     private final Random random = new Random();
 
     private Argon2Advanced sut;
     private String prefix;
-
 
     protected abstract Argon2Advanced createSut();
 
@@ -147,6 +146,14 @@ public abstract class AbstractArgonTest {
         assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
         assertThat(sut.rawHash(ITERATIONS, MEMORY, 1, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
+    }
+
+    protected byte[] getFixedSalt() {
+        return "thisisthesalt".getBytes(UTF8);
+    }
+
+    protected Argon2Advanced getSut() {
+        return sut;
     }
 
     private byte[] createSalt() {

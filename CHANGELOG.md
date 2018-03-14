@@ -4,13 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- Add method in `Argon2Advanced` which takes a pre-generated salt. See [#45](https://github.com/phxql/argon2-jvm/issues/45)
+
 ## [2.4] - 2018-02-24
 
 ### Added
 - Added `Automatic-Module-Name` to JAR files
-- Added support for Linux ARM. Compiled on a Raspberry Pi 2.
-- Added support for Linux ARM-64. Compiled on a Raspberry Pi 3.
-- Added `Argon2Helper` class with a method to find the optimal number of iterations.
+- Added support for Linux ARM. Compiled on a Raspberry Pi 2
+- Added support for Linux ARM-64. Compiled on a Raspberry Pi 3
+- Added `Argon2Helper` class with a method to find the optimal number of iterations
 
 ### Fixed
 - Fixed wrong Argon2 id mapping ([PR](https://github.com/phxql/argon2-jvm/pull/41))
@@ -32,18 +36,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed [#22](https://github.com/phxql/argon2-jvm/issues/22).
 
 ### Changed
-- Recompiled Argon2 libraries (Argon2 version is now 20161029).
+- Recompiled Argon2 libraries (Argon2 version is now 20161029)
 
 ## [2.1] - 2016-10-31
 ### Added
-- Added artifact without the pre-compiled argon2 libraries.
+- Added artifact without the pre-compiled argon2 libraries
 
 ### Changed
-- The libraries are now uploaded to Maven Central instead to Bintray.
+- The libraries are now uploaded to Maven Central instead to Bintray
 
 ## [2.0] - 2016-10-03
 *Attention*: This release sets the default charset to UTF-8 instead of using the system default. If your system default
-haven't been UTF-8, refactor your code to use the overloads which accept `Charset`.
+haven't been UTF-8, refactor your code to use the overloads which accept `Charset`
 
 ### Added
 - Specified the release from which the binaries have been built (see README.md in the `resources` folder). See #7
