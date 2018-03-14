@@ -8,6 +8,10 @@ public final class Argon2Helper {
      * Nanoseconds in a millisecond.
      */
     private static final long MILLIS_IN_NANOS = 1000000L;
+    /**
+     * Number of warmup runs.
+     */
+    private static final int WARMUP_RUNS = 10;
 
     /**
      * No instances allowed.
@@ -40,6 +44,11 @@ public final class Argon2Helper {
      */
     public static int findIterations(Argon2 argon2, long maxMillisecs, int memory, int parallelism, IterationLogger logger) {
         char[] password = "password".toCharArray();
+
+        // Do some warmup runs for the JIT to kick in
+        for (int i = 0; i < WARMUP_RUNS; i++) {
+            argon2.hash(1, memory, parallelism, password);
+        }
 
         long took;
         int iterations = 0;
