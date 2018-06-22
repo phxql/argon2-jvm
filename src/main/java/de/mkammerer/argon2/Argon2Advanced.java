@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 
 /**
  * Advanced Argon2 hash functions.
- *
+ * <p>
  * All implementing classes need to be thread safe.
  */
 public interface Argon2Advanced extends Argon2 {
@@ -61,4 +61,17 @@ public interface Argon2Advanced extends Argon2 {
      * @return Hashed password in raw bytes.
      */
     byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
+
+    /**
+     * Hashes a password, using the given salt.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to hash
+     * @param charset     Charset of the password
+     * @param salt        Salt
+     * @return Hashed password.
+     */
+    String hash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
 }

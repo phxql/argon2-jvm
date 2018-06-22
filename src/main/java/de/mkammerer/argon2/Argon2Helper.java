@@ -8,6 +8,22 @@ public final class Argon2Helper {
      * Nanoseconds in a millisecond.
      */
     private static final long MILLIS_IN_NANOS = 1000000L;
+    /**
+     * Number of warmup runs.
+     */
+    private static final int WARMUP_RUNS = 10;
+    /**
+     * Minimum number of iterations.
+     */
+    private static final int MIN_ITERATIONS = 1;
+    /**
+     * Minimum number of memory.
+     */
+    private static final int MIN_MEMORY = 8;
+    /**
+     * Minimm number of parallelism.
+     */
+    private static final int MIN_PARALLELISM = 1;
 
     /**
      * No instances allowed.
@@ -41,6 +57,8 @@ public final class Argon2Helper {
     public static int findIterations(Argon2 argon2, long maxMillisecs, int memory, int parallelism, IterationLogger logger) {
         char[] password = "password".toCharArray();
 
+        warmup(argon2, password);
+
         long took;
         int iterations = 0;
         do {
@@ -54,6 +72,18 @@ public final class Argon2Helper {
         } while (took <= maxMillisecs);
 
         return iterations - 1;
+    }
+
+    /**
+     * Calls Argon2 a number of times to warm up the JIT
+     *
+     * @param argon2   Argon2 instance.
+     * @param password Some password.
+     */
+    private static void warmup(Argon2 argon2, char[] password) {
+        for (int i = 0; i < WARMUP_RUNS; i++) {
+            argon2.hash(MIN_ITERATIONS, MIN_MEMORY, MIN_PARALLELISM, password);
+        }
     }
 
     /**
