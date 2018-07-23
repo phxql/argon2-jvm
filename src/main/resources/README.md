@@ -15,3 +15,13 @@ Compiled with Visual Studio 2017, `ReleaseStatic` configuration
 
 ## OSX:
 * `make clean && OPTTARGET=generic make`
+
+# Cross compiling on Debian Linux
+
+## arm
+* `apt install gcc-arm-linux-gnueabihf`
+* `make clean && CC=arm-linux-gnueabihf-gcc make`
+
+## arm-64: 
+* `apt install gcc-aarch64-linux-gnu`
+* `make clean && CC=aarch64-linux-gnu-gcc make`
