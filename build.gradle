@@ -74,10 +74,6 @@ jar {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.4.1'
-}
-
 signing {
     sign configurations.archives
     required { gradle.taskGraph.hasTask("uploadArchives") }
