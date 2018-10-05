@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added method in `Argon2Advanced` which takes a pre-generated salt. See [#45](https://github.com/phxql/argon2-jvm/issues/45)
 - Added warmup runs in the `Argon2Helper.findIterations` method to reduce JIT-related timing issues
 - Updated Argon2 to version [20171227](https://github.com/P-H-C/phc-winner-argon2/releases/tag/20171227)
+- Updated JNA from 4.5.0 to 4.5.2
 
 ## [2.4] - 2018-02-24
 
