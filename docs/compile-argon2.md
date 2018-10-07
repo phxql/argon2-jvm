@@ -8,4 +8,4 @@
 6. If it doesn't work, set the Java system property `jna.debug_load` to `true`. This will print JNA library lookup details to the console. Example: `-Djna.debug_load=true`
 
 You can make it available to JNA by placing them under your `resources/{OS}_{ARCH}`. In this case you don't need to use any extra system property.
-Check the [JNA](https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md) getting started for details.
+Check the [JNA getting started guide](https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md) for details.
