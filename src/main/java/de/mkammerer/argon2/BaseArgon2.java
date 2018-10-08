@@ -102,6 +102,11 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         return hash(iterations, memory, parallelism, password, DEFAULT_CHARSET);
     }
 
+	@Override
+	public String hash(int iterations, int memory, int parallelism, String password, String salt) {
+		return hash(iterations, memory, parallelism, password.toCharArray(), DEFAULT_CHARSET, salt.getBytes(DEFAULT_CHARSET));
+	}
+
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, byte[] salt) {
         return rawHash(iterations, memory, parallelism, password, DEFAULT_CHARSET, salt);

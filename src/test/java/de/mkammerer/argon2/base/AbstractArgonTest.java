@@ -55,6 +55,17 @@ public abstract class AbstractArgonTest {
     }
 
     @Test
+    public void testWithStringAndSaltString() throws Exception {
+        String salt = new String(createSalt());
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt);
+        System.out.println(hash);
+
+        assertThat(hash.startsWith(prefix), is(true));
+        assertThat(sut.verify(hash, PASSWORD), is(true));
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD), is(false));
+    }
+
+    @Test
     public void testWithChars() throws Exception {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray());
         System.out.println(hash);

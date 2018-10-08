@@ -74,4 +74,18 @@ public interface Argon2Advanced extends Argon2 {
      * @return Hashed password.
      */
     String hash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
+
+    /**
+     * Hashes a password, using the given salt.
+     * <p>
+     * Uses UTF-8 encoding.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to hash
+     * @param salt        Salt to use. This will override the default salt length
+     * @return Hashed password.
+     */
+    String hash(int iterations, int memory, int parallelism, String password, String salt);
 }
