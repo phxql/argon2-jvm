@@ -19,7 +19,9 @@ public interface Argon2Advanced extends Argon2 {
      * @param password    Password to hash
      * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
+     * @deprecated Use the {@link #rawHash(int, int, int, char[], byte[])} method instead. Will be removed in version 3.
      */
+    @Deprecated
     byte[] rawHash(int iterations, int memory, int parallelism, String password, byte[] salt);
 
     /**
@@ -32,7 +34,9 @@ public interface Argon2Advanced extends Argon2 {
      * @param charset     Charset of the password
      * @param salt        Salt to use. This will override the default salt length
      * @return Hashed password in raw bytes.
+     * @deprecated Use the {@link #hash(int, int, int, char[], Charset)} method instead. Will be removed in version 3.
      */
+    @Deprecated
     byte[] rawHash(int iterations, int memory, int parallelism, String password, Charset charset, byte[] salt);
 
     /**

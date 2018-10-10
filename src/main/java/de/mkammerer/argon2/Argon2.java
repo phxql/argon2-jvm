@@ -18,7 +18,9 @@ public interface Argon2 {
      * @param parallelism Number of threads and compute lanes
      * @param password    Password to hash
      * @return Hashed password.
+     * @deprecated Use the {@link #hash(int, int, int, char[])} method instead. Will be removed in version 3.
      */
+    @Deprecated
     String hash(int iterations, int memory, int parallelism, String password);
 
     /**
@@ -30,7 +32,9 @@ public interface Argon2 {
      * @param password    Password to hash
      * @param charset     Charset of the password
      * @return Hashed password.
+     * @deprecated Use the {@link #hash(int, int, int, char[], Charset)} method instead. Will be removed in version 3.
      */
+    @Deprecated
     String hash(int iterations, int memory, int parallelism, String password, Charset charset);
 
     /**
@@ -66,7 +70,9 @@ public interface Argon2 {
      * @param hash     Hash.
      * @param password Password.
      * @return True if the password matches the hash, false otherwise.
+     * @deprecated Use the {@link #verify(String, char[])} method instead. Will be removed in version 3.
      */
+    @Deprecated
     boolean verify(String hash, String password);
 
     /**
@@ -76,7 +82,9 @@ public interface Argon2 {
      * @param password Password.
      * @param charset  Charset of the password
      * @return True if the password matches the hash, false otherwise.
+     * @deprecated Use the {@link #verify(String, char[], Charset)} method instead. Will be removed in version 3.
      */
+    @Deprecated
     boolean verify(String hash, String password, Charset charset);
 
     /**

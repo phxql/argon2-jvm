@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Marked all methods accepting a `String` password as deprecated. These methods will be removed in version 3.
+
 ## [2.5] - 2018-10-07
 
 ### Added
