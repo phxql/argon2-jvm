@@ -124,7 +124,7 @@ public interface Argon2 {
      *
      * @param hash Hash.
      * @param data Data.
-     * @return True if the password matches the hash, false otherwise.
+     * @return True if the data matches the hash, false otherwise.
      */
     boolean verify(String hash, byte[] data);
 
