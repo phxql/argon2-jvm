@@ -79,6 +79,34 @@ public interface Argon2Advanced extends Argon2 {
     byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
 
     /**
+     * Uses the given password to generate key material (password based key derivation).
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to generate key material from
+     * @param charset     Charset of the password
+     * @param salt        Salt to use. This will override the default salt length
+     * @param keyLength   Length of the returned key material in bytes.
+     * @return Key material.
+     */
+    byte[] pbkdf(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, int keyLength);
+
+    /**
+     * Uses the given password to generate key material (password based key derivation).
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to generate key material from
+     * @param salt        Salt to use. This will override the default salt length
+     * @param keyLength   Length of the returned key material in bytes.
+     * @return Key material.
+     */
+    byte[] pbkdf(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int keyLength);
+
+
+    /**
      * Hashes a password, using the given salt.
      *
      * @param iterations  Number of iterations

@@ -173,12 +173,12 @@ public abstract class AbstractArgonTest {
     @Test
     public void testRawWithBytes() throws Exception {
         byte[] salt = createSalt();
-        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes("utf-8"), salt);
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes("utf-8"), salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes("utf-8"), salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes("utf-8"), notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), notTheSalt), is(not(hash)));
     }
 
     @Test
@@ -190,6 +190,40 @@ public abstract class AbstractArgonTest {
         assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
         assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
+    }
+
+    @Test
+    public void testPbkdfWithChars() {
+        byte[] salt = createSalt();
+        int keyLength = 512 / 8;
+
+        byte[] key1 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt, keyLength);
+        byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt, keyLength);
+        byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt, keyLength);
+
+        assertThat(key1.length, is(keyLength));
+        assertThat(key2.length, is(keyLength));
+        assertThat(key3.length, is(keyLength));
+
+        assertThat(key1, is(key2));
+        assertThat(key1, is(not(key3)));
+    }
+
+    @Test
+    public void testPbkdfWithBytes() throws Exception {
+        byte[] salt = createSalt();
+        int keyLength = 512 / 8;
+
+        byte[] key1 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt, keyLength);
+        byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt, keyLength);
+        byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt, keyLength);
+
+        assertThat(key1.length, is(keyLength));
+        assertThat(key2.length, is(keyLength));
+        assertThat(key3.length, is(keyLength));
+
+        assertThat(key1, is(key2));
+        assertThat(key1, is(not(key3)));
     }
 
     protected byte[] getFixedSalt() {

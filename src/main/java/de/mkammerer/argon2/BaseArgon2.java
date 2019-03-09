@@ -101,14 +101,14 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, byte[] data, byte[] salt) {
-        return rawHashBytes(iterations, memory, parallelism, data, salt);
+        return rawHashBytes(iterations, memory, parallelism, data, salt, defaultHashLength);
     }
 
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt) {
         final byte[] pwd = toByteArray(password, charset);
         try {
-            return rawHashBytes(iterations, memory, parallelism, pwd, salt);
+            return rawHashBytes(iterations, memory, parallelism, pwd, salt, defaultHashLength);
         } finally {
             wipeArray(pwd);
         }
@@ -118,7 +118,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     public byte[] rawHash(int iterations, int memory, int parallelism, String password, Charset charset, byte[] salt) {
         final byte[] pwd = password.getBytes(charset);
         try {
-            return rawHashBytes(iterations, memory, parallelism, pwd, salt);
+            return rawHashBytes(iterations, memory, parallelism, pwd, salt, defaultHashLength);
         } finally {
             wipeArray(pwd);
         }
@@ -174,6 +174,21 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     @Override
     public void wipeArray(char[] array) {
         Arrays.fill(array, (char) 0);
+    }
+
+    @Override
+    public byte[] pbkdf(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, int keyLength) {
+        final byte[] pwd = toByteArray(password, charset);
+        try {
+            return pbkdf(iterations, memory, parallelism, pwd, salt, keyLength);
+        } finally {
+            wipeArray(pwd);
+        }
+    }
+
+    @Override
+    public byte[] pbkdf(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int keyLength) {
+        return rawHashBytes(iterations, memory, parallelism, password, salt, keyLength);
     }
 
     /**
@@ -266,12 +281,12 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         }
     }
 
-    private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt) {
+    private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt, int hashLength) {
         final JnaUint32 jnaIterations = new JnaUint32(iterations);
         final JnaUint32 jnaMemory = new JnaUint32(memory);
         final JnaUint32 jnaParallelism = new JnaUint32(parallelism);
 
-        final byte[] hash = new byte[defaultHashLength];
+        final byte[] hash = new byte[hashLength];
 
         int result = callLibraryRawHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, hash);
         checkResult(result);
