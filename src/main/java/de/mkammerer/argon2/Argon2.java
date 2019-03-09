@@ -4,13 +4,13 @@ import java.nio.charset.Charset;
 
 /**
  * Argon2 password hashing function.
- *
+ * <p>
  * All implementing classes need to be thread safe.
  */
 public interface Argon2 {
     /**
      * Hashes a password.
-     *
+     * <p>
      * Uses UTF-8 encoding.
      *
      * @param iterations  Number of iterations
@@ -39,7 +39,7 @@ public interface Argon2 {
 
     /**
      * Hashes a password.
-     *
+     * <p>
      * Uses UTF-8 encoding.
      *
      * @param iterations  Number of iterations
@@ -63,8 +63,19 @@ public interface Argon2 {
     String hash(int iterations, int memory, int parallelism, char[] password, Charset charset);
 
     /**
-     * Verifies a password against a hash.
+     * Hashes the given data.
      *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param data        Data to hash
+     * @return Hashed data.
+     */
+    String hash(int iterations, int memory, int parallelism, byte[] data);
+
+    /**
+     * Verifies a password against a hash.
+     * <p>
      * Uses UTF-8 encoding.
      *
      * @param hash     Hash.
@@ -89,7 +100,7 @@ public interface Argon2 {
 
     /**
      * Verifies a password against a hash.
-     *
+     * <p>
      * Uses UTF-8 encoding.
      *
      * @param hash     Hash.
@@ -109,6 +120,15 @@ public interface Argon2 {
     boolean verify(String hash, char[] password, Charset charset);
 
     /**
+     * Verifies the given data against a hash.
+     *
+     * @param hash Hash.
+     * @param data Data.
+     * @return True if the password matches the hash, false otherwise.
+     */
+    boolean verify(String hash, byte[] data);
+
+    /**
      * Wipes the data from the given array.
      * <p>
      * Use this method after hash creation / verification on the array which contains the user password.
@@ -116,4 +136,13 @@ public interface Argon2 {
      * @param array The array to wipe.
      */
     void wipeArray(char[] array);
+
+    /**
+     * Wipes the data from the given array.
+     * <p>
+     * Use this method after hash creation / verification on the array which contains the user password.
+     *
+     * @param array The array to wipe.
+     */
+    void wipeArray(byte[] array);
 }

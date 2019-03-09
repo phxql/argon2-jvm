@@ -54,6 +54,18 @@ public interface Argon2Advanced extends Argon2 {
     byte[] rawHash(int iterations, int memory, int parallelism, char[] password, byte[] salt);
 
     /**
+     * Hashes the given data and returns the raw bytes.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param data        Data to hash
+     * @param salt        Salt to use. This will override the default salt length
+     * @return Hashed data in raw bytes.
+     */
+    byte[] rawHash(int iterations, int memory, int parallelism, byte[] data, byte[] salt);
+
+    /**
      * Hashes a password and returns the raw bytes.
      *
      * @param iterations  Number of iterations

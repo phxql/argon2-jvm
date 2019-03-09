@@ -78,6 +78,16 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     }
 
     @Override
+    public String hash(int iterations, int memory, int parallelism, byte[] data) {
+        return hashBytes(iterations, memory, parallelism, data);
+    }
+
+    @Override
+    public boolean verify(String hash, byte[] data) {
+        return verifyBytes(hash, data);
+    }
+
+    @Override
     public String hash(int iterations, int memory, int parallelism, char[] password, Charset charset) {
         final byte[] pwd = toByteArray(password, charset);
         try {
@@ -105,6 +115,11 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, byte[] salt) {
         return rawHash(iterations, memory, parallelism, password, DEFAULT_CHARSET, salt);
+    }
+
+    @Override
+    public byte[] rawHash(int iterations, int memory, int parallelism, byte[] data, byte[] salt) {
+        return rawHashBytes(iterations, memory, parallelism, data, salt);
     }
 
     @Override
@@ -157,14 +172,18 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         final byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, encoded);
+        checkResult(result);
 
+        return Native.toString(encoded, ASCII);
+    }
+
+    private void checkResult(int result) {
         if (result != Argon2Library.ARGON2_OK) {
             String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
             throw new IllegalStateException(String.format("%s (%d)", errMsg, result));
         }
-
-        return Native.toString(encoded, ASCII);
     }
+
 
     private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt) {
         final JnaUint32 jnaIterations = new JnaUint32(iterations);
@@ -174,11 +193,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         final byte[] hash = new byte[defaultHashLength];
 
         int result = callLibraryRawHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, hash);
-
-        if (result != Argon2Library.ARGON2_OK) {
-            String errMsg = Argon2Library.INSTANCE.argon2_error_message(result);
-            throw new IllegalStateException(String.format("%s (%d)", errMsg, result));
-        }
+        checkResult(result);
 
         return hash;
     }
@@ -263,9 +278,8 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      *
      * @param array the array to wipe
      */
-    private void wipeArray(byte[] array) {
-        assert array != null;
-
+    @Override
+    public void wipeArray(byte[] array) {
         Arrays.fill(array, (byte) 0);
     }
 
