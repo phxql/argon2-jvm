@@ -11,7 +11,7 @@ The libraries are compiled from [this source code](https://github.com/P-H-C/phc-
 * arm-64: `make clean && make`
 
 ## Windows
-Compiled with Visual Studio 2017, `ReleaseStatic` configuration
+Compiled with Visual Studio 2019, `ReleaseStatic` configuration
 
 ## OSX:
 * `make clean && OPTTARGET=generic make`
