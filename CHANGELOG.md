@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Marked all methods accepting a `String` password as deprecated. These methods will be removed in version 3
+- Update Argon2 libraries to 20190702
 
 ## [2.5] - 2018-10-07
 
