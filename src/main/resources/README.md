@@ -18,6 +18,10 @@ Compiled with Visual Studio 2019, `ReleaseStatic` configuration
 
 # Cross compiling on Debian Linux
 
+## x86 & x64
+* `apt install make binutils gcc gcc-multilib`
+* See above
+
 ## arm
 * `apt install make binutils gcc-arm-linux-gnueabihf`
 * `make clean && CC=arm-linux-gnueabihf-gcc make`
