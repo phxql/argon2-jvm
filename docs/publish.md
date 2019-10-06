@@ -4,9 +4,10 @@
 ```
 signing.keyId=[ID of the GPG key]
 signing.password=[Password of the GPG key]
+signing.secretKeyRingFile=[Path to the keyring file]
 sonatype.username=[Sonatype username]
 sonatype.password=[Sonatype password]
-```
+```   
 1. Update version in `build.gradle`, `CHANGELOG.md`, `README.md`  
 1. Merge `develop` in `master`
 1. Tag current version in format `v[version]`
@@ -18,3 +19,7 @@ sonatype.password=[Sonatype password]
 1. Push the changes: `git push` and the tags `git push --tags` 
 1. Checkout `develop` branch
 1. Update versions to new development version
+
+## Notes:
+
+If you can't find the secring.gpg file needed for signing, see [this documentation](https://docs.gradle.org/current/userguide/signing_plugin.html) for help.
