@@ -4,10 +4,13 @@ import de.mkammerer.argon2.Argon2Advanced;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Random;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 public abstract class AbstractArgonTest {
@@ -81,19 +84,48 @@ public abstract class AbstractArgonTest {
         assertThat(sut.verify(hash, password, UTF8), is(true));
     }
 
+
+    @Test
+    public void testHashBytes() throws UnsupportedEncodingException {
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes("utf-8"));
+        System.out.println(hash);
+
+        assertThat(hash.startsWith(prefix), is(true));
+        assertThat(sut.verify(hash, PASSWORD.getBytes("utf-8")), is(true));
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD.getBytes("utf-8")), is(false));
+    }
+
+
     @Test(expected = IllegalStateException.class)
-    public void testInvalidParameters() throws Exception {
+    public void testHashWithInvalidParameters() throws Exception {
         sut.hash(0, 0, 0, PASSWORD);
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testRawHashWithInvalidParameters() throws Exception {
+        byte[] salt = createSalt();
+        sut.rawHash(0, 0, 0, PASSWORD, salt);
+    }
+
     @Test
-    public void testWipeArray() throws Exception {
+    public void testWipeArrayChars() throws Exception {
         char[] array = "Hello, Argon2".toCharArray();
 
         sut.wipeArray(array);
 
         for (char c : array) {
             assertThat(c, is((char) 0));
+        }
+    }
+
+    @Test
+    public void testWipeArrayBytes() throws Exception {
+        byte[] array = "Hello, Argon2".getBytes("utf-8");
+
+        sut.wipeArray(array);
+
+        for (byte b : array) {
+            assertThat(b, is((byte) 0));
         }
     }
 
@@ -139,6 +171,17 @@ public abstract class AbstractArgonTest {
     }
 
     @Test
+    public void testRawWithBytes() throws Exception {
+        byte[] salt = createSalt();
+        byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt);
+
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt), is(hash));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt), is(not(hash)));
+        byte[] notTheSalt = new byte[16];
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), notTheSalt), is(not(hash)));
+    }
+
+    @Test
     public void testRawWithCharsAndCharset() throws Exception {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt);
@@ -147,6 +190,40 @@ public abstract class AbstractArgonTest {
         assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
         byte[] notTheSalt = new byte[16];
         assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
+    }
+
+    @Test
+    public void testPbkdfWithChars() {
+        byte[] salt = createSalt();
+        int keyLength = 512 / 8;
+
+        byte[] key1 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt, keyLength);
+        byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt, keyLength);
+        byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt, keyLength);
+
+        assertThat(key1.length, is(keyLength));
+        assertThat(key2.length, is(keyLength));
+        assertThat(key3.length, is(keyLength));
+
+        assertThat(key1, is(key2));
+        assertThat(key1, is(not(key3)));
+    }
+
+    @Test
+    public void testPbkdfWithBytes() throws Exception {
+        byte[] salt = createSalt();
+        int keyLength = 512 / 8;
+
+        byte[] key1 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt, keyLength);
+        byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt, keyLength);
+        byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt, keyLength);
+
+        assertThat(key1.length, is(keyLength));
+        assertThat(key2.length, is(keyLength));
+        assertThat(key3.length, is(keyLength));
+
+        assertThat(key1, is(key2));
+        assertThat(key1, is(not(key3)));
     }
 
     protected byte[] getFixedSalt() {

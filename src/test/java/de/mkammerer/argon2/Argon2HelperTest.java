@@ -6,7 +6,7 @@ public class Argon2HelperTest {
     @Test
     public void test() {
         Argon2 argon2 = Argon2Factory.create();
-        int iterations = Argon2Helper.findIterations(argon2, 1000, 65536, 1, new ConsoleLogger());
+        int iterations = Argon2Helper.findIterations(argon2, 200, 65536, 1, new ConsoleLogger());
 
         System.out.println("Iterations: " + iterations);
     }

@@ -4,7 +4,6 @@
 ```
 signing.keyId=[ID of the GPG key]
 signing.password=[Password of the GPG key]
-signing.secretKeyRingFile=[Location of the secret key ring file, e.g. /home/moe/.gnupg/secring.gpg]
 sonatype.username=[Sonatype username]
 sonatype.password=[Sonatype password]
 ```

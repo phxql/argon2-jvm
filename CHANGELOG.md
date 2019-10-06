@@ -2,7 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.6] - 2019-10-06
+
+### Added
+
+- Added methods `hash` and `rawHash` for byte arrays
+- Added method `pbkdf` to ease generating key material from a password
+
+### Changed
+
+- Marked all methods accepting a `String` password as deprecated. These methods will be removed in version 3
+- Update Argon2 libraries to 20190702
+- Update JNA to 5.4.0
 
 ## [2.5] - 2018-10-07
 

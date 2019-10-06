@@ -9,7 +9,7 @@ With pre-compiled Argon2 libraries:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
 </dependency>
 ```
 
@@ -19,7 +19,7 @@ Without pre-compiled Argon2 libraries:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm-nolibs</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
 </dependency>
 ```
 
@@ -27,13 +27,13 @@ Without pre-compiled Argon2 libraries:
 With pre-compiled Argon2 libraries:
 
 ```groovy
-compile 'de.mkammerer:argon2-jvm:2.5'
+compile 'de.mkammerer:argon2-jvm:2.6'
 ```
 
 Without pre-compiled Argon2 libraries:
 
 ```groovy
-compile 'de.mkammerer:argon2-jvm-nolibs:2.5'
+compile 'de.mkammerer:argon2-jvm-nolibs:2.6'
 ```
 
 ## Usage
@@ -45,6 +45,8 @@ This binding needs the Argon2 C library. Libraries for the following operation s
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
+
+See [tested distributions](docs/tested-distributions.md) for details on which distributions this has been tested.
 
 If you'd prefer to install/compile argon2 on your own you can use argon2-jvm-nolibs instead of argon2-jvm.
 
