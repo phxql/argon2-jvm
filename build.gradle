@@ -9,7 +9,7 @@ apply plugin: 'maven'
 apply plugin: 'jacoco'
 
 group 'de.mkammerer'
-version '2.6'
+version '2.7-SNAPSHOT'
 
 description 'Argon2 Binding for the JVM'
 
