@@ -27,10 +27,10 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      */
     private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
-	/**
-	 * The pattern that a hash must match.
-	 */
-	private static final Pattern HASH_PATTERN = Pattern.compile("^\\$argon2[id]{1,2}\\$v=\\d+\\$m=(\\d+),t=(\\d+),p=(\\d+)\\$.+$");
+    /**
+     * The pattern that a hash must match.
+     */
+    private static final Pattern HASH_PATTERN = Pattern.compile("^\\$argon2[id]{1,2}\\$v=\\d+\\$m=(\\d+),t=(\\d+),p=(\\d+)\\$.+$");
 
     /**
      * Secure RNG for salt.
@@ -199,19 +199,17 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     }
 
     @Override
-	public boolean needsRehash(String hash, int iterations, int memory, int parallelism) {
-		final Matcher matcher = HASH_PATTERN.matcher(hash);
-		int actualMemory = Integer.MIN_VALUE;
-		int actualIterations = Integer.MIN_VALUE;
-		int actualParallelism = Integer.MIN_VALUE;
-		if (matcher.find())
-		{
-			actualMemory = Integer.parseInt(matcher.group(1));
-			actualIterations = Integer.parseInt(matcher.group(2));
-			actualParallelism = Integer.parseInt(matcher.group(3));
-		}
-		return actualMemory < memory || actualIterations < iterations || actualParallelism < parallelism;
-	}
+    public boolean needsRehash(String hash, int iterations, int memory, int parallelism) {
+        Matcher matcher = HASH_PATTERN.matcher(hash);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid hash '" + hash + "'");
+        }
+
+        int actualMemory = Integer.parseInt(matcher.group(1));
+        int actualIterations = Integer.parseInt(matcher.group(2));
+        int actualParallelism = Integer.parseInt(matcher.group(3));
+        return actualMemory < memory || actualIterations < iterations || actualParallelism < parallelism;
+    }
 
     /**
      * Returns the hash length in bytes.

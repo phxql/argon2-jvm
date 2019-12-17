@@ -12,7 +12,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractArgonTest {
     protected static final Charset ASCII = Charset.forName("ASCII");
@@ -227,10 +226,10 @@ public abstract class AbstractArgonTest {
         assertThat(key1, is(not(key3)));
     }
 
-	@Test
-	public void testNeedsRehashWithInvalidHash() {
-		assertTrue(sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM));
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testNeedsRehashWithInvalidHash() {
+        sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM);
+    }
 
     protected byte[] getFixedSalt() {
         return "thisisthesalt".getBytes(UTF8);

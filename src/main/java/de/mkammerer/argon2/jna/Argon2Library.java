@@ -58,6 +58,7 @@ public interface Argon2Library extends Library {
      * @return {@link #ARGON2_OK} if successful
      */
     int argon2id_hash_encoded(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
+
     /**
      * Hashes a password with Argon2d, producing an encoded hash.
      *
@@ -74,7 +75,7 @@ public interface Argon2Library extends Library {
      * @return {@link #ARGON2_OK} if successful
      */
     int argon2d_hash_encoded(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, Size_t hashlen, byte[] encoded, Size_t encodedlen);
-    
+
     /**
      * Hashes a password with Argon2i, producing an encoded hash.
      *
@@ -106,6 +107,7 @@ public interface Argon2Library extends Library {
      * @return {@link #ARGON2_OK} if successful
      */
     int argon2id_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+
     /**
      * Hashes a password with Argon2d, producing an encoded hash.
      *
@@ -121,6 +123,7 @@ public interface Argon2Library extends Library {
      * @return {@link #ARGON2_OK} if successful
      */
     int argon2d_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
+
     /**
      * Verifies a password against an Argon2i encoded string.
      *
@@ -153,6 +156,7 @@ public interface Argon2Library extends Library {
      * @return ARGON2_OK if successful
      */
     int argon2id_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
+
     /**
      * Returns the encoded hash length for the given input parameters.
      *
