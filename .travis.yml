@@ -5,6 +5,9 @@ os:
   - linux
   - osx
 
+jdk:
+  - openjdk8
+
 # Gradle wrapper caching
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
