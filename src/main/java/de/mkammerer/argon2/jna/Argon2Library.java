@@ -10,7 +10,7 @@ public interface Argon2Library extends Library {
     /**
      * Singleton instance.
      */
-    Argon2Library INSTANCE = (Argon2Library) Native.loadLibrary("argon2", Argon2Library.class);
+    Argon2Library INSTANCE = (Argon2Library) Native.load("argon2", Argon2Library.class);
 
     /**
      * Return code if everything is okay.
