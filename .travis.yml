@@ -6,7 +6,7 @@ os:
   - osx
 
 jdk:
-  - openjdk8
+  - openjdk11
 
 # Gradle wrapper caching
 before_cache:
