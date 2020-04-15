@@ -2,15 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+## 2.7 - 2020-04-15
+
+### Added
+- Added method `needsRehash` to check if a hash needs to be upgraded
+- Updated JNA to 5.5.0
+- Recompiled Argon2 for Linux x86 / x64 / ARM / ARM 64 on Ubuntu 16.04 
+
 ## [2.6] - 2019-10-06
 
 ### Added
-
 - Added methods `hash` and `rawHash` for byte arrays
 - Added method `pbkdf` to ease generating key material from a password
 
 ### Changed
-
 - Marked all methods accepting a `String` password as deprecated. These methods will be removed in version 3
 - Update Argon2 libraries to 20190702
 - Update JNA to 5.4.0
@@ -18,12 +25,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.5] - 2018-10-07
 
 ### Added
-
 - Added method in `Argon2Advanced` which takes a pre-generated salt. See [#45](https://github.com/phxql/argon2-jvm/issues/45)
 - Added warmup runs in the `Argon2Helper.findIterations` method to reduce JIT-related timing issues
 
 ### Changed
-
 - Updated Argon2 to version [20171227](https://github.com/P-H-C/phc-winner-argon2/releases/tag/20171227)
 - Updated JNA from 4.5.0 to 4.5.2
 

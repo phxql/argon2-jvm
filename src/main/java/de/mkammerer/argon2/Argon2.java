@@ -145,4 +145,18 @@ public interface Argon2 {
      * @param array The array to wipe.
      */
     void wipeArray(byte[] array);
+
+    /**
+     * Checks if the given hash uses obsolete parameters like iterations, memory, parallelism.
+     * <p>
+     * If one of the hash's parameters doesn't match the required minimum, this method will return true.
+     *
+     * @param hash        a hash created by {@link #hash(int, int, int, char[], java.nio.charset.Charset) hash}
+     * @param iterations  number of minimum iterations
+     * @param memory      minimum memory usage
+     * @param parallelism minimum of parallelism
+     * @return {@code true} if the hash should be rehashed to match the given parameters, or {@code false} otherwise.
+     * @throws IllegalArgumentException if the hash is invalid
+     */
+    boolean needsRehash(String hash, int iterations, int memory, int parallelism);
 }

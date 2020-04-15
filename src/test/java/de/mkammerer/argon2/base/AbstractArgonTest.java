@@ -226,6 +226,11 @@ public abstract class AbstractArgonTest {
         assertThat(key1, is(not(key3)));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testNeedsRehashWithInvalidHash() {
+        sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM);
+    }
+
     protected byte[] getFixedSalt() {
         return "thisisthesalt".getBytes(UTF8);
     }

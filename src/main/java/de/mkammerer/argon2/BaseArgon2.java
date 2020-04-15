@@ -9,6 +9,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Argon2 base class.
@@ -24,6 +26,11 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * Default charset.
      */
     private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+
+    /**
+     * The pattern that a hash must match.
+     */
+    private static final Pattern HASH_PATTERN = Pattern.compile("^\\$argon2[id]{1,2}\\$v=\\d+\\$m=(\\d+),t=(\\d+),p=(\\d+)\\$.+$");
 
     /**
      * Secure RNG for salt.
@@ -189,6 +196,19 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     @Override
     public byte[] pbkdf(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int keyLength) {
         return rawHashBytes(iterations, memory, parallelism, password, salt, keyLength);
+    }
+
+    @Override
+    public boolean needsRehash(String hash, int iterations, int memory, int parallelism) {
+        Matcher matcher = HASH_PATTERN.matcher(hash);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid hash '" + hash + "'");
+        }
+
+        int actualMemory = Integer.parseInt(matcher.group(1));
+        int actualIterations = Integer.parseInt(matcher.group(2));
+        int actualParallelism = Integer.parseInt(matcher.group(3));
+        return actualMemory < memory || actualIterations < iterations || actualParallelism < parallelism;
     }
 
     /**
