@@ -4,9 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 2.7 - 2020-04-15
+
 ### Added
 - Added method `needsRehash` to check if a hash needs to be upgraded
 - Updated JNA to 5.5.0
+- Recompiled Argon2 for Linux x86 / x64 / ARM / ARM 64 on Ubuntu 16.04 
 
 ## [2.6] - 2019-10-06
 
