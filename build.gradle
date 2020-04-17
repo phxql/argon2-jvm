@@ -13,34 +13,36 @@ version '2.8-SNAPSHOT'
 
 description 'Argon2 Binding for the JVM'
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
 repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
 dependencies {
-    compile 'net.java.dev.jna:jna:5.5.0'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'net.java.dev.jna:jna:5.5.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    getArchiveClassifier().set('sources')
     from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    getArchiveClassifier().set('javadoc')
     from javadoc.destinationDir
 }
 
-task noLibsJar(type: Jar, dependsOn: javadoc) {
-    baseName = project.name + '-nolibs'
+task noLibsJar(type: Jar, dependsOn: classes) {
+    getArchiveAppendix().set('nolibs')
     from sourceSets.main.output.classesDirs
 
     manifest {
@@ -49,14 +51,14 @@ task noLibsJar(type: Jar, dependsOn: javadoc) {
 }
 
 task noLibsSourcesJar(type: Jar, dependsOn: classes) {
-    baseName = project.name + '-nolibs'
-    classifier = 'sources'
+    getArchiveAppendix().set('nolibs')
+    getArchiveClassifier().set('sources')
     from sourceSets.main.allJava
 }
 
 task noLibsJavadocJar(type: Jar, dependsOn: javadoc) {
-    baseName = project.name + '-nolibs'
-    classifier = 'javadoc'
+    getArchiveAppendix().set('nolibs')
+    getArchiveClassifier().set('javadoc')
     from javadoc.destinationDir
 }
 
