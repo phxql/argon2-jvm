@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
+dependencies {
+    implementation 'de.mkammerer:argon2-jvm:2.7'
+}
+
+application {
+    mainClassName = 'de.mkammerer.argon2.compatibility.App'
+}

@@ -1,0 +1,20 @@
+FROM centos:6
+# Install Java
+RUN yum install --assumeyes java-1.8.0-openjdk-headless && yum clean all
+
+WORKDIR /tmp
+
+# Compile argon2 and install it
+RUN yum install --assumeyes wget gcc && yum clean all && \
+    wget https://github.com/P-H-C/phc-winner-argon2/archive/20190702.tar.gz  && \
+    tar xzf 20190702.tar.gz && \
+    cd phc-winner-argon2-20190702/ && \
+    make && \
+    make install
+
+WORKDIR /
+
+# Install compatibility application
+ENV COMPATIBILITY_TESTS_OPTS "-Djna.debug_load=true"
+ADD compatibility-tests.tar .
+CMD /compatibility-tests/bin/compatibility-tests
