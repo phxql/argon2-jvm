@@ -2,6 +2,8 @@
 
 All these tests have been done with the standard Argon2-JVM library (with the embedded libargon2 C library).
 
+Tested version of Argon2-JVM: **2.7**
+
 | Distribution | Works |
 |--------------|-------|
 | CentOS 6     | No    |
