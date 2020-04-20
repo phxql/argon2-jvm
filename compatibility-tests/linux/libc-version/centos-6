@@ -1,0 +1,8 @@
+FROM centos:6
+# Install gcc
+RUN yum install --assumeyes gcc && yum clean all
+
+WORKDIR /
+ADD glibc_version.c .
+RUN gcc glibc_version.c -o glibc_version
+CMD /glibc_version

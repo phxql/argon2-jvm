@@ -4,18 +4,18 @@ All these tests have been done with the standard Argon2-JVM library (with the em
 
 Tested version of Argon2-JVM: **2.7**
 
-| Distribution | Works |
-|--------------|-------|
-| CentOS 6     | No    |
-| CentOS 7     | Yes   |
-| CentOS 8     | Yes   |
-| Debian 8     | Yes   |
-| Debian 9     | Yes   |
-| Debian 10    | Yes   |
-| Ubuntu 14.04 | Yes   |
-| Ubuntu 16.04 | Yes   |
-| Ubuntu 18.04 | Yes   |
-| Ubuntu 19.10 | Yes   |
+| Distribution | Works | libc |
+|--------------|-------|------|
+| CentOS 6     | No    | 2.12 |
+| CentOS 7     | Yes   | 2.17 |
+| CentOS 8     | Yes   | 2.28 |
+| Debian 8     | Yes   | 2.19 |
+| Debian 9     | Yes   | 2.24 |
+| Debian 10    | Yes   | 2.28 |
+| Ubuntu 14.04 | Yes   | 2.19 |
+| Ubuntu 16.04 | Yes   | 2.23 |
+| Ubuntu 18.04 | Yes   | 2.27 |
+| Ubuntu 19.10 | Yes   | 2.30 |
 
 ## Workarounds
 
