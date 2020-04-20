@@ -12,22 +12,10 @@ All binaries have been compiled on Ubuntu 16.04 against `libc-2.23.so`.
 * arm: `make clean && make`
 * arm-64: `make clean && make`
 
+See [this script](../../../libargon2/context/build-libargon2.sh) for details.
+
 ## Windows
 Compiled with Visual Studio 2019, `ReleaseStatic` configuration
 
 ## OSX:
 * `make clean && OPTTARGET=generic make`
-
-# Cross compiling on Debian Linux
-
-## x86 & x64
-* `apt install make binutils gcc gcc-multilib`
-* See above
-
-## arm
-* `apt install make binutils gcc-arm-linux-gnueabihf`
-* `make clean && CC=arm-linux-gnueabihf-gcc make`
-
-## arm-64: 
-* `apt install make binutils gcc-aarch64-linux-gnu`
-* `make clean && CC=aarch64-linux-gnu-gcc make`
