@@ -8,7 +8,7 @@ if [ ! -f context/compatibility-tests.tar ]; then
 fi
 
 DOCKER="podman" # Replace with 'docker' if you don't have podman
-DOCKERFILE="ubuntu-18.04" # See the dockerfiles/ folder and set this variable to the Dockerfile you want to test
+DOCKERFILE="ubuntu-20.04" # See the dockerfiles/ folder and set this variable to the Dockerfile you want to test
 
 IMAGE_NAME="argon2-$DOCKERFILE"
 $DOCKER build -t $IMAGE_NAME -f dockerfiles/$DOCKERFILE context
