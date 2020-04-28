@@ -3,6 +3,7 @@ package de.mkammerer.argon2;
 import com.sun.jna.Native;
 import de.mkammerer.argon2.jna.Argon2Library;
 import de.mkammerer.argon2.jna.JnaUint32;
+import de.mkammerer.argon2.jna.Size_t;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -68,7 +69,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, char[] password, Charset charset) {
-        final byte[] pwd = toByteArray(password, charset);
+        byte[] pwd = toByteArray(password, charset);
         try {
             return hashBytes(iterations, memory, parallelism, pwd);
         } finally {
@@ -78,7 +79,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, String password, Charset charset) {
-        final byte[] pwd = password.getBytes(charset);
+        byte[] pwd = password.getBytes(charset);
         try {
             return hashBytes(iterations, memory, parallelism, pwd);
         } finally {
@@ -93,7 +94,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public String hash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt) {
-        final byte[] pwd = toByteArray(password, charset);
+        byte[] pwd = toByteArray(password, charset);
         try {
             return hashBytes(iterations, memory, parallelism, pwd, salt);
         } finally {
@@ -113,7 +114,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt) {
-        final byte[] pwd = toByteArray(password, charset);
+        byte[] pwd = toByteArray(password, charset);
         try {
             return rawHashBytes(iterations, memory, parallelism, pwd, salt, defaultHashLength);
         } finally {
@@ -123,7 +124,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public byte[] rawHash(int iterations, int memory, int parallelism, String password, Charset charset, byte[] salt) {
-        final byte[] pwd = password.getBytes(charset);
+        byte[] pwd = password.getBytes(charset);
         try {
             return rawHashBytes(iterations, memory, parallelism, pwd, salt, defaultHashLength);
         } finally {
@@ -185,7 +186,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
     @Override
     public byte[] pbkdf(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, int keyLength) {
-        final byte[] pwd = toByteArray(password, charset);
+        byte[] pwd = toByteArray(password, charset);
         try {
             return pbkdf(iterations, memory, parallelism, pwd, salt, keyLength);
         } finally {
@@ -209,6 +210,40 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         int actualIterations = Integer.parseInt(matcher.group(2));
         int actualParallelism = Integer.parseInt(matcher.group(3));
         return actualMemory < memory || actualIterations < iterations || actualParallelism < parallelism;
+    }
+
+    @Override
+    public HashResult hashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int hashLength, Argon2Version version) {
+        JnaUint32 jnaIterations = new JnaUint32(iterations);
+        JnaUint32 jnaMemory = new JnaUint32(memory);
+        JnaUint32 jnaParallelism = new JnaUint32(parallelism);
+
+        byte[] hash = new byte[hashLength];
+
+        int len = Argon2Library.INSTANCE.argon2_encodedlen(jnaIterations, jnaMemory, jnaParallelism,
+                new JnaUint32(salt.length), new JnaUint32(hashLength), getType().getJnaType()).intValue();
+        byte[] encoded = new byte[len];
+
+        int result = Argon2Library.INSTANCE.argon2_hash(
+                jnaIterations, jnaMemory, jnaParallelism, password, new Size_t(password.length), salt, new Size_t(salt.length),
+                hash, new Size_t(hash.length), encoded, new Size_t(encoded.length), getType().getJnaType(), new JnaUint32(version.getJnaVersion())
+        );
+        checkResult(result);
+
+        return new HashResult(hash, Native.toString(encoded, ASCII));
+    }
+
+    @Override
+    public byte[] generateSalt() {
+        return generateSalt(defaultSaltLength);
+    }
+
+    @Override
+    public byte[] generateSalt(int lengthInBytes) {
+        byte[] salt = new byte[lengthInBytes];
+        secureRandom.nextBytes(salt);
+
+        return salt;
     }
 
     /**
@@ -262,31 +297,19 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      */
     protected abstract int callLibraryVerify(byte[] encoded, byte[] pwd);
 
-    /**
-     * Generates {@link #defaultSaltLength} bytes of salt.
-     *
-     * @return Salt.
-     */
-    private byte[] generateSalt() {
-        byte[] salt = new byte[defaultSaltLength];
-        secureRandom.nextBytes(salt);
-
-        return salt;
-    }
-
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
-        final byte[] salt = generateSalt();
+        byte[] salt = generateSalt();
         return hashBytes(iterations, memory, parallelism, pwd, salt);
     }
 
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt) {
-        final JnaUint32 jnaIterations = new JnaUint32(iterations);
-        final JnaUint32 jnaMemory = new JnaUint32(memory);
-        final JnaUint32 jnaParallelism = new JnaUint32(parallelism);
+        JnaUint32 jnaIterations = new JnaUint32(iterations);
+        JnaUint32 jnaMemory = new JnaUint32(memory);
+        JnaUint32 jnaParallelism = new JnaUint32(parallelism);
 
         int len = Argon2Library.INSTANCE.argon2_encodedlen(jnaIterations, jnaMemory, jnaParallelism,
                 new JnaUint32(salt.length), new JnaUint32(defaultHashLength), getType().getJnaType()).intValue();
-        final byte[] encoded = new byte[len];
+        byte[] encoded = new byte[len];
 
         int result = callLibraryHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, encoded);
         checkResult(result);
@@ -302,11 +325,11 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     }
 
     private byte[] rawHashBytes(int iterations, int memory, int parallelism, byte[] pwd, byte[] salt, int hashLength) {
-        final JnaUint32 jnaIterations = new JnaUint32(iterations);
-        final JnaUint32 jnaMemory = new JnaUint32(memory);
-        final JnaUint32 jnaParallelism = new JnaUint32(parallelism);
+        JnaUint32 jnaIterations = new JnaUint32(iterations);
+        JnaUint32 jnaMemory = new JnaUint32(memory);
+        JnaUint32 jnaParallelism = new JnaUint32(parallelism);
 
-        final byte[] hash = new byte[hashLength];
+        byte[] hash = new byte[hashLength];
 
         int result = callLibraryRawHash(pwd, salt, jnaIterations, jnaMemory, jnaParallelism, hash);
         checkResult(result);
