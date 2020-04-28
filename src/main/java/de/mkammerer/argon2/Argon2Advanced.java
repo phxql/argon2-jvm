@@ -118,4 +118,34 @@ public interface Argon2Advanced extends Argon2 {
      * @return Hashed password.
      */
     String hash(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt);
+
+    /**
+     * Advanced version of hash, let the caller specify the hash length, the salt and the argon2 version. Returns both
+     * the encoded and the raw hash.
+     *
+     * @param iterations  Number of iterations
+     * @param memory      Sets memory usage to x kibibytes
+     * @param parallelism Number of threads and compute lanes
+     * @param password    Password to hash
+     * @param salt        Salt to use. This will override the default salt length
+     * @param hashLength  Length of the returned hash in bytes.
+     * @param version     Argon2 version
+     * @return Hash result, containing both the raw and the encoded representation.
+     */
+    HashResult hashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int hashLength, Argon2Version version);
+
+    /**
+     * Generates salt with the default length.
+     *
+     * @return Salt.
+     */
+    byte[] generateSalt();
+
+    /**
+     * Generates salt with the specified length in bytes.
+     *
+     * @param lengthInBytes Length of salt in bytes.
+     * @return Salt.
+     */
+    byte[] generateSalt(int lengthInBytes);
 }

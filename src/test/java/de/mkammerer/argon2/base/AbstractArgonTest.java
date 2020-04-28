@@ -1,6 +1,9 @@
 package de.mkammerer.argon2.base;
 
 import de.mkammerer.argon2.Argon2Advanced;
+import de.mkammerer.argon2.Argon2Constants;
+import de.mkammerer.argon2.Argon2Version;
+import de.mkammerer.argon2.HashResult;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,8 +14,11 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractArgonTest {
     protected static final Charset ASCII = Charset.forName("ASCII");
     protected static final Charset UTF8 = Charset.forName("utf-8");
@@ -87,12 +93,12 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testHashBytes() throws UnsupportedEncodingException {
-        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes("utf-8"));
+        String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(UTF8));
         System.out.println(hash);
 
         assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD.getBytes("utf-8")), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD.getBytes("utf-8")), is(false));
+        assertThat(sut.verify(hash, PASSWORD.getBytes(UTF8)), is(true));
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD.getBytes(UTF8)), is(false));
     }
 
 
@@ -120,7 +126,7 @@ public abstract class AbstractArgonTest {
 
     @Test
     public void testWipeArrayBytes() throws Exception {
-        byte[] array = "Hello, Argon2".getBytes("utf-8");
+        byte[] array = "Hello, Argon2".getBytes(UTF8);
 
         sut.wipeArray(array);
 
@@ -229,6 +235,49 @@ public abstract class AbstractArgonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNeedsRehashWithInvalidHash() {
         sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM);
+    }
+
+    @Test
+    public void testHashAdvanced() throws Exception {
+        byte[] password = PASSWORD.getBytes(UTF8);
+        byte[] salt = createSalt();
+        int keyLength = 512 / 8;
+
+        for (Argon2Version version : Argon2Version.values()) {
+            HashResult result = sut.hashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, keyLength, version);
+
+            assertThat(result.getRaw().length, is(keyLength));
+            assertThat(result.getEncoded(), startsWith(prefix));
+            assertThat(sut.verify(result.getEncoded(), password), is(true));
+        }
+    }
+
+    @Test
+    public void generateSalt() throws Exception {
+        byte[] salt1 = sut.generateSalt();
+        byte[] salt2 = sut.generateSalt();
+
+        assertThat(salt1, is(notNullValue()));
+        assertThat(salt2, is(notNullValue()));
+
+        assertThat(salt1.length, is(Argon2Constants.DEFAULT_SALT_LENGTH));
+        assertThat(salt2.length, is(Argon2Constants.DEFAULT_SALT_LENGTH));
+
+        assertThat(salt1, is(not(salt2)));
+    }
+
+    @Test
+    public void generateSaltWithLength() throws Exception {
+        byte[] salt1 = sut.generateSalt(32);
+        byte[] salt2 = sut.generateSalt(32);
+
+        assertThat(salt1, is(notNullValue()));
+        assertThat(salt2, is(notNullValue()));
+
+        assertThat(salt1.length, is(32));
+        assertThat(salt2.length, is(32));
+
+        assertThat(salt1, is(not(salt2)));
     }
 
     protected byte[] getFixedSalt() {
