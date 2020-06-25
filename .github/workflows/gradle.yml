@@ -18,6 +18,7 @@ jobs:
         # New gradle doesn't run on <= 8
         # Java >= 12 doesn't support source/target level 6 anymore
         java: [8, 9, 10, 11]
+        architecture: [x86, x64]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -25,6 +26,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+          architecture: ${{ matrix.architecture }}
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
