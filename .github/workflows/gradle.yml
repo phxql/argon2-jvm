@@ -15,7 +15,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [8, 9, 10, 11, 12, 13, 14] # New gradle doesn't run on 6 or 7
+        # New gradle doesn't run on <= 8
+        # Java >= 12 doesn't support source/target level 6 anymore
+        java: [8, 9, 10, 11]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
