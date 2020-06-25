@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+        java: [8, 9, 10, 11, 12, 13, 14] # New gradle doesn't run on 6 or 7
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -29,5 +29,7 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Build with Gradle
-        run: gradle clean build
+        run: ./gradlew clean build
