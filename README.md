@@ -1,4 +1,4 @@
-# Argon2 Binding for the JVM [![Build Status](https://travis-ci.org/phxql/argon2-jvm.svg?branch=master)](https://travis-ci.org/phxql/argon2-jvm)
+# Argon2 Binding for the JVM ![Build & test](https://github.com/phxql/argon2-jvm/workflows/Build%20&%20test/badge.svg)
 
 This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 
