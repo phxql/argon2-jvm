@@ -34,7 +34,7 @@ task libsJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output
 
     manifest {
-        attributes('Automatic-Module-Name': 'de.mkammerer.argon2')
+        attributes(manifestAttributes())
     }
 }
 
@@ -53,7 +53,7 @@ task noLibsJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output.classesDirs
 
     manifest {
-        attributes('Automatic-Module-Name': 'de.mkammerer.argon2')
+        attributes(manifestAttributes())
     }
 }
 
@@ -68,6 +68,9 @@ task noLibsJavadocJar(type: Jar, dependsOn: javadoc) {
     getArchiveClassifier().set('javadoc')
     from javadoc.destinationDir
 }
+
+// When running build, create all the JARs
+build.dependsOn(libsJar, libsSourcesJar, libsJavadocJar, noLibsJar, noLibsSourcesJar, noLibsJavadocJar)
 
 publishing {
     publications {
@@ -144,4 +147,19 @@ private def configurePom(org.gradle.api.publish.maven.MavenPom pom) {
             url = "https://github.com/phxql/argon2-jvm"
         }
     }
+}
+
+/**
+ * Creates the JAR attributes for the MANIFEST.MD
+ */
+private Map<String, Object> manifestAttributes() {
+    return [
+            'Automatic-Module-Name' : 'de.mkammerer.argon2',
+            // OSGI stuff
+            'Bundle-ManifestVersion': '2',
+            'Bundle-SymbolicName'   : 'de.mkammerer.argon2',
+            'Bundle-Version'        : project.version,
+            'Export-Package'        : 'de.mkammerer.argon2, de.mkammerer.argon2.jna',
+            'Import-Package'        : 'com.sun.jna'
+    ]
 }
