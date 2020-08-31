@@ -1,0 +1,12 @@
+FROM alpine:3
+# Install Java
+RUN apk update && apk add openjdk11-jre-headless
+# Install libargon2
+RUN apk update && apk add argon2-dev
+
+WORKDIR /
+
+# Install compatibility application
+ENV COMPATIBILITY_TESTS_OPTS "-Djna.debug_load=true -Djna.platform.library.path="
+ADD compatibility-tests.tar .
+CMD /compatibility-tests/bin/compatibility-tests
