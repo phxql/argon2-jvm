@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ ubuntu-latest ]
         # New gradle doesn't run on <= 8
         # Java >= 12 doesn't support source/target level 6 anymore
         java: [8, 9, 10, 11]
