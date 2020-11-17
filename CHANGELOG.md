@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Improved the [compatibility list](compatibility-tests/README.md)
+- Updated JNA to 5.6.0
 
 ## [2.7] - 2020-04-15
 
