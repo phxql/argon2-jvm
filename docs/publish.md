@@ -29,3 +29,11 @@ gpg --export-secret-keys <Key ID> > argon2.key
 ```
 
 and then use the path to the `argon2.key` as `signing.secretKeyRingFile`.
+
+If you need the short id of the key, run
+
+```
+gpg --list-secret-keys
+```
+
+The short id are the last 8 chars of the fingerprint prefixed by `0x`.
