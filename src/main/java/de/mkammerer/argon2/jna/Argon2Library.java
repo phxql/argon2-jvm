@@ -10,7 +10,7 @@ public interface Argon2Library extends Library {
     /**
      * Singleton instance.
      */
-    Argon2Library INSTANCE = (Argon2Library) Native.load("argon2", Argon2Library.class);
+    Argon2Library INSTANCE = Native.load("argon2", Argon2Library.class);
 
     /**
      * Return code if everything is okay.
@@ -136,6 +136,17 @@ public interface Argon2Library extends Library {
     int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen);
      */
     int argon2i_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
+
+    /*
+    ARGON2_PUBLIC int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
+                              const uint32_t parallelism, const void *pwd,
+                              const size_t pwdlen, const void *salt,
+                              const size_t saltlen, void *hash,
+                              const size_t hashlen, char *encoded,
+                              const size_t encodedlen, argon2_type type,
+                              const uint32_t version);
+     */
+    int argon2_hash(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen, byte[] encoded, Size_t encodedlen, Argon2_type type, JnaUint32 version);
 
     /**
      * Verifies a password against an Argon2d encoded string.

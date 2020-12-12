@@ -1,0 +1,8 @@
+FROM debian:8
+# Install gcc
+RUN apt update && apt install --yes gcc && rm -rf /var/cache/apt/
+
+WORKDIR /
+ADD glibc_version.c .
+RUN gcc glibc_version.c -o glibc_version
+CMD /glibc_version

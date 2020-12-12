@@ -22,4 +22,10 @@ sonatype.password=[Sonatype password]
 
 ## Notes:
 
-If you can't find the secring.gpg file needed for signing, see [this documentation](https://docs.gradle.org/current/userguide/signing_plugin.html) for help.
+If you can't find the secring.gpg file needed for signing, do this:
+
+```
+gpg --export-secret-keys <Key ID> > argon2.key
+```
+
+and then use the path to the `argon2.key` as `signing.secretKeyRingFile`.

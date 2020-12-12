@@ -9,7 +9,7 @@ With pre-compiled Argon2 libraries:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>2.7</version>
+    <version>2.8</version>
 </dependency>
 ```
 
@@ -19,7 +19,7 @@ Without pre-compiled Argon2 libraries:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm-nolibs</artifactId>
-    <version>2.7</version>
+    <version>2.8</version>
 </dependency>
 ```
 
@@ -27,13 +27,13 @@ Without pre-compiled Argon2 libraries:
 With pre-compiled Argon2 libraries:
 
 ```groovy
-compile 'de.mkammerer:argon2-jvm:2.7'
+implementation 'de.mkammerer:argon2-jvm:2.8'
 ```
 
 Without pre-compiled Argon2 libraries:
 
 ```groovy
-compile 'de.mkammerer:argon2-jvm-nolibs:2.7'
+implementation 'de.mkammerer:argon2-jvm-nolibs:2.8'
 ```
 
 ## Usage
@@ -46,13 +46,16 @@ This binding needs the Argon2 C library. Libraries for the following operation s
 * Windows x86-64
 * Darwin (OSX)
 
-See [tested distributions](docs/tested-distributions.md) for details on which distributions this has been tested.
+See [tested distributions](compatibility-tests/README.md) for details on which distributions this has been tested.
 
 If you'd prefer to install/compile argon2 on your own you can use argon2-jvm-nolibs instead of argon2-jvm.
 
 If you need help to build argon2, have a look at [this documentation](docs/compile-argon2.md).
 
 ```java
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+
 // Create instance
 Argon2 argon2 = Argon2Factory.create();
 

@@ -1,0 +1,10 @@
+FROM centos:6
+# Install Java
+RUN yum install --assumeyes java-1.8.0-openjdk-headless && yum clean all
+
+WORKDIR /
+
+# Install compatibility application
+ENV COMPATIBILITY_TESTS_OPTS "-Djna.debug_load=true -Djna.platform.library.path="
+ADD compatibility-tests.tar .
+CMD /compatibility-tests/bin/compatibility-tests

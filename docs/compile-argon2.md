@@ -9,3 +9,8 @@
 
 You can make it available to JNA by placing them under your `resources/{OS}_{ARCH}`. In this case you don't need to use any extra system property.
 Check the [JNA getting started guide](https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md) for details.
+
+## Install it on your local system
+
+1. `make install`
+1. Now Argon2-JVM should find it and use it. No need to set additional properties
