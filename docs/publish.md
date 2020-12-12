@@ -11,7 +11,7 @@ sonatype.password=[Sonatype password]
 1. Update version in `build.gradle`, `CHANGELOG.md`, `README.md`  
 1. Merge `develop` in `master`
 1. Tag current version in format `v[version]`
-1. Run `gradlew clean build uploadArchives`
+1. Run `gradlew clean build publish`
 1. Open [https://oss.sonatype.org/#stagingRepositories](https://oss.sonatype.org/#stagingRepositories)
 1. Find the argon2 staging repo
 1. Close the argon2 staging repo
