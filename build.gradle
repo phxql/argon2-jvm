@@ -154,12 +154,6 @@ private def configurePom(org.gradle.api.publish.maven.MavenPom pom) {
  */
 private Map<String, Object> manifestAttributes() {
     return [
-            'Automatic-Module-Name' : 'de.mkammerer.argon2',
-            // OSGI stuff
-            'Bundle-ManifestVersion': '2',
-            'Bundle-SymbolicName'   : 'de.mkammerer.argon2',
-            'Bundle-Version'        : project.version,
-            'Export-Package'        : 'de.mkammerer.argon2, de.mkammerer.argon2.jna',
-            'Import-Package'        : 'com.sun.jna'
+            'Automatic-Module-Name' : 'de.mkammerer.argon2'
     ]
 }
