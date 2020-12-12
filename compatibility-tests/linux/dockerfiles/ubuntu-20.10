@@ -1,0 +1,10 @@
+FROM ubuntu:20.10
+# Install Java
+RUN apt update && apt install --yes openjdk-11-jre-headless && apt clean
+
+WORKDIR /
+
+# Install compatibility application
+ENV COMPATIBILITY_TESTS_OPTS "-Djna.debug_load=true -Djna.platform.library.path="
+ADD compatibility-tests.tar .
+CMD /compatibility-tests/bin/compatibility-tests

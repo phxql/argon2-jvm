@@ -17,6 +17,7 @@ Tested version of Argon2-JVM: **2.7**
 | Ubuntu 18.04 | Yes   | 2.27 |
 | Ubuntu 19.10 | Yes   | 2.30 |
 | Ubuntu 20.04 | Yes   | 2.31 |
+| Ubuntu 20.20 | Yes   | 2.32 |
 | Alpine 3     | No    | -    |
 
 ## Workarounds
