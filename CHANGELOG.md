@@ -1,15 +1,21 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
+
+## Unreleased
+
+No changes yet.
+
+## [2.8] - 2020-12-12
 
 ### Added
+
 - Added method `hashAdvanced` to `Argon2Advanced` which lets the caller specify the argon2 version
 - Added methods `generateSalt` to `Argon2Advanced` which generates salt with either the default or the given length
 - Added OSGi entries to the JAR manifest
 
 ### Changed
+
 - Improved the [compatibility list](compatibility-tests/README.md)
 - Updated JNA to 5.6.0
 
