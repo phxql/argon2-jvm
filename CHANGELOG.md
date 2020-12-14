@@ -12,7 +12,6 @@ No changes yet.
 
 - Added method `hashAdvanced` to `Argon2Advanced` which lets the caller specify the argon2 version
 - Added methods `generateSalt` to `Argon2Advanced` which generates salt with either the default or the given length
-- Added OSGi entries to the JAR manifest
 
 ### Changed
 
