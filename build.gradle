@@ -78,9 +78,7 @@ publishing {
             artifactId = 'argon2-jvm'
 
             from components.java
-            artifact libsJar
-            artifact libsSourcesJar
-            artifact libsJavadocJar
+            artifacts = [libsJar, libsSourcesJar, libsJavadocJar]
 
             pom(this.&configurePom)
         }
@@ -89,9 +87,7 @@ publishing {
             artifactId = 'argon2-jvm-nolibs'
 
             from components.java
-            artifact noLibsJar
-            artifact noLibsSourcesJar
-            artifact noLibsJavadocJar
+            artifacts = [noLibsJar, noLibsSourcesJar, noLibsJavadocJar]
 
             pom(this.&configurePom)
         }
