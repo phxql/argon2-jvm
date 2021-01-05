@@ -1,0 +1,15 @@
+plugins {
+    id 'org.sonarqube' version '3.0'
+    id 'jacoco'
+}
+
+dependencies {
+    implementation 'net.java.dev.jna:jna:5.6.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+}
+
+sonarqube {
+    properties {
+        property 'sonar.exclusions', 'src/main/java/de/mkammerer/argon2/jna/*.java'
+    }
+}

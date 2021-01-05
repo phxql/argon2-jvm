@@ -1,0 +1,3 @@
+dependencies {
+    api project(':argon2-jvm-nolibs')
+}
