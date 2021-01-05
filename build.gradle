@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'signing'
 
     group 'de.mkammerer'
-    version '2.9-SNAPSHOT'
+    version '2.9'
     description 'Argon2 Binding for the JVM'
 
     repositories {
@@ -61,7 +61,7 @@ subprojects {
 private def configurePom(org.gradle.api.publish.maven.MavenPom pom) {
     pom.with {
         name = 'Argon2 JVM'
-        description = project.description
+        description = 'Argon2 Binding for the JVM'
         url = 'https://github.com/phxql/argon2-jvm'
         packaging = 'jar'
         licenses {
