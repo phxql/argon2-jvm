@@ -23,14 +23,6 @@ subprojects {
         withSourcesJar()
     }
 
-    jar {
-        manifest {
-            attributes(
-                    'Automatic-Module-Name': 'de.mkammerer.argon2'
-            )
-        }
-    }
-
     publishing {
         publications {
             libs(MavenPublication) {

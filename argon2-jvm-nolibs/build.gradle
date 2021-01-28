@@ -2,6 +2,14 @@ plugins {
     id 'org.sonarqube' version '3.0'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Automatic-Module-Name': 'de.mkammerer.argon2-nolibs'
+        )
+    }
+}
+
 dependencies {
     implementation 'net.java.dev.jna:jna:5.6.0'
 }
