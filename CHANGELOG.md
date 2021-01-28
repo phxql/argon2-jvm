@@ -1,16 +1,21 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
+All notable changes to this project will be documented in this file. This project adheres
+to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-No changes yet.
+### Fixed
+
+- Fixed duplicate Automatic-Module-Name in manifest, see [this issue](https://github.com/phxql/argon2-jvm/issues/80).
 
 ## [2.9] - 2021-01-05
 
 ### Changed
 
-- Cleaned up the mess with the Gradle modules. To fix that in clean manner, the artifact structure has slightly changed. Consumers of the library shouldn't notice that, but `argon2-jvm` only contains the argon2 binary libraries while `argon2-jvm-nolibs`
+- Cleaned up the mess with the Gradle modules. To fix that in clean manner, the artifact structure has slightly changed.
+  Consumers of the library shouldn't notice that, but `argon2-jvm` only contains the argon2 binary libraries
+  while `argon2-jvm-nolibs`
   contains the Java code. `argon2-jvm` depends on `argon2-jvm-nolibs`, which in turn depends on JNA.
 
 ## [2.8] - 2020-12-12
