@@ -5,9 +5,13 @@ to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+No changes yet.
+
+## [2.9.1] - 2021-01-30
+
 ### Fixed
 
-- Fixed duplicate Automatic-Module-Name in manifest, see [this issue](https://github.com/phxql/argon2-jvm/issues/80).
+- Fixed duplicate `Automatic-Module-Name` in manifest, see [this issue](https://github.com/phxql/argon2-jvm/issues/80).
 
 ## [2.9] - 2021-01-05
 

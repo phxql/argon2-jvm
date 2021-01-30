@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'signing'
 
     group 'de.mkammerer'
-    version '2.10-SNAPSHOT'
+    version '2.9.1'
     description 'Argon2 Binding for the JVM'
 
     repositories {
