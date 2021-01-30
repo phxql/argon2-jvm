@@ -91,9 +91,9 @@ Argon2 argon2=Argon2Factory.create();
 // 1000 = The hash call must take at most 1000 ms
 // 65536 = Memory cost
 // 1 = parallelism
-        int iterations=Argon2Helper.findIterations(argon2,1000,65536,1);
+int iterations=Argon2Helper.findIterations(argon2,1000,65536,1);
 
-        System.out.println("Optimal number of iterations: "+iterations);
+System.out.println("Optimal number of iterations: "+iterations);
 ```
 
 ## Compile Argon2 yourself
