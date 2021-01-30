@@ -8,7 +8,8 @@ signing.secretKeyRingFile=[Path to the keyring file]
 sonatype.username=[Sonatype username]
 sonatype.password=[Sonatype password]
 ```   
-1. Update version in `build.gradle`, `CHANGELOG.md`, `README.md`  
+1. Update version in `build.gradle`, `CHANGELOG.md`, `README.md`
+1. Create commit `Version x.x.x`   
 1. Merge `develop` in `master`
 1. Tag current version in format `v[version]`
 1. Run `./gradlew clean build publish`
@@ -19,6 +20,8 @@ sonatype.password=[Sonatype password]
 1. Push the changes: `git push` and the tags `git push --tags` 
 1. Checkout `develop` branch
 1. Update versions to new development version
+1. Create commit `Start next development version`
+1. Create a new release from the tag on [GitHub](https://github.com/phxql/argon2-jvm/tags)
 
 ## Notes:
 
