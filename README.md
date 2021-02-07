@@ -51,6 +51,7 @@ This binding needs a compiled Argon2 library. It is recommended to install argon
 * Windows x86
 * Windows x86-64
 * Darwin (OSX)
+* Darwin (OSX) M1
 
 See [tested distributions](compatibility-tests/README.md) for details on which distributions this has been tested.
 

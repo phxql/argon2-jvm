@@ -1,11 +1,12 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. This project adheres
-to [Semantic Versioning](http://semver.org/).
+All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-No changes yet.
+### Added
+
+* Added support for Apple's M1 ([PR](https://github.com/phxql/argon2-jvm/pull/81), [VirusTotal scan of the binary](https://www.virustotal.com/gui/file/3f32cb2306483fc111f8c2b6fe24902944960c183bdfef803e7b3a84ba407b67/detection))
 
 ## [2.9.1] - 2021-01-30
 
