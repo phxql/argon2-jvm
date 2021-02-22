@@ -8,8 +8,11 @@ application {
 }
 
 dependencies {
-    implementation project(':argon2-jvm')
+    implementation(project(':argon2-jvm')) {
+        exclude(group: 'net.java.dev.jna', module: 'jna')
+    }
 
+    implementation files('libs/jna-pr1316.jar')
     implementation('org.slf4j:slf4j-api:1.7.30')
     implementation 'net.java.dev.jna:jna:5.6.0'
 
