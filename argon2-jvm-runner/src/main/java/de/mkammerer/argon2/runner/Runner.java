@@ -1,5 +1,7 @@
 package de.mkammerer.argon2.runner;
 
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.slf4j.Logger;
@@ -31,6 +33,31 @@ public class Runner {
     }
 
     private void run(String[] args) {
+        printSystemInfo();
+        printJnaInfo();
+        testArgon2();
+    }
+
+    private void printSystemInfo() {
+        LOGGER.info("System properties:");
+        LOGGER.info("  VM vendor: {}", System.getProperty("java.vm.vendor"));
+        LOGGER.info("  VM version: {}", System.getProperty("java.vm.version"));
+        LOGGER.info("  Runtime version: {}", System.getProperty("java.runtime.version"));
+        LOGGER.info("  Java version: {}", System.getProperty("java.version"));
+        LOGGER.info("  Operating system: {}", System.getProperty("os.name"));
+        LOGGER.info("  Operating system version: {}", System.getProperty("os.version"));
+        LOGGER.info("  Operating system architecture: {}", System.getProperty("os.arch"));
+        LOGGER.info("  Library path: {}", System.getProperty("java.library.path"));
+    }
+
+    private void printJnaInfo() {
+        LOGGER.info("JNA info:");
+        LOGGER.info("  Version: {}", Native.VERSION);
+        LOGGER.info("  Resource prefix: {}", Platform.RESOURCE_PREFIX);
+        LOGGER.info("  Architecture: {}", Platform.ARCH);
+    }
+
+    private void testArgon2() {
         LOGGER.info("Creating Argon2 instance");
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
         // Read password from user

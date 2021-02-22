@@ -9,6 +9,9 @@ application {
 
 dependencies {
     implementation project(':argon2-jvm')
+
     implementation('org.slf4j:slf4j-api:1.7.30')
+    implementation 'net.java.dev.jna:jna:5.6.0'
+
     runtimeOnly('ch.qos.logback:logback-classic:1.2.3')
 }
