@@ -58,7 +58,7 @@ public class Runner {
     }
 
     private void testArgon2() {
-        LOGGER.info("Creating Argon2 instance");
+        LOGGER.info("Creating Argon2 instance...");
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
         // Read password from user
         char[] password = "my-password".toCharArray();
