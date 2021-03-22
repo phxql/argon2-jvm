@@ -5,7 +5,7 @@ plugins {
 jar {
     manifest {
         attributes(
-                'Automatic-Module-Name': 'de.mkammerer.argon2-nolibs'
+                'Automatic-Module-Name': 'de.mkammerer.argon2.nolibs'
         )
     }
 }
