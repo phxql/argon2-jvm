@@ -2,9 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.10.1] - 2021-04-06
 
-* No changes yet
+### Changed
+
+* Updated JNA to 5.8.0
 
 ## [2.10] - 2021-04-06
 
