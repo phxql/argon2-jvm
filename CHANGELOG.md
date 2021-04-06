@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. This projec
 
 ## Unreleased
 
+## [2.10] - 2021-04-06
+
 ### Added
 
 - Added support for Apple's M1 ([PR](https://github.com/phxql/argon2-jvm/pull/82), [VirusTotal scan of the binary](https://www.virustotal.com/gui/file-analysis/ZDQ3ZTQ1ZTIxNTYzY2YyZmU5ZGJjYzQyNGY5ZWY4MzY6MTYxNDA2NzU3MA==/detection))

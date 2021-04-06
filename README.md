@@ -7,22 +7,20 @@ This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 Without pre-compiled Argon2 libraries (recommended, install argon2 via your package manager):
 
 ```xml
-
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm-nolibs</artifactId>
-    <version>2.10-SNAPSHOT</version>
+    <version>2.10</version>
 </dependency>
 ```
 
 With pre-compiled Argon2 libraries:
 
 ```xml
-
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>2.10-SNAPSHOT</version>
+    <version>2.10</version>
 </dependency>
 ```
 
@@ -31,13 +29,13 @@ With pre-compiled Argon2 libraries:
 Without pre-compiled Argon2 libraries (recommended, install argon2 via your package manager):
 
 ```groovy
-implementation 'de.mkammerer:argon2-jvm-nolibs:2.10-SNAPSHOT'
+implementation 'de.mkammerer:argon2-jvm-nolibs:2.10'
 ```
 
 With pre-compiled Argon2 libraries:
 
 ```groovy
-implementation 'de.mkammerer:argon2-jvm:2.10-SNAPSHOT'
+implementation 'de.mkammerer:argon2-jvm:2.10'
 ```
 
 ## Usage
@@ -88,13 +86,13 @@ The recommended parameters for the `hash` call above can be found in the [whitep
 You can use the method `Argon2Helper.findIterations` to find the optimal number of iterations on your system:
 
 ```java
-Argon2 argon2=Argon2Factory.create();
+Argon2 argon2 = Argon2Factory.create();
 // 1000 = The hash call must take at most 1000 ms
 // 65536 = Memory cost
 // 1 = parallelism
-int iterations=Argon2Helper.findIterations(argon2,1000,65536,1);
+int iterations = Argon2Helper.findIterations(argon2, 1000, 65536, 1);
 
-System.out.println("Optimal number of iterations: "+iterations);
+System.out.println("Optimal number of iterations: " + iterations);
 ```
 
 ## Compile Argon2 yourself
