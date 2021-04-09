@@ -1,6 +1,7 @@
 package de.mkammerer.argon2;
 
 import de.mkammerer.argon2.jna.Argon2Library;
+import de.mkammerer.argon2.jna.Argon2_context;
 import de.mkammerer.argon2.jna.JnaUint32;
 import de.mkammerer.argon2.jna.Size_t;
 
@@ -44,5 +45,15 @@ class Argon2d extends BaseArgon2 {
     @Override
     protected int callLibraryVerify(byte[] encoded, byte[] pwd) {
         return Argon2Library.INSTANCE.argon2d_verify(encoded, pwd, new Size_t(pwd.length));
+    }
+
+    @Override
+    protected int callLibraryContext(Argon2_context.ByReference context) {
+        return Argon2Library.INSTANCE.argon2d_ctx(context);
+    }
+
+    @Override
+    protected int callLibraryVerifyContext(Argon2_context.ByReference context, byte[] rawHash) {
+        return Argon2Library.INSTANCE.argon2d_verify_ctx(context, rawHash);
     }
 }

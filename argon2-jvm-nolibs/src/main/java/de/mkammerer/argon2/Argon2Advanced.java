@@ -135,6 +135,71 @@ public interface Argon2Advanced extends Argon2 {
     HashResult hashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, int hashLength, Argon2Version version);
 
     /**
+     * Hashes a password, using the given salt, secret and associated data.
+     *
+     * @param iterations     Number of iterations
+     * @param memory         Sets memory usage to x kibibytes
+     * @param parallelism    Number of threads and compute lanes
+     * @param password       Password to hash
+     * @param charset        Charset of the password
+     * @param salt           Salt
+     * @param secret         Secret (sometimes referred as Pepper)
+     * @param associatedData Associated Data
+     * @return Hashed password in raw bytes.
+     */
+    byte[] rawHashAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData);
+
+    /**
+     * Advanced version of hash, let the caller specify addition parameters such as hash length, salt, secret and associated data.
+     * Return both the encoded and the raw hash.
+     *
+     * @param iterations     Number of iterations
+     * @param memory         Sets memory usage to x kibibytes
+     * @param parallelism    Number of threads and compute lanes
+     * @param password       Password to hash
+     * @param salt           Salt
+     * @param secret         Secret (sometimes referred as Pepper)
+     * @param associatedData Associated Data
+     * @param hashLength     Length of the returned hash in bytes.
+     * @param version        Argon2 version
+     * @return Hashed password in raw bytes.
+     */
+    byte[] rawHashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version);
+
+    /**
+     * Verifies a password against a hash.
+     *
+     * @param iterations     Number of iterations
+     * @param memory         Sets memory usage to x kibibytes
+     * @param parallelism    Number of threads and compute lanes
+     * @param password       Password to hash
+     * @param charset        Charset of the password
+     * @param salt           Salt
+     * @param secret         Secret (sometimes referred as Pepper)
+     * @param associatedData Associated Data
+     * @param rawHash        Raw Hash bytes.
+     * @return True if the password matches the hash, false otherwise.
+     */
+    boolean verifyAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData, byte[] rawHash);
+
+    /**
+     * Verifies a password against a hash.
+     *
+     * @param iterations     Number of iterations
+     * @param memory         Sets memory usage to x kibibytes
+     * @param parallelism    Number of threads and compute lanes
+     * @param password       Password to hash
+     * @param salt           Salt
+     * @param secret         Secret (sometimes referred as Pepper)
+     * @param associatedData Associated Data
+     * @param hashLength     Length of the returned hash in bytes.
+     * @param version        Argon2 version
+     * @param rawHash        Raw Hash bytes.
+     * @return True if the password matches the hash, false otherwise.
+     */
+    boolean verifyAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version, byte[] rawHash);
+
+    /**
      * Generates salt with the default length.
      *
      * @return Salt.

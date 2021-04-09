@@ -24,6 +24,10 @@ public abstract class AbstractArgonTest {
     protected static final Charset UTF8 = Charset.forName("utf-8");
     protected static final String PASSWORD = "password";
     protected static final String NOT_THE_PASSWORD = "not-the-password";
+    protected static final String SECRET = "secret";
+    protected static final String NOT_THE_SECRET = "not-the-secret";
+    protected static final String ASSOCIATED_DATA = "associated-data";
+    protected static final String NOT_THE_ASSOCIATED_DATA = "not-the-associated-data";
     protected static final int ITERATIONS = 2;
     protected static final int MEMORY = 1024;
     protected static final int PARALLELISM = 1;
@@ -249,6 +253,56 @@ public abstract class AbstractArgonTest {
             assertThat(result.getRaw().length, is(keyLength));
             assertThat(result.getEncoded(), startsWith(prefix));
             assertThat(sut.verify(result.getEncoded(), password), is(true));
+        }
+    }
+
+    @Test
+    public void testRawHashAdvancedWithStringAndCharset() throws Exception {
+        char[] password = PASSWORD.toCharArray();
+        char[] notPassword = NOT_THE_PASSWORD.toCharArray();
+        byte[] salt = createSalt();
+        byte[] notSalt = createSalt();
+        byte[] secret = SECRET.getBytes(ASCII);
+        byte[] notSecret = NOT_THE_SECRET.getBytes(ASCII);
+        byte[] ad = ASSOCIATED_DATA.getBytes(ASCII);
+        byte[] notAd = NOT_THE_ASSOCIATED_DATA.getBytes(ASCII);
+
+        byte[] hash = sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad);
+
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad), is(hash));
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad), is(not(hash)));
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad), is(not(hash)));
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad), is(not(hash)));
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd), is(not(hash)));
+
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad, hash), is(true));
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad, hash), is(false));
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad, hash), is(false));
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad, hash), is(false));
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd, hash), is(false));
+    }
+
+    @Test
+    public void testRawHashAdvancedWithBytes() throws Exception {
+        byte[] password = PASSWORD.getBytes(ASCII);
+        byte[] notPassword = NOT_THE_PASSWORD.getBytes(ASCII);
+        byte[] salt = createSalt();
+        byte[] notSalt = createSalt();
+        byte[] secret = SECRET.getBytes(ASCII);
+        byte[] notSecret = NOT_THE_SECRET.getBytes(ASCII);
+        byte[] ad = ASSOCIATED_DATA.getBytes(ASCII);
+        byte[] notAd = NOT_THE_ASSOCIATED_DATA.getBytes(ASCII);
+        int keyLength = 512 / 8;
+
+        for (Argon2Version version : Argon2Version.values()) {
+            byte[] hash = sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, ad, keyLength, version);
+
+            assertThat(hash.length, is(keyLength));
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, ad, keyLength, version, hash), is(true));
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, salt, secret, ad, keyLength, version, hash), is(false));
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, notSalt, secret, ad, keyLength, version, hash), is(false));
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, notSecret, ad, keyLength, version, hash), is(false));
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, notAd, keyLength, version, hash), is(false));
         }
     }
 
