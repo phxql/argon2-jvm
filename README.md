@@ -7,7 +7,7 @@ This is a JVM binding for [Argon2](https://github.com/P-H-C/phc-winner-argon2).
 If you are using an OS or an architecture which is not that common (e.g. argon2-jvm has no support for BSD), this library will not work for you, if your system has no native installation of the Argon2 library.
 
 [Spring Security Crypto](https://github.com/spring-projects/spring-security/tree/master/crypto) has a `Argon2PasswordEncoder`
-which doesn't have any dependencies on native C libraries, as it uses Bouncy Castle which implements the Argon2 algorithm in pure Java. And don't let the name "Spring Security" scare you, the Spring Security Crypto has no dependency on Spring or Spring Security. If you don't need (for whatever reason) the native Argon2 library, I would suggest that you look at the `Argon2PasswordEncoder` from Spring Security Crypto.
+which doesn't have any dependencies on native C libraries, as it uses Bouncy Castle which implements the Argon2 algorithm in pure Java. And don't let the name "Spring Security Crypto" scare you, it has no dependency on Spring or Spring Security. If you don't need (for whatever reason) the native Argon2 library, I would suggest that you look at the `Argon2PasswordEncoder` from Spring Security Crypto.
 
 I have prepared a [small showcase project](https://github.com/phxql/argon2-playground) which demonstrates the use of Argon2 with Spring Security Crypto.
 
