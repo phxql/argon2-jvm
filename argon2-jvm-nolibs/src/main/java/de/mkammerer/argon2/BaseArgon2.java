@@ -431,7 +431,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param parallelism    Parallelism.
      * @param hashLength     Hash length.
      * @param password       Password.
-     * @param salt           Salt (nullable).
+     * @param salt           Salt.
      * @param secret         Secret (nullable).
      * @param associatedData Associated Data (nullable).
      * @param version        Version (nullable).
@@ -447,14 +447,9 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         context.pwd.write(0, password, 0, password.length);
         context.pwdlen = new JnaUint32(password.length);
 
-        if (salt != null) {
-            context.salt = new Memory(salt.length);
-            context.salt.write(0, salt, 0, salt.length);
-            context.saltlen = new JnaUint32(salt.length);
-        } else {
-            context.salt = Pointer.NULL;
-            context.saltlen = new JnaUint32(0);
-        }
+        context.salt = new Memory(salt.length);
+        context.salt.write(0, salt, 0, salt.length);
+        context.saltlen = new JnaUint32(salt.length);
 
         if (secret != null) {
             context.secret = new Memory(secret.length);
@@ -479,7 +474,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         context.lanes = new JnaUint32(parallelism);
         context.threads = new JnaUint32(parallelism);
 
-        context.version = version.getJnaType();
+        context.version = version != null ? version.getJnaType() : Argon2Version.NUMBER.getJnaType();
 
         context.allocate_cbk = Pointer.NULL;
         context.free_cbk = Pointer.NULL;
