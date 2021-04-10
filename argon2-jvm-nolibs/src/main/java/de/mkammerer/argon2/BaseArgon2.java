@@ -249,6 +249,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
                 length, password, salt, secret, associatedData, version);
 
         int result = callLibraryContext(context);
+        wipeMemory(context);
         checkResult(result);
 
         return context.out.getByteArray(0, length);
@@ -267,13 +268,9 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
                 length, password, salt, secret, associatedData, version);
 
         int result = callLibraryVerifyContext(context, rawHash);
+        wipeMemory(context);
 
-        // skip the result check for error code VERIFY_MISMATCH as this should simply return false instead of throwing an exception.
-        if (result != -35) {
-            checkResult(result);
-        }
-
-        return result == 0;
+        return result == Argon2Library.ARGON2_OK;
     }
 
     @Override
@@ -482,5 +479,24 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         context.flags = new JnaUint32(0);
 
         return context;
+    }
+
+    /**
+     * Wipes the confidential data from a previously created context except for
+     * the {@link Argon2_context#out} field as this stores the hash.
+     *
+     * @param context {@link Argon2_context}
+     */
+    private static void wipeMemory(Argon2_context context) {
+        context.pwd.clear(context.pwdlen.longValue());
+        context.salt.clear(context.saltlen.longValue());
+
+        if (context.secretlen.longValue() != 0 && context.secret != Pointer.NULL) {
+            context.secret.clear(context.secretlen.longValue());
+        }
+
+        if (context.adlen.longValue() != 0 && context.ad != Pointer.NULL) {
+            context.ad.clear(context.adlen.longValue());
+        }
     }
 }
