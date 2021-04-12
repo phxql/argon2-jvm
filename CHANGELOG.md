@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ## Unreleased
 
-* No changes yet
+### Added
+
+* Added support for context secrets and associated data ([PR](https://github.com/phxql/argon2-jvm/pull/86))
 
 ## [2.10.1] - 2021-04-06
 
