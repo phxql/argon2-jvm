@@ -8,7 +8,7 @@ import de.mkammerer.argon2.jna.Argon2_version;
 public enum Argon2Version {
     V10(0x10),
     V13(0x13),
-    NUMBER(V13.version);
+    DEFAULT_VERSION(V13.version);
 
     private final int version;
     private final Argon2_version jnaType;

@@ -239,33 +239,33 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     @Override
     public byte[] rawHashAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData) {
         byte[] pwd = toByteArray(password, charset);
-        return rawHashAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.NUMBER);
+        return rawHashAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.DEFAULT_VERSION);
     }
 
     @Override
     public byte[] rawHashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version) {
-        int length = hashLength > 0 ? hashLength : defaultHashLength;
+        if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
         Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
-                length, password, salt, secret, associatedData, version);
+                hashLength, password, salt, secret, associatedData, version);
 
         int result = callLibraryContext(context);
         wipeMemory(context);
         checkResult(result);
 
-        return context.out.getByteArray(0, length);
+        return context.out.getByteArray(0, hashLength);
     }
 
     @Override
     public boolean verifyAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData, byte[] rawHash) {
         byte[] pwd = toByteArray(password, charset);
-        return verifyAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.NUMBER, rawHash);
+        return verifyAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.DEFAULT_VERSION, rawHash);
     }
 
     @Override
     public boolean verifyAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version, byte[] rawHash) {
-        int length = hashLength > 0 ? hashLength : defaultHashLength;
+        if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
         Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
-                length, password, salt, secret, associatedData, version);
+                hashLength, password, salt, secret, associatedData, version);
 
         int result = callLibraryVerifyContext(context, rawHash);
         wipeMemory(context);
@@ -468,10 +468,15 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
         context.t_cost = new JnaUint32(iterations);
         context.m_cost = new JnaUint32(memory);
+
+        /*
+        lanes and threads properties are set similar to the argon2.h c library function int argon_hash(...)
+        see: https://github.com/P-H-C/phc-winner-argon2/blob/master/include/argon2.h
+         */
         context.lanes = new JnaUint32(parallelism);
         context.threads = new JnaUint32(parallelism);
 
-        context.version = version != null ? version.getJnaType() : Argon2Version.NUMBER.getJnaType();
+        context.version = version != null ? version.getJnaType() : Argon2Version.DEFAULT_VERSION.getJnaType();
 
         context.allocate_cbk = Pointer.NULL;
         context.free_cbk = Pointer.NULL;

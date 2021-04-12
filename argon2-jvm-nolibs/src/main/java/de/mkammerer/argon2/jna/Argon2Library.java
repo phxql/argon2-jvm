@@ -172,9 +172,9 @@ public interface Argon2Library extends Library {
     int argon2_verify(byte[] encoded, byte[] pwd, Size_t pwdlen, Argon2_type type);
 
     /**
-     * Argon2d: Version of Argon2 that picks memory blocks depending
-     * on the password and salt. Only for side-channel-free
-     * environment!!
+     * Argon2i: Version of Argon2 that picks memory blocks
+     * independent on the password and salt. Good for side-channels,
+     * but worse w.r.t. tradeoff attacks if only one pass is used.
      *
      * @param context Pointer to current Argon2 context
      * @return Zero if successful, a non zero error code otherwise
@@ -182,9 +182,9 @@ public interface Argon2Library extends Library {
     int argon2i_ctx(Argon2_context.ByReference context);
 
     /**
-     * Argon2i: Version of Argon2 that picks memory blocks
-     * independent on the password and salt. Good for side-channels,
-     * but worse w.r.t. tradeoff attacks if only one pass is used.
+     * Argon2d: Version of Argon2 that picks memory blocks depending
+     * on the password and salt. Only for side-channel-free
+     * environment!!
      *
      * @param contexts Pointer to current Argon2 context
      * @return Zero if successful, a non zero error code otherwise
