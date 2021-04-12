@@ -1,7 +1,10 @@
 package de.mkammerer.argon2;
 
+import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import de.mkammerer.argon2.jna.Argon2Library;
+import de.mkammerer.argon2.jna.Argon2_context;
 import de.mkammerer.argon2.jna.JnaUint32;
 import de.mkammerer.argon2.jna.Size_t;
 
@@ -226,11 +229,48 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
 
         int result = Argon2Library.INSTANCE.argon2_hash(
                 jnaIterations, jnaMemory, jnaParallelism, password, new Size_t(password.length), salt, new Size_t(salt.length),
-                hash, new Size_t(hash.length), encoded, new Size_t(encoded.length), getType().getJnaType(), new JnaUint32(version.getJnaVersion())
+                hash, new Size_t(hash.length), encoded, new Size_t(encoded.length), getType().getJnaType(), version.getJnaType()
         );
         checkResult(result);
 
         return new HashResult(hash, Native.toString(encoded, ASCII));
+    }
+
+    @Override
+    public byte[] rawHashAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData) {
+        byte[] pwd = toByteArray(password, charset);
+        return rawHashAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.DEFAULT_VERSION);
+    }
+
+    @Override
+    public byte[] rawHashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version) {
+        if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
+        Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
+                hashLength, password, salt, secret, associatedData, version);
+
+        int result = callLibraryContext(context);
+        wipeMemory(context);
+        checkResult(result);
+
+        return context.out.getByteArray(0, hashLength);
+    }
+
+    @Override
+    public boolean verifyAdvanced(int iterations, int memory, int parallelism, char[] password, Charset charset, byte[] salt, byte[] secret, byte[] associatedData, byte[] rawHash) {
+        byte[] pwd = toByteArray(password, charset);
+        return verifyAdvanced(iterations, memory, parallelism, pwd, salt, secret, associatedData, defaultHashLength, Argon2Version.DEFAULT_VERSION, rawHash);
+    }
+
+    @Override
+    public boolean verifyAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version, byte[] rawHash) {
+        if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
+        Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
+                hashLength, password, salt, secret, associatedData, version);
+
+        int result = callLibraryVerifyContext(context, rawHash);
+        wipeMemory(context);
+
+        return result == Argon2Library.ARGON2_OK;
     }
 
     @Override
@@ -297,6 +337,23 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      */
     protected abstract int callLibraryVerify(byte[] encoded, byte[] pwd);
 
+    /**
+     * Is called when the ctx hash function of the native library should be called.
+     *
+     * @param context Pointer to one Argon2 context.
+     * @return Return code.
+     */
+    protected abstract int callLibraryContext(Argon2_context.ByReference context);
+
+    /**
+     * Is called when the ctx verify function of the native library should be called.
+     *
+     * @param context Pointer to one Argon2 context.
+     * @param rawHash Raw hash.
+     * @return Return code.
+     */
+    protected abstract int callLibraryVerifyContext(Argon2_context.ByReference context, byte[] rawHash);
+
     private String hashBytes(int iterations, int memory, int parallelism, byte[] pwd) {
         byte[] salt = generateSalt();
         return hashBytes(iterations, memory, parallelism, pwd, salt);
@@ -352,7 +409,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param charset Charset of the password
      * @return UTF-8 encoded byte array
      */
-    private byte[] toByteArray(char[] chars, Charset charset) {
+    private static byte[] toByteArray(char[] chars, Charset charset) {
         assert chars != null;
 
         CharBuffer charBuffer = CharBuffer.wrap(chars);
@@ -361,5 +418,90 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
                 byteBuffer.position(), byteBuffer.limit());
         Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
         return bytes;
+    }
+
+    /**
+     * Builds a {@link Argon2_context} by the specified arguments.
+     *
+     * @param iterations     Iterations.
+     * @param memory         Memory.
+     * @param parallelism    Parallelism.
+     * @param hashLength     Hash length.
+     * @param password       Password.
+     * @param salt           Salt.
+     * @param secret         Secret (nullable).
+     * @param associatedData Associated Data (nullable).
+     * @param version        Version (nullable).
+     * @return {@link Argon2_context}
+     */
+    private static Argon2_context.ByReference buildContextReference(int iterations, int memory, int parallelism, int hashLength, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, Argon2Version version) {
+        Argon2_context.ByReference context = new Argon2_context.ByReference();
+
+        context.out = new Memory(hashLength);
+        context.outlen = new JnaUint32(hashLength);
+
+        context.pwd = new Memory(password.length);
+        context.pwd.write(0, password, 0, password.length);
+        context.pwdlen = new JnaUint32(password.length);
+
+        context.salt = new Memory(salt.length);
+        context.salt.write(0, salt, 0, salt.length);
+        context.saltlen = new JnaUint32(salt.length);
+
+        if (secret != null) {
+            context.secret = new Memory(secret.length);
+            context.secret.write(0, secret, 0, secret.length);
+            context.secretlen = new JnaUint32(secret.length);
+        } else {
+            context.secret = Pointer.NULL;
+            context.secretlen = new JnaUint32(0);
+        }
+
+        if (associatedData != null) {
+            context.ad = new Memory(associatedData.length);
+            context.ad.write(0, associatedData, 0, associatedData.length);
+            context.adlen = new JnaUint32(associatedData.length);
+        } else {
+            context.ad = Pointer.NULL;
+            context.adlen = new JnaUint32(0);
+        }
+
+        context.t_cost = new JnaUint32(iterations);
+        context.m_cost = new JnaUint32(memory);
+
+        /*
+        lanes and threads properties are set similar to the argon2.h c library function int argon_hash(...)
+        see: https://github.com/P-H-C/phc-winner-argon2/blob/master/include/argon2.h
+         */
+        context.lanes = new JnaUint32(parallelism);
+        context.threads = new JnaUint32(parallelism);
+
+        context.version = version != null ? version.getJnaType() : Argon2Version.DEFAULT_VERSION.getJnaType();
+
+        context.allocate_cbk = Pointer.NULL;
+        context.free_cbk = Pointer.NULL;
+
+        context.flags = new JnaUint32(0);
+
+        return context;
+    }
+
+    /**
+     * Wipes the confidential data from a previously created context except for
+     * the {@link Argon2_context#out} field as this stores the hash.
+     *
+     * @param context {@link Argon2_context}
+     */
+    private static void wipeMemory(Argon2_context context) {
+        context.pwd.clear(context.pwdlen.longValue());
+        context.salt.clear(context.saltlen.longValue());
+
+        if (context.secretlen.longValue() != 0 && context.secret != Pointer.NULL) {
+            context.secret.clear(context.secretlen.longValue());
+        }
+
+        if (context.adlen.longValue() != 0 && context.ad != Pointer.NULL) {
+            context.ad.clear(context.adlen.longValue());
+        }
     }
 }
