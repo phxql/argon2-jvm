@@ -38,7 +38,7 @@ public class Argon2_context extends Structure {
     /**
      * key array
      */
-    public Pointer secret = null;
+    public Pointer secret = Pointer.NULL;
     /**
      * key length
      */
@@ -46,7 +46,7 @@ public class Argon2_context extends Structure {
     /**
      * associated data array
      */
-    public Pointer ad = null;
+    public Pointer ad = Pointer.NULL;
     /**
      * associated data length
      */

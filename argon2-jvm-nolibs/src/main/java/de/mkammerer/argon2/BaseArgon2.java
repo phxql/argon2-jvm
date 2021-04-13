@@ -246,7 +246,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     public byte[] rawHashAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version) {
         if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
         Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
-                hashLength, password, salt, secret, associatedData, version);
+                hashLength, password, salt, version, secret, associatedData);
 
         int result = callLibraryContext(context);
         wipeMemory(context);
@@ -265,7 +265,7 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
     public boolean verifyAdvanced(int iterations, int memory, int parallelism, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, int hashLength, Argon2Version version, byte[] rawHash) {
         if (hashLength <= 0) throw new IllegalArgumentException("hashLength must be greater than zero");
         Argon2_context.ByReference context = buildContextReference(iterations, memory, parallelism,
-                hashLength, password, salt, secret, associatedData, version);
+                hashLength, password, salt, version, secret, associatedData);
 
         int result = callLibraryVerifyContext(context, rawHash);
         wipeMemory(context);
@@ -429,12 +429,12 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param hashLength     Hash length.
      * @param password       Password.
      * @param salt           Salt.
+     * @param version        Version.
      * @param secret         Secret (nullable).
      * @param associatedData Associated Data (nullable).
-     * @param version        Version (nullable).
      * @return {@link Argon2_context}
      */
-    private static Argon2_context.ByReference buildContextReference(int iterations, int memory, int parallelism, int hashLength, byte[] password, byte[] salt, byte[] secret, byte[] associatedData, Argon2Version version) {
+    private static Argon2_context.ByReference buildContextReference(int iterations, int memory, int parallelism, int hashLength, byte[] password, byte[] salt, Argon2Version version, byte[] secret, byte[] associatedData) {
         Argon2_context.ByReference context = new Argon2_context.ByReference();
 
         context.out = new Memory(hashLength);
@@ -448,36 +448,29 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
         context.salt.write(0, salt, 0, salt.length);
         context.saltlen = new JnaUint32(salt.length);
 
+        context.t_cost = new JnaUint32(iterations);
+        context.m_cost = new JnaUint32(memory);
+
+        // lanes and threads properties are set similar to the argon2.h c library function int argon_hash(...)
+        // see: https://github.com/P-H-C/phc-winner-argon2/blob/master/include/argon2.h
+        context.lanes = new JnaUint32(parallelism);
+        context.threads = new JnaUint32(parallelism);
+
+        context.version = version.getJnaType();
+
         if (secret != null) {
             context.secret = new Memory(secret.length);
             context.secret.write(0, secret, 0, secret.length);
             context.secretlen = new JnaUint32(secret.length);
-        } else {
-            context.secret = Pointer.NULL;
-            context.secretlen = new JnaUint32(0);
         }
 
         if (associatedData != null) {
             context.ad = new Memory(associatedData.length);
             context.ad.write(0, associatedData, 0, associatedData.length);
             context.adlen = new JnaUint32(associatedData.length);
-        } else {
-            context.ad = Pointer.NULL;
-            context.adlen = new JnaUint32(0);
         }
 
-        context.t_cost = new JnaUint32(iterations);
-        context.m_cost = new JnaUint32(memory);
-
-        /*
-        lanes and threads properties are set similar to the argon2.h c library function int argon_hash(...)
-        see: https://github.com/P-H-C/phc-winner-argon2/blob/master/include/argon2.h
-         */
-        context.lanes = new JnaUint32(parallelism);
-        context.threads = new JnaUint32(parallelism);
-
-        context.version = version != null ? version.getJnaType() : Argon2Version.DEFAULT_VERSION.getJnaType();
-
+        // Setting this to null means that argon2 uses internal memory management
         context.allocate_cbk = Pointer.NULL;
         context.free_cbk = Pointer.NULL;
 
@@ -493,6 +486,9 @@ abstract class BaseArgon2 implements Argon2, Argon2Advanced {
      * @param context {@link Argon2_context}
      */
     private static void wipeMemory(Argon2_context context) {
+        // TODO: This can be replaced by setting argon2 flags
+        // see https://github.com/P-H-C/phc-winner-argon2/blob/16d3df698db2486dde480b09a732bf9bf48599f9/include/argon2.h#L91
+
         context.pwd.clear(context.pwdlen.longValue());
         context.salt.clear(context.saltlen.longValue());
 
