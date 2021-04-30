@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
+* `argon2-jvm-nolibs` is now a multi-release JAR with a `module-info` file for Java >= 11. ([PR](https://github.com/phxql/argon2-jvm/pull/85))
+
+### Added
+
 * Added support for context secrets and associated data ([PR](https://github.com/phxql/argon2-jvm/pull/86))
 
 ## [2.10.1] - 2021-04-06
