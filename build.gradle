@@ -15,6 +15,10 @@ subprojects {
         options.encoding = 'UTF-8'
     }
 
+    compileJava {
+        options.compilerArgs.addAll(['--release', '6']);
+    }
+
     java {
         sourceCompatibility = JavaVersion.VERSION_1_6
         targetCompatibility = JavaVersion.VERSION_1_6
