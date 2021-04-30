@@ -16,8 +16,8 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ 11 ]
-        architecture: [ x86, x64 ]
+        java: [ '11' ]
+        architecture: [ 'x86', 'x64' ]
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -43,9 +43,9 @@ jobs:
       matrix:
         os: [ macos-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ 11 ]
+        java: [ '11' ]
         # MacOS has no support for x86 ("Error: No valid download found for version 11.x and package jdk.")
-        architecture: [ x64 ]
+        architecture: [ 'x64' ]
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -71,8 +71,8 @@ jobs:
       matrix:
         os: [ windows-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ 11 ]
-        architecture: [ x86, x64 ]
+        java: [ '11' ]
+        architecture: [ 'x86', 'x64' ]
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
