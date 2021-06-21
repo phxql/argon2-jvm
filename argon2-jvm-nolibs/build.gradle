@@ -19,7 +19,7 @@ jar {
     }
     into('META-INF/versions/11') {
         from sourceSets.java11.output
-        exclude('de/**')
+        include('module-info.class')
     }
 }
 
@@ -32,7 +32,8 @@ compileJava11Java {
     targetCompatibility = 11
     options.compilerArgs.addAll([
             '--release', '11',
-            '--module-path', sourceSets.main.compileClasspath.asPath]);
+            '--module-path', sourceSets.main.compileClasspath.asPath,
+            '--module-version', project.version]);
 }
 
 sonarqube {
