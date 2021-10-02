@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'signing'
 
     group 'de.mkammerer'
-    version '2.10.1'
+    version '2.11'
     description 'Argon2 Binding for the JVM'
 
     repositories {
@@ -13,6 +13,10 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
+    }
+
+    compileJava {
+        options.compilerArgs.addAll(['--release', '6']);
     }
 
     java {

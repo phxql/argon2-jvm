@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.11] - 2021-10-02
+
+### Added
+
+* `argon2-jvm-nolibs` is now a multi-release JAR with a `module-info` file for Java >= 11. ([PR](https://github.com/phxql/argon2-jvm/pull/85))
+* Added support for context secrets and associated data ([PR](https://github.com/phxql/argon2-jvm/pull/86))
+
 ## [2.10.1] - 2021-04-06
 
 ### Changed

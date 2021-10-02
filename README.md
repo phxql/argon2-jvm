@@ -19,7 +19,7 @@ Without pre-compiled Argon2 libraries (recommended, install argon2 via your pack
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm-nolibs</artifactId>
-    <version>2.10.1</version>
+    <version>2.11</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ With pre-compiled Argon2 libraries:
 <dependency>
     <groupId>de.mkammerer</groupId>
     <artifactId>argon2-jvm</artifactId>
-    <version>2.10.1</version>
+    <version>2.11</version>
 </dependency>
 ```
 
@@ -38,13 +38,13 @@ With pre-compiled Argon2 libraries:
 Without pre-compiled Argon2 libraries (recommended, install argon2 via your package manager):
 
 ```groovy
-implementation 'de.mkammerer:argon2-jvm-nolibs:2.10.1'
+implementation 'de.mkammerer:argon2-jvm-nolibs:2.11'
 ```
 
 With pre-compiled Argon2 libraries:
 
 ```groovy
-implementation 'de.mkammerer:argon2-jvm:2.10.1'
+implementation 'de.mkammerer:argon2-jvm:2.11'
 ```
 
 ## Usage

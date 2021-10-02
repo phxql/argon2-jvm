@@ -124,19 +124,6 @@ public interface Argon2Library extends Library {
      */
     int argon2d_hash_raw(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen);
 
-    /**
-     * Verifies a password against an Argon2i encoded string.
-     *
-     * @param encoded String encoding parameters, salt, hash
-     * @param pwd     Pointer to password
-     * @param pwdlen  Password size in bytes
-     * @return ARGON2_OK if successful
-     */
-    /*
-    int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen);
-     */
-    int argon2i_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
-
     /*
     ARGON2_PUBLIC int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
                               const uint32_t parallelism, const void *pwd,
@@ -146,7 +133,17 @@ public interface Argon2Library extends Library {
                               const size_t encodedlen, argon2_type type,
                               const uint32_t version);
      */
-    int argon2_hash(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen, byte[] encoded, Size_t encodedlen, Argon2_type type, JnaUint32 version);
+    int argon2_hash(JnaUint32 t_cost, JnaUint32 m_cost, JnaUint32 parallelism, byte[] pwd, Size_t pwdlen, byte[] salt, Size_t saltlen, byte[] hash, Size_t hashlen, byte[] encoded, Size_t encodedlen, Argon2_type type, Argon2_version version);
+
+    /**
+     * Verifies a password against an Argon2i encoded string.
+     *
+     * @param encoded String encoding parameters, salt, hash
+     * @param pwd     Pointer to password
+     * @param pwdlen  Password size in bytes
+     * @return ARGON2_OK if successful
+     */
+    int argon2i_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
 
     /**
      * Verifies a password against an Argon2d encoded string.
@@ -167,6 +164,84 @@ public interface Argon2Library extends Library {
      * @return ARGON2_OK if successful
      */
     int argon2id_verify(byte[] encoded, byte[] pwd, Size_t pwdlen);
+
+    /*
+    ARGON2_PUBLIC int argon2_verify(const char *encoded, const void *pwd,
+                                const size_t pwdlen, argon2_type type);
+     */
+    int argon2_verify(byte[] encoded, byte[] pwd, Size_t pwdlen, Argon2_type type);
+
+    /**
+     * Argon2i: Version of Argon2 that picks memory blocks
+     * independent on the password and salt. Good for side-channels,
+     * but worse w.r.t. tradeoff attacks if only one pass is used.
+     *
+     * @param context Pointer to current Argon2 context
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2i_ctx(Argon2_context.ByReference context);
+
+    /**
+     * Argon2d: Version of Argon2 that picks memory blocks depending
+     * on the password and salt. Only for side-channel-free
+     * environment!!
+     *
+     * @param contexts Pointer to current Argon2 context
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2d_ctx(Argon2_context.ByReference contexts);
+
+    /**
+     * Argon2id: Version of Argon2 where the first half-pass over memory is
+     * password-independent, the rest are password-dependent (on the password and
+     * salt). OK against side channels (they reduce to 1/2-pass Argon2i), and
+     * better with w.r.t. tradeoff attacks (similar to Argon2d).
+     *
+     * @param contexts Pointer to current Argon2 context
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2id_ctx(Argon2_context.ByReference contexts);
+
+    /*
+    ARGON2_PUBLIC int argon2_ctx(argon2_context *context, argon2_type type);
+     */
+    int argon2_ctx(Argon2_context.ByReference context, Argon2_type type);
+
+    /**
+     * Verify if a given password is correct for Argon2d hashing
+     *
+     * @param context Pointer to current Argon2 context
+     * @param hash    The password hash to verify. The length of the hash is
+     *                specified by the context outlen member
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2i_verify_ctx(Argon2_context.ByReference context, byte[] hash);
+
+    /**
+     * Verify if a given password is correct for Argon2i hashing
+     *
+     * @param context Pointer to current Argon2 context
+     * @param hash    The password hash to verify. The length of the hash is
+     *                specified by the context outlen member
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2d_verify_ctx(Argon2_context.ByReference context, byte[] hash);
+
+    /**
+     * Verify if a given password is correct for Argon2id hashing
+     *
+     * @param context Pointer to current Argon2 context
+     * @param hash    The password hash to verify. The length of the hash is
+     *                specified by the context outlen member
+     * @return Zero if successful, a non zero error code otherwise
+     */
+    int argon2id_verify_ctx(Argon2_context.ByReference context, byte[] hash);
+
+    /*
+    ARGON2_PUBLIC int argon2_verify_ctx(argon2_context *context, const char *hash,
+                                        argon2_type type);
+    */
+    int argon2_verify_ctx(Argon2_context.ByReference contexts, byte[] hash, Argon2_version version);
 
     /**
      * Returns the encoded hash length for the given input parameters.
