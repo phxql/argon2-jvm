@@ -1,3 +1,5 @@
+apply plugin: 'java-library'
+
 jar {
     manifest {
         attributes(
@@ -8,5 +10,4 @@ jar {
 
 dependencies {
     api project(':argon2-jvm-nolibs')
-    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
 }

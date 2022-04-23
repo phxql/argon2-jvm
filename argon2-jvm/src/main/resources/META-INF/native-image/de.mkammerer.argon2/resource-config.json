@@ -1,0 +1,13 @@
+{
+  "resources": [
+    {
+      "pattern": "darwin-.*/libargon2\\.dylib"
+    },
+    {
+      "pattern": "linux-.*/libargon2\\.so"
+    },
+    {
+      "pattern": "win32-.*/argon2\\.dll"
+    }
+  ]
+}
