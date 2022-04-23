@@ -1,0 +1,29 @@
+[
+  {
+    "name": "de.mkammerer.argon2.jna.Argon2_type",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "de.mkammerer.argon2.jna.JnaUint32",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "de.mkammerer.argon2.jna.Size_t",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  }
+]

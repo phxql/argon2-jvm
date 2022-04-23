@@ -1,7 +1,13 @@
+plugins {
+    id 'org.graalvm.buildtools.native' version '0.9.11' apply false
+    id 'org.sonarqube' version '3.0' apply false
+}
+
 subprojects {
-    apply plugin: 'java-library'
+    apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'org.graalvm.buildtools.native'
 
     group 'de.mkammerer'
     version '2.12-SNAPSHOT'
@@ -63,6 +69,14 @@ subprojects {
     signing {
         sign publishing.publications.libs
         required { gradle.taskGraph.hasTask('publish') }
+    }
+
+    graalvmNative {
+        binaries {
+            main {
+                buildArgs.add('--allow-incomplete-classpath')
+            }
+        }
     }
 }
 

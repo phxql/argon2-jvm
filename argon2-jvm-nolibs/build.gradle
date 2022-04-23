@@ -1,6 +1,5 @@
-plugins {
-    id 'org.sonarqube' version '3.0'
-}
+apply plugin: 'java-library'
+apply plugin: 'org.sonarqube'
 
 sourceSets {
     java11 {

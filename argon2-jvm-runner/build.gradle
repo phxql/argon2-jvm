@@ -1,17 +1,15 @@
-plugins {
-    id 'application'
-}
+apply plugin: 'application'
 
 application {
-    mainClass.set('de.mkammerer.argon2.runner.Runner')
+    mainClass = 'de.mkammerer.argon2.runner.Runner'
     applicationDefaultJvmArgs = ['-XX:+UseSerialGC', '-Xmx64M']
 }
 
 dependencies {
     implementation project(':argon2-jvm')
 
-    implementation('org.slf4j:slf4j-api:1.7.36')
+    implementation 'org.slf4j:slf4j-api:1.7.36'
     implementation 'net.java.dev.jna:jna:5.11.0'
 
-    runtimeOnly('ch.qos.logback:logback-classic:1.2.11')
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
 }
