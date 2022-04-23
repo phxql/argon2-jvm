@@ -4,24 +4,21 @@ import de.mkammerer.argon2.Argon2Advanced;
 import de.mkammerer.argon2.Argon2Constants;
 import de.mkammerer.argon2.Argon2Version;
 import de.mkammerer.argon2.HashResult;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SuppressWarnings("deprecation")
 public abstract class AbstractArgonTest {
-    protected static final Charset ASCII = Charset.forName("ASCII");
-    protected static final Charset UTF8 = Charset.forName("utf-8");
+    protected static final Charset ASCII = StandardCharsets.US_ASCII;
+    protected static final Charset UTF8 = StandardCharsets.UTF_8;
     protected static final String PASSWORD = "password";
     protected static final String NOT_THE_PASSWORD = "not-the-password";
     protected static final String SECRET = "secret";
@@ -41,7 +38,7 @@ public abstract class AbstractArgonTest {
 
     protected abstract String getHashPrefix();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         sut = createSut();
         prefix = getHashPrefix();
@@ -52,9 +49,9 @@ public abstract class AbstractArgonTest {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD);
         System.out.println(hash);
 
-        assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD), is(false));
+        assertThat(hash.startsWith(prefix)).isTrue();
+        assertThat(sut.verify(hash, PASSWORD)).isTrue();
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD)).isFalse();
     }
 
     @Test
@@ -62,9 +59,9 @@ public abstract class AbstractArgonTest {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII);
         System.out.println(hash);
 
-        assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD, ASCII), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD, ASCII), is(false));
+        assertThat(hash.startsWith(prefix)).isTrue();
+        assertThat(sut.verify(hash, PASSWORD, ASCII)).isTrue();
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD, ASCII)).isFalse();
     }
 
     @Test
@@ -72,9 +69,9 @@ public abstract class AbstractArgonTest {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray());
         System.out.println(hash);
 
-        assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD.toCharArray()), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD.toCharArray()), is(false));
+        assertThat(hash.startsWith(prefix)).isTrue();
+        assertThat(sut.verify(hash, PASSWORD.toCharArray())).isTrue();
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD.toCharArray())).isFalse();
     }
 
     @Test
@@ -82,16 +79,16 @@ public abstract class AbstractArgonTest {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII);
         System.out.println(hash);
 
-        assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD.toCharArray(), ASCII), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD.toCharArray(), ASCII), is(false));
+        assertThat(hash.startsWith(prefix)).isTrue();
+        assertThat(sut.verify(hash, PASSWORD.toCharArray(), ASCII)).isTrue();
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD.toCharArray(), ASCII)).isFalse();
     }
 
     @Test
     public void testUTF8() throws Exception {
         String password = "ŧҺìş ίŝ ứţƒ-8";
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, password, UTF8);
-        assertThat(sut.verify(hash, password, UTF8), is(true));
+        assertThat(sut.verify(hash, password, UTF8)).isTrue();
     }
 
 
@@ -100,21 +97,25 @@ public abstract class AbstractArgonTest {
         String hash = sut.hash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(UTF8));
         System.out.println(hash);
 
-        assertThat(hash.startsWith(prefix), is(true));
-        assertThat(sut.verify(hash, PASSWORD.getBytes(UTF8)), is(true));
-        assertThat(sut.verify(hash, NOT_THE_PASSWORD.getBytes(UTF8)), is(false));
+        assertThat(hash.startsWith(prefix)).isTrue();
+        assertThat(sut.verify(hash, PASSWORD.getBytes(UTF8))).isTrue();
+        assertThat(sut.verify(hash, NOT_THE_PASSWORD.getBytes(UTF8))).isFalse();
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testHashWithInvalidParameters() throws Exception {
-        sut.hash(0, 0, 0, PASSWORD);
+        assertThatThrownBy(() ->
+                sut.hash(0, 0, 0, PASSWORD)
+        ).isInstanceOf(IllegalStateException.class);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testRawHashWithInvalidParameters() throws Exception {
         byte[] salt = createSalt();
-        sut.rawHash(0, 0, 0, PASSWORD, salt);
+        assertThatThrownBy(() ->
+                sut.rawHash(0, 0, 0, PASSWORD, salt)
+        ).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -124,7 +125,7 @@ public abstract class AbstractArgonTest {
         sut.wipeArray(array);
 
         for (char c : array) {
-            assertThat(c, is((char) 0));
+            assertThat(c).isEqualTo((char) 0);
         }
     }
 
@@ -135,7 +136,7 @@ public abstract class AbstractArgonTest {
         sut.wipeArray(array);
 
         for (byte b : array) {
-            assertThat(b, is((byte) 0));
+            assertThat(b).isEqualTo((byte) 0);
         }
     }
 
@@ -144,7 +145,7 @@ public abstract class AbstractArgonTest {
         char[] chars = PASSWORD.toCharArray();
         sut.hash(ITERATIONS, MEMORY, PARALLELISM, chars);
 
-        assertThat(chars, equalTo(PASSWORD.toCharArray()));
+        assertThat(chars).isEqualTo(PASSWORD.toCharArray());
     }
 
     @Test
@@ -152,10 +153,10 @@ public abstract class AbstractArgonTest {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, salt)).isEqualTo(hash);
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, salt)).isNotEqualTo(hash);
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, notTheSalt)).isNotEqualTo(hash);
     }
 
     @Test
@@ -163,10 +164,10 @@ public abstract class AbstractArgonTest {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, ASCII, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, salt)).isEqualTo(hash);
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD, ASCII, salt)).isNotEqualTo(hash);
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD, ASCII, notTheSalt)).isNotEqualTo(hash);
     }
 
     @Test
@@ -174,10 +175,10 @@ public abstract class AbstractArgonTest {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), salt)).isEqualTo(hash);
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), salt)).isNotEqualTo(hash);
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), notTheSalt)).isNotEqualTo(hash);
     }
 
     @Test
@@ -185,10 +186,10 @@ public abstract class AbstractArgonTest {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt)).isEqualTo(hash);
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt)).isNotEqualTo(hash);
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), notTheSalt)).isNotEqualTo(hash);
     }
 
     @Test
@@ -196,10 +197,10 @@ public abstract class AbstractArgonTest {
         byte[] salt = createSalt();
         byte[] hash = sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt);
 
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt), is(hash));
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt)).isEqualTo(hash);
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt)).isNotEqualTo(hash);
         byte[] notTheSalt = new byte[16];
-        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, notTheSalt), is(not(hash)));
+        assertThat(sut.rawHash(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, notTheSalt)).isNotEqualTo(hash);
     }
 
     @Test
@@ -211,12 +212,12 @@ public abstract class AbstractArgonTest {
         byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.toCharArray(), ASCII, salt, keyLength);
         byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.toCharArray(), ASCII, salt, keyLength);
 
-        assertThat(key1.length, is(keyLength));
-        assertThat(key2.length, is(keyLength));
-        assertThat(key3.length, is(keyLength));
+        assertThat(key1.length).isEqualTo(keyLength);
+        assertThat(key2.length).isEqualTo(keyLength);
+        assertThat(key3.length).isEqualTo(keyLength);
 
-        assertThat(key1, is(key2));
-        assertThat(key1, is(not(key3)));
+        assertThat(key1).isEqualTo(key2);
+        assertThat(key1).isNotEqualTo(key3);
     }
 
     @Test
@@ -228,17 +229,19 @@ public abstract class AbstractArgonTest {
         byte[] key2 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, PASSWORD.getBytes(ASCII), salt, keyLength);
         byte[] key3 = sut.pbkdf(ITERATIONS, MEMORY, PARALLELISM, NOT_THE_PASSWORD.getBytes(ASCII), salt, keyLength);
 
-        assertThat(key1.length, is(keyLength));
-        assertThat(key2.length, is(keyLength));
-        assertThat(key3.length, is(keyLength));
+        assertThat(key1.length).isEqualTo(keyLength);
+        assertThat(key2.length).isEqualTo(keyLength);
+        assertThat(key3.length).isEqualTo(keyLength);
 
-        assertThat(key1, is(key2));
-        assertThat(key1, is(not(key3)));
+        assertThat(key1).isEqualTo(key2);
+        assertThat(key1).isNotEqualTo(key3);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNeedsRehashWithInvalidHash() {
-        sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM);
+        assertThatThrownBy(() ->
+                sut.needsRehash("asiudgui3478fo sm", ITERATIONS, MEMORY, PARALLELISM)
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -250,9 +253,9 @@ public abstract class AbstractArgonTest {
         for (Argon2Version version : Argon2Version.values()) {
             HashResult result = sut.hashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, keyLength, version);
 
-            assertThat(result.getRaw().length, is(keyLength));
-            assertThat(result.getEncoded(), startsWith(prefix));
-            assertThat(sut.verify(result.getEncoded(), password), is(true));
+            assertThat(result.getRaw().length).isEqualTo(keyLength);
+            assertThat(result.getEncoded()).startsWith(prefix);
+            assertThat(sut.verify(result.getEncoded(), password)).isTrue();
         }
     }
 
@@ -269,17 +272,17 @@ public abstract class AbstractArgonTest {
 
         byte[] hash = sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad);
 
-        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad), is(hash));
-        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad), is(not(hash)));
-        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad), is(not(hash)));
-        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad), is(not(hash)));
-        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd), is(not(hash)));
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad)).isEqualTo(hash);
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad)).isNotEqualTo(hash);
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad)).isNotEqualTo(hash);
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad)).isNotEqualTo(hash);
+        assertThat(sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd)).isNotEqualTo(hash);
 
-        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad, hash), is(true));
-        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad, hash), is(false));
-        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad, hash), is(false));
-        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad, hash), is(false));
-        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd, hash), is(false));
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, ad, hash)).isTrue();
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, ASCII, salt, secret, ad, hash)).isFalse();
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, notSalt, secret, ad, hash)).isFalse();
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, notSecret, ad, hash)).isFalse();
+        assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, ASCII, salt, secret, notAd, hash)).isFalse();
     }
 
     @Test
@@ -297,12 +300,12 @@ public abstract class AbstractArgonTest {
         for (Argon2Version version : Argon2Version.values()) {
             byte[] hash = sut.rawHashAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, ad, keyLength, version);
 
-            assertThat(hash.length, is(keyLength));
-            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, ad, keyLength, version, hash), is(true));
-            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, salt, secret, ad, keyLength, version, hash), is(false));
-            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, notSalt, secret, ad, keyLength, version, hash), is(false));
-            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, notSecret, ad, keyLength, version, hash), is(false));
-            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, notAd, keyLength, version, hash), is(false));
+            assertThat(hash.length).isEqualTo(keyLength);
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, ad, keyLength, version, hash)).isTrue();
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, notPassword, salt, secret, ad, keyLength, version, hash)).isFalse();
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, notSalt, secret, ad, keyLength, version, hash)).isFalse();
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, notSecret, ad, keyLength, version, hash)).isFalse();
+            assertThat(sut.verifyAdvanced(ITERATIONS, MEMORY, PARALLELISM, password, salt, secret, notAd, keyLength, version, hash)).isFalse();
         }
     }
 
@@ -311,13 +314,13 @@ public abstract class AbstractArgonTest {
         byte[] salt1 = sut.generateSalt();
         byte[] salt2 = sut.generateSalt();
 
-        assertThat(salt1, is(notNullValue()));
-        assertThat(salt2, is(notNullValue()));
+        assertThat(salt1).isNotNull();
+        assertThat(salt2).isNotNull();
 
-        assertThat(salt1.length, is(Argon2Constants.DEFAULT_SALT_LENGTH));
-        assertThat(salt2.length, is(Argon2Constants.DEFAULT_SALT_LENGTH));
+        assertThat(salt1.length).isEqualTo(Argon2Constants.DEFAULT_SALT_LENGTH);
+        assertThat(salt2.length).isEqualTo(Argon2Constants.DEFAULT_SALT_LENGTH);
 
-        assertThat(salt1, is(not(salt2)));
+        assertThat(salt1).isNotEqualTo(salt2);
     }
 
     @Test
@@ -325,13 +328,13 @@ public abstract class AbstractArgonTest {
         byte[] salt1 = sut.generateSalt(32);
         byte[] salt2 = sut.generateSalt(32);
 
-        assertThat(salt1, is(notNullValue()));
-        assertThat(salt2, is(notNullValue()));
+        assertThat(salt1).isNotNull();
+        assertThat(salt2).isNotNull();
 
-        assertThat(salt1.length, is(32));
-        assertThat(salt2.length, is(32));
+        assertThat(salt1.length).isEqualTo(32);
+        assertThat(salt2.length).isEqualTo(32);
 
-        assertThat(salt1, is(not(salt2)));
+        assertThat(salt1).isNotEqualTo(salt2);
     }
 
     protected byte[] getFixedSalt() {

@@ -30,8 +30,8 @@ dependencies {
 compileJava11Java {
     sourceCompatibility = 11
     targetCompatibility = 11
+    options.release = 11
     options.compilerArgs.addAll([
-            '--release', '11',
             '--module-path', sourceSets.main.compileClasspath.asPath,
             '--module-version', project.version]);
 }
