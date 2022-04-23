@@ -9,6 +9,15 @@
     ]
   },
   {
+    "name": "de.mkammerer.argon2.jna.Argon2_version",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
     "name": "de.mkammerer.argon2.jna.JnaUint32",
     "methods": [
       {
@@ -25,5 +34,13 @@
         "parameterTypes": []
       }
     ]
+  },
+  {
+    "name": "de.mkammerer.argon2.jna.Argon2_context",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "de.mkammerer.argon2.jna.Argon2_context$ByReference",
+    "allDeclaredFields": true
   }
 ]
