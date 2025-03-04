@@ -124,7 +124,7 @@ Licensed under [LGPL v3](https://www.gnu.org/licenses/lgpl.html).
 
 ## Maintainer
 
-Moritz Kammerer ([@phXql](https://github.com/phxql))
+Moritz Halbritter ([@phXql](https://github.com/phxql))
 
 ## Contributing
 

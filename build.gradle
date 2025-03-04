@@ -95,8 +95,8 @@ private def configurePom(MavenPom pom) {
         developers {
             developer {
                 id = 'phxql'
-                name = 'Moritz Kammerer'
-                email = 'kammerer.moritz@gmail.com'
+                name = 'Moritz Halbritter'
+                email = 'halbritter.moritz@gmail.com'
                 url = 'https://www.mkammerer.de/'
             }
         }
