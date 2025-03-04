@@ -1,0 +1,7 @@
+[
+  {
+    "interfaces": [
+      "de.mkammerer.argon2.jna.Argon2Library"
+    ]
+  }
+]

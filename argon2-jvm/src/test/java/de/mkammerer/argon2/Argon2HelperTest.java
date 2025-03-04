@@ -1,6 +1,6 @@
 package de.mkammerer.argon2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class Argon2HelperTest {
     @Test

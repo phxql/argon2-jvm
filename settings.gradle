@@ -1,3 +1,10 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = 'argon2-jvm'
 include 'argon2-jvm-nolibs'
 include 'argon2-jvm'
