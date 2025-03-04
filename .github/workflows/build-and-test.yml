@@ -36,7 +36,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK ${{ matrix.java }}
+      - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '23'
