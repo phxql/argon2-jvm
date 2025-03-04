@@ -8,8 +8,8 @@ application {
 dependencies {
     implementation project(':argon2-jvm')
 
-    implementation 'org.slf4j:slf4j-api:1.7.36'
-    implementation 'net.java.dev.jna:jna:5.11.0'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'net.java.dev.jna:jna:5.16.0'
 
-    runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.5.17'
 }
