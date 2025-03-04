@@ -10,7 +10,7 @@ subprojects {
     apply plugin: 'org.graalvm.buildtools.native'
 
     group 'de.mkammerer'
-    version '2.12-SNAPSHOT'
+    version '2.12'
     description 'Argon2 Binding for the JVM'
 
     repositories {
