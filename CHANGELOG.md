@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-* Updated JNA to 5.11.0
+* Updated JNA to 5.16.0
 
 ## [2.11] - 2021-10-02
 
