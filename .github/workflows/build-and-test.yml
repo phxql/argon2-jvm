@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-      - uses: graalvm/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@v1
         with:
           java-version: '23'
           distribution: 'graalvm'
