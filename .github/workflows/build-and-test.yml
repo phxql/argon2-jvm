@@ -40,7 +40,7 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
-          distribution: 'graalvm'
+          distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
           cache: 'gradle'
