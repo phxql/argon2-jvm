@@ -15,19 +15,18 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ '11' ]
+        java: [ '17' ]
         architecture: [ 'x64' ] # ubuntu-latest has no support for x86
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
           distribution: ${{ matrix.distribution }}
-          cache: 'gradle'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
@@ -35,7 +34,7 @@ jobs:
   build-on-linux-native:
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
@@ -43,7 +42,6 @@ jobs:
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
-          cache: 'gradle'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
@@ -53,20 +51,19 @@ jobs:
       matrix:
         os: [ macos-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ '11' ]
+        java: [ '17' ]
         # MacOS has no support for x86 ("Error: No valid download found for version 11.x and package jdk.")
         architecture: [ 'x64' ]
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
           distribution: ${{ matrix.distribution }}
-          cache: 'gradle'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
@@ -77,19 +74,18 @@ jobs:
       matrix:
         os: [ windows-latest ]
         # See CONTRIBUTING.md on JDK 11 build requirement
-        java: [ '11' ]
+        java: [ '17' ]
         architecture: [ 'x86', 'x64' ]
         distribution: [ 'zulu', 'adopt' ]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
           distribution: ${{ matrix.distribution }}
-          cache: 'gradle'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle

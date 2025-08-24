@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-TBD
+* Minimum required Java version is now Java 8
 
 ## [2.12] - 2025-03-04
 
